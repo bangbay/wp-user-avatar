@@ -17,10 +17,7 @@ define('WP_USER_AVATAR_FOLDER', basename(dirname(__FILE__)));
 define('WP_USER_AVATAR_ABSPATH', trailingslashit(str_replace("\\","/", WP_PLUGIN_DIR.'/'.WP_USER_AVATAR_FOLDER)));
 define('WP_USER_AVATAR_URLPATH', trailingslashit(plugins_url(WP_USER_AVATAR_FOLDER)));
 
-// Initialize default settings
-register_activation_hook(__FILE__, 'wp_user_avatar_options');
-
-// Remove settings and metadata on plugin delete
+// Remove user metadata on plugin delete
 register_uninstall_hook(__FILE__, 'wp_user_avatar_delete_setup');
 
 // Remove user metadata
