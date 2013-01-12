@@ -36,7 +36,9 @@ if(!class_exists('wp_user_avatar')){
       add_action('edit_user_profile', array(&$this,'action_show_user_profile'));
       add_action('personal_options_update', array(&$this,'action_process_option_update'));
       add_action('edit_user_profile_update', array(&$this,'action_process_option_update'));
-      add_filter('attachment_fields_to_edit', array(&$this, 'add_wp_user_avatar_attachment_field_to_edit'), 10, 2); 
+      if(!function_exists('wp_enqueue_media')){
+        add_filter('attachment_fields_to_edit', array(&$this, 'add_wp_user_avatar_attachment_field_to_edit'), 10, 2); 
+      }
     }
 
     // Add to user profile edit

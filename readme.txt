@@ -1,7 +1,7 @@
 === WP User Avatar ===
 
 Contributors: bangbay
-Donate link: http://siboliban.org/
+Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, profile avatar, profile image, profile photo, user avatar, user image, user photo
 Requires at least: 3.0
 Tested up to: 3.5
@@ -23,7 +23,7 @@ This plugin uses the new Media Uploader introduced in WordPress 3.5, but is also
 
 1. Download, install, and activate the WP User Avatar plugin.
 2. Choose a profile to edit.
-3. In the profile edit view, click "Edit WP User Avatar".
+3. In edit mode, click "Edit WP User Avatar".
 4. Choose an image, then click "Set WP User Avatar".
 5. Click "Update Profile".
 6. In your theme, use the function get_wp_user_avatar() in place of get_avatar().
@@ -63,6 +63,8 @@ If you leave the options blank, WP User Avatar will detect whether you're inside
 get_wp_user_avatar() will also fall back to get_avatar() if no WP User Avatar image is set. For this to work, "Show Avatars" must be checked in your Discussion settings.
 
 == Screenshots ==
+1. See thumbnails of WP User Avatar in the Users section.
+2. WP User Avatar adds a field to your profile in edit mode.
 
 == Changelog ==
 
