@@ -56,7 +56,7 @@ if(!class_exists('wp_user_avatar')){
               <p>
                 <?php
                   if(!empty($wp_user_avatar)){
-                    echo get_wp_user_avatar($user->ID, 96);
+                    echo get_wp_user_avatar($user->ID, "medium");
                   } else {
                     if(get_option('show_avatars') == '1'){
                       echo get_avatar($user->ID, 96);
@@ -75,10 +75,62 @@ if(!class_exists('wp_user_avatar')){
     </table>
     <script type="text/javascript">
       jQuery(function($){
-        $('#add-wp-user-avatar').click(function(e){
-          e.preventDefault();
-          tb_show('Edit <?php echo $user->display_name; ?>', 'media-upload.php?type=image&post_type=user&tab=library&TB_iframe=1');
-        });
+        <?php if(function_exists('wp_enqueue_media')) : // Use Backbone uploader for WP 3.5+ ?>
+          wp.media.wpUserAvatar = {
+            get: function() {
+              return wp.media.view.settings.post.wpUserAvatarId;
+            },
+            set: function(id) {
+              var settings = wp.media.view.settings;
+              settings.post.wpUserAvatarId = id;
+              settings.post.wpUserAvatarSrc = $('.attachment-info .thumbnail').find('img').attr('src');
+              if(settings.post.wpUserAvatarId)
+                setWPUserAvatar(settings.post.wpUserAvatarId, settings.post.wpUserAvatarSrc);
+            },
+            frame: function(){
+              if(this._frame)
+                return this._frame;
+              this._frame = wp.media({
+                state: 'library',
+                states: [ new wp.media.controller.Library({ title: "Edit WP User Avatar: <?php echo $user->display_name; ?>" }) ]
+              });
+              this._frame.on('open', function(){
+                var selection = this.state().get('selection');
+                id = jQuery('#wp-user-avatar').val();
+                attachment = wp.media.attachment(id);
+                attachment.fetch();
+                selection.add(attachment ? [ attachment ] : []);
+              }, this._frame);
+              this._frame.on('toolbar:create:select', function(toolbar){
+                this.createSelectToolbar(toolbar, {
+                  text: 'Set WP User Avatar'
+                });
+              }, this._frame);
+              this._frame.state('library').on('select', this.select);
+              return this._frame;
+            },
+            select: function(id) {
+              var settings = wp.media.view.settings,
+                selection = this.get('selection').single();
+              wp.media.wpUserAvatar.set(selection ? selection.id : -1);
+            },
+            init: function() {
+              $('body').on( 'click', '#add-wp-user-avatar', function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                wp.media.wpUserAvatar.frame().open();
+              });
+            }
+          };
+          $(wp.media.wpUserAvatar.init);
+        <?php else : // Fall back to Thickbox uploader ?>
+          $('#add-wp-user-avatar').click(function(e){
+            e.preventDefault();
+            tb_show('Edit WP User Avatar: <?php echo $user->display_name; ?>', 'media-upload.php?type=image&post_type=user&tab=library&TB_iframe=1');
+          });
+        <?php endif; ?>
+      });
+      jQuery(function($){
         $('#remove-wp-user-avatar').click(function(e){
           var gravatar = "<?php echo get_avatar($user->ID); ?>";
           if(gravatar == ''){
@@ -101,17 +153,8 @@ if(!class_exists('wp_user_avatar')){
 
     // Add button to attach image
     function add_wp_user_avatar_attachment_field_to_edit($fields, $post){
-      $image = wp_get_attachment_image_src($post->ID, array(96,96));
-      $button .= $pagenow.'<button type="button" class="button" id="set-wp-user-avatar-image" onclick="setWPUserAvatar(\''.$post->ID.'\', \''.$image[0].'\')">Set WP User Avatar</button>';
-      $button .= "<script type='text/javascript'>
-        function setWPUserAvatar(attachment, imageURL){
-          jQuery('#wp-user-avatar', window.parent.document).val(attachment);
-          jQuery('#wp-user-avatar-preview', window.parent.document).find('img').attr('src', imageURL).attr('width', '96').removeAttr('height', '');
-          jQuery('#wp-user-avatar-preview-message', window.parent.document).show();
-          jQuery('#remove-wp-user-avatar', window.parent.document).show();
-          window.parent.tb_remove();
-        }
-      </script>";
+      $image = wp_get_attachment_image_src($post->ID, "medium");
+      $button .= '<button type="button" class="button" id="set-wp-user-avatar-image" onclick="setWPUserAvatar(\''.$post->ID.'\', \''.$image[0].'\')">Set WP User Avatar</button>';
       $fields['wp-user-avatar'] = array(
         'label' => __('WP User Avatar'),
         'input' => 'html',
@@ -171,6 +214,10 @@ function get_wp_user_avatar($id_or_email = '', $size = '96', $default = '', $alt
 function media_upload_js(){
   wp_enqueue_script('media-upload');
   wp_enqueue_script('thickbox');
+  if(function_exists('wp_enqueue_media')){
+    wp_enqueue_media();
+  }
+  wp_enqueue_script('mulubox', WP_USER_AVATAR_URLPATH.'js/wp-user-avatar.js');
 }
 
 function media_upload_css(){

@@ -17,6 +17,8 @@ WordPress currently only allows you to use custom avatars that are uploaded thro
 
 To use WP User Avatar in your theme, replace anywhere you use the function get_avatar() with get_wp_user_avatar(). get_wp_user_avatar() accepts the same fields as get_avatar() with added functionality.
 
+This plugin uses the new Media Uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.0.
+
 == Installation ==
 
 1. Download, install, and activate the WP User Avatar plugin.

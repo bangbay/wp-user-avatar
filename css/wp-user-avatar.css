@@ -1,2 +1,3 @@
 .savesend .button { display: none; }
 #wp-user-avatar-preview-message { color: #c00; display: none; }
+#wp-user-avatar-preview img { max-width: 96px; }
