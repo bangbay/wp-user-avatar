@@ -63,6 +63,7 @@ If you leave the options blank, WP User Avatar will detect whether you're inside
 get_wp_user_avatar() will also fall back to get_avatar() if no WP User Avatar image is set. For this to work, "Show Avatars" must be checked in your Discussion settings.
 
 == Screenshots ==
+
 1. See thumbnails of WP User Avatar in the Users section.
 2. WP User Avatar adds a field to your profile in edit mode.
 

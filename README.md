@@ -1,17 +1,8 @@
-=== WP User Avatar ===
+**WP User Avatar**
 
-Contributors: bangbay
-Donate link: http://siboliban.org/donate
-Tags: author image, author photo, author avatar, avatar, profile avatar, profile image, profile photo, user avatar, user image, user photo
-Requires at least: 3.0
-Tested up to: 3.5
-Stable tag: 1.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Download the plugin at: http://wordpress.org/extend/plugins/wp-user-avatar/
 
-Use any image in your WordPress Media Libary as a custom user avatar.
-
-== Description ==
+*Description**
 
 WordPress currently only allows you to use custom avatars that are uploaded through gravatar.com. WP User Avatar enables you to use any photo uploaded into your Media Library as an avatar. This means any image you've uploaded for a page or post is available for you to use as an avatar. No extra folders or image editing functions are necessary.
 
@@ -19,7 +10,7 @@ To use WP User Avatar in your theme, replace anywhere you use the function get_a
 
 This plugin uses the new Media Uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.0.
 
-== Installation ==
+**Installation**
 
 1. Download, install, and activate the WP User Avatar plugin.
 2. Choose a profile to edit.
@@ -28,9 +19,9 @@ This plugin uses the new Media Uploader introduced in WordPress 3.5, but is also
 5. Click "Update Profile".
 6. In your theme, use the function get_wp_user_avatar() in place of get_avatar().
 
-== Frequently Asked Questions ==
+**Frequently Asked Questions**
 
-= How do I use WP User Avatar? =
+**How do I use WP User Avatar?**
 
 In your theme, replace get_avatar with get_wp_user_avatar().
 
@@ -61,14 +52,3 @@ If you leave the options blank, WP User Avatar will detect whether you're inside
 `<?php echo get_wp_user_avatar(); ?>`
 
 get_wp_user_avatar() will also fall back to get_avatar() if no WP User Avatar image is set. For this to work, "Show Avatars" must be checked in your Discussion settings.
-
-== Screenshots ==
-1. See thumbnails of WP User Avatar in the Users section.
-2. WP User Avatar adds a field to your profile in edit mode.
-
-== Changelog ==
-
-= 1.0 =
-* Initial release
-
-== Upgrade Notice ==
