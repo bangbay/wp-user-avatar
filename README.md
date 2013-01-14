@@ -2,7 +2,7 @@
 
 Download the plugin at: http://wordpress.org/extend/plugins/wp-user-avatar/
 
-*Description**
+**Description**
 
 WordPress currently only allows you to use custom avatars that are uploaded through gravatar.com. WP User Avatar enables you to use any photo uploaded into your Media Library as an avatar. This means any image you've uploaded for a page or post is available for you to use as an avatar. No extra folders or image editing functions are necessary.
 
