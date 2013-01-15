@@ -256,7 +256,7 @@ function get_wp_user_avatar($id_or_email = '', $size = '96', $align = ''){
 }
 
 // Return just the image src
-function get_wp_user_avatar_src($id_or_email, $size, $align){
+function get_wp_user_avatar_src($id_or_email, $size = '', $align = ''){
   $wp_user_avatar_image = get_wp_user_avatar($id_or_email, $size, $align);
   $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $wp_user_avatar_image, $matches, PREG_SET_ORDER);
   $wp_user_avatar_image_src = $matches [0] [1];
