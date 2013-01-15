@@ -35,7 +35,7 @@ This plugin uses the new Media Uploader introduced in WordPress 3.5, but is also
 
 After activating WP User Avatar, you have a choice of manually replacing <code>get_avatar()</code> with <code>get_wp_user_avatar()</code> in your theme, or leaving <code>get_avatar()</code> as-is. Here are the differences:
 
-**<code>get_wp_user_avatar()</code>**
+= get_wp_user_avatar() =
 
 1. Allows you to use the values "original", "large", "medium", or "thumbnail" for your avatar size.
 2. Doesn't add a fixed width and height to the image if you use the aforementioned values. This will give you more flexibility to resize the image with CSS.
@@ -43,7 +43,7 @@ After activating WP User Avatar, you have a choice of manually replacing <code>g
 4. Shows nothing if no WP User Avatar image is set.
 5. Gives you the choice to show the default avatar only if "Show Avatars" is enabled in your Discussion settings
 
-**<code>get_avatar()</code>**
+= get_avatar() =
 
 1. Requires you to enable "Show Avatars" in your Discussion settings to show any avatars.
 2. Accepts only numeric values for your avatar size.
@@ -85,7 +85,7 @@ Outputs:
 
 **Note:** WordPress adds more CSS classes to the avater not listed here.
 
-= Example Usage =
+** Example Usage **
 
 Within The Loop, you may be using:
 
@@ -105,27 +105,33 @@ You can also add an alignment of "left", "right", or "center":
 
 On an author page outside of The Loop, you may be using:
 
-`<?php $user = get_user_by('slug', $author_name); echo get_avatar($user->ID, 96); ?>`
+`<?php
+  $user = get_user_by('slug', $author_name); 
+  echo get_avatar($user->ID, 96);
+?>`
 
 Replace this function with:
 
-`<?php $user = get_user_by('slug', $author_name); echo get_wp_user_avatar($user->ID, 96); ?>`
+`<?php
+  $user = get_user_by('slug', $author_name);
+  echo get_wp_user_avatar($user->ID, 96);
+?>`
 
 If you leave the options blank, WP User Avatar will detect whether you're inside The Loop or on an author page and return the correct avatar in the default 96x96 size:
 
 `<?php echo get_wp_user_avatar(); ?>`
 
-<code>get_wp_user_avatar()</code> will also fall back to <code>get_avatar()</code> if no WP User Avatar image is set. For this to work, "Show Avatars" must be checked in your Discussion settings.
+The function <code>get_wp_user_avatar()</code> will also fall back to <code>get_avatar()</code> if no WP User Avatar image is set. For this to work, "Show Avatars" must be checked in your Discussion settings.
 
-= Other Available Functions =
+** Other Available Functions **
 
-**<code>get_wp_user_avatar_src()</code>**
+= <code>get_wp_user_avatar_src() =
 
 Works just like <code>get_wp_user_avatar()</code> but returns just the image src. This is useful if you would like to link a thumbnail-sized avatar to a larger version of the image:
 
 `<a href="<?php echo get_wp_user_avatar_src($user_id, 'large'); ?>"><?php echo get_wp_user_avatar($user_id, 'thumbnail'); ?></a>`
 
-**<code>has_wp_user_avatar()</code>**
+= has_wp_user_avatar() =
 
 Returns true if the user has a WP User Avatar image. You can specify the user ID, or leave it blank to automatically detect the author within a post or author page:
 
