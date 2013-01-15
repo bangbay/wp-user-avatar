@@ -85,7 +85,7 @@ Outputs:
 
 **Note:** WordPress adds more CSS classes to the avater not listed here.
 
-** Example Usage **
+**Example Usage**
 
 Within The Loop, you may be using:
 
@@ -123,7 +123,7 @@ If you leave the options blank, WP User Avatar will detect whether you're inside
 
 The function <code>get_wp_user_avatar()</code> will also fall back to <code>get_avatar()</code> if no WP User Avatar image is set. For this to work, "Show Avatars" must be checked in your Discussion settings.
 
-** Other Available Functions **
+**Other Available Functions**
 
 = <code>get_wp_user_avatar_src() =
 
