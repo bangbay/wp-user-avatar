@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, profile avatar, profile image, profile photo, user avatar, user image, user photo
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 1.1
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,7 +70,7 @@ The function <code>get_wp_user_avatar()</code> will also fall back to <code>get_
 
 = [avatar] shortcode =
 
-You can use the shortcode <code>[avatar]</code> in your posts. It will automatically detect the author of the post, or you can specify an author by username. You can specify a size and alignment, but they are optional.
+You can use the shortcode <code>[avatar]</code> in your posts. It will detect the author of the post or you can specify an author by username. You can specify a size and alignment, but they are optional.
 
 `[avatar user="admin" size="medium" align="left"]`
 
@@ -84,7 +84,7 @@ Works just like <code>get_wp_user_avatar()</code> but returns just the image src
 
 = has_wp_user_avatar() =
 
-Returns true if the user has a WP User Avatar image. You can specify the user ID, or leave it blank to automatically detect the author within The Loop or author page:
+Returns true if the user has a WP User Avatar image. You can specify the user ID, or leave it blank to detect the author within The Loop or author page:
 
 `<?php
   if ( has_wp_user_avatar($user_id) ) {
@@ -106,7 +106,7 @@ You have a choice of manually replacing <code>get_avatar()</code> with <code>get
 2. Doesn't add a fixed width and height to the image if you use the aforementioned values. This will give you more flexibility to resize the image with CSS.
 3. Optionally adds CSS classes "alignleft", "alignright", or "aligncenter" to position your avatar.
 4. Shows nothing if no WP User Avatar image is set.
-5. Gives you the choice to show the default avatar only if "Show Avatars" is enabled in your Discussion settings.
+5. Shows the default avatar only if "Show Avatars" is enabled in your Discussion settings.
 
 = get_avatar() =
 
@@ -118,7 +118,7 @@ You have a choice of manually replacing <code>get_avatar()</code> with <code>get
 
 = How can I see which users have an avatar? =
 
-WP User Avatar adds a column to your Users admin table with avatar thumbnails. If "Show Avatars" is enabled in your Discussion settings, instead of a new column, you will see avatars to the left of each username.
+For administrators, WP User Avatar adds a column with avatar thumbnails to your Users admin table. If "Show Avatars" is enabled in your Discussion settings, you will see avatars to the left of each username instead of in a new column.
 
 = Will WP User Avatar work with comment author avatars? =
 
@@ -126,7 +126,7 @@ Yes, for registered users. Non-registered comment authors will show their gravat
 
 = Can I insert WP User Avatar directly into a post? =
 
-You can use the shortcode <code>[avatar]</code> in your posts. It will automatically detect the author of the post, or you can specify an author by username. You can specify a size or alignment, but they are optional.
+You can use the shortcode <code>[avatar]</code> in your posts. It will detect the author of the post or you can specify an author by username. You can specify a size or alignment, but they are optional.
 
 `[avatar user="admin" size="medium" align="left"]`
 
@@ -155,6 +155,9 @@ Outputs:
 1. WP User Avatar adds a field to your profile in edit mode.
 
 == Changelog ==
+
+= 1.1.1 =
+Bug Fix: Capabilities error in comment avatar.
 
 = 1.1 =
 * Add: Add filter for get_avatar

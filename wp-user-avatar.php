@@ -1,13 +1,13 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.1
+ * @version 1.1.1
  */
 /*
 Plugin Name: WP User Avatar
 Plugin URI: http://wordpress.org/extend/plugins/wp-user-avatar/
 Description: Use any image in your WordPress Media Libary as a custom user avatar.
-Version: 1.1
+Version: 1.1.1
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
 */
@@ -48,7 +48,7 @@ if(!class_exists('wp_user_avatar')){
 
     // Add to user profile edit
     function action_show_user_profile($user){
-       $hide = !has_wp_user_avatar($user->ID) ? ' style="display:none;"' : '';
+      $hide = !has_wp_user_avatar($user->ID) ? ' style="display:none;"' : '';
     ?>
     <h3><?php _e('WP User Avatar') ?></h3>
     <table class="form-table">
@@ -267,11 +267,17 @@ function get_wp_user_avatar_src($id_or_email, $size = '', $align = ''){
 function get_wp_user_avatar_alt($avatar, $id_or_email, $size = '', $default = '', $alt = false){
   global $post, $pagenow, $comment;
   $author_name = get_query_var('author_name');
-  $user = is_numeric($id_or_email) ? get_user_by('id', $id_or_email) : get_user_by('email', $id_or_email);
+  $user = is_numeric($id_or_email) ? get_user_by('id', $id_or_email) : '';
   // Find user ID on comment, author page, or post
   if(is_object($id_or_email)){
-    $id_or_email = $comment->user_id != '0' ? $comment->user_id : $comment->comment_author_email;
-    $alt = $comment->comment_author;
+    if(!empty($comment->comment_author_email)){
+      $id_or_email = $comment->user_id != '0' ? $comment->user_id : $comment->comment_author_email;
+      $alt = $comment->comment_author;
+      $wp_user_avatar_meta = get_the_author_meta('wp_user_avatar', $id_or_email);
+    } else {
+      $id_or_email = '';
+      $wp_user_avatar_meta = '';
+    }
   } else {
     if(!empty($id_or_email)){
       $user = is_numeric($id_or_email) ? get_user_by('id', $id_or_email) : get_user_by('email', $id_or_email);
@@ -280,8 +286,8 @@ function get_wp_user_avatar_alt($avatar, $id_or_email, $size = '', $default = ''
     }
     $id_or_email = $user->ID;
     $alt = $user->display_name;
+    $wp_user_avatar_meta = get_the_author_meta('wp_user_avatar', $id_or_email);
   }
-  $wp_user_avatar_meta = get_the_author_meta('wp_user_avatar', $id_or_email);
   if(!empty($wp_user_avatar_meta) && $pagenow != 'options-discussion.php'){
     $wp_user_avatar_image = wp_get_attachment_image_src($wp_user_avatar_meta, array($size,$size));
     $dimensions = is_numeric($size) ? ' width="'.$wp_user_avatar_image[1].'" height="'.$wp_user_avatar_image[2].'"' : '';
