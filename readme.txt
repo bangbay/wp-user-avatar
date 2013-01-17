@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, profile avatar, profile image, profile photo, user avatar, user image, user photo
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 1.1.1
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,8 +156,14 @@ Outputs:
 
 == Changelog ==
 
+= 1.1.3 =
+* Bug Fix: Comment author with no e-mail address
+
+= 1.1.2 =
+* Remove: Unused variables
+
 = 1.1.1 =
-Bug Fix: Capabilities error in comment avatar.
+* Bug Fix: Capabilities error in comment avatar
 
 = 1.1 =
 * Add: Add filter for get_avatar
