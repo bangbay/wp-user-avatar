@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, profile avatar, profile image, profile photo, user avatar, user image, user photo
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 1.1.3
+Stable tag: 1.1.5a
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,7 @@ Use any image in your WordPress Media Libary as a custom user avatar.
 
 WordPress currently only allows you to use custom avatars that are uploaded through gravatar.com. WP User Avatar enables you to use any photo uploaded into your Media Library as an avatar. This means you use the same uploader and library as your posts. No extra folders or image editing functions are necessary.
 
-To use WP User Avatar in your theme, manually replace <code>get_avatar()</code> with <code>get_wp_user_avatar()</code> or leave <code>get_avatar()</code> as-is. <code>get_wp_user_avatar()</code> has  functionality not available in <code>get_avatar()</code>. You can also use the shortcode <code>[avatar]</code> in your posts.
+To use WP User Avatar in your theme, choose a theme that has avatar support. Then, manually replace [<code>get_avatar()</code>](http://codex.wordpress.org/Function_Reference/get_avatar) with <code>get_wp_user_avatar()</code> or leave <code>get_avatar()</code> as-is. <code>get_wp_user_avatar()</code> has functionality not available in <code>get_avatar()</code>. [Read about the differences here](http://wordpress.org/extend/plugins/wp-user-avatar/faq/). You can also use the shortcode <code>[avatar]</code> in your posts.
 
 This plugin uses the new Media Uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.0.
 
@@ -25,7 +25,7 @@ This plugin uses the new Media Uploader introduced in WordPress 3.5, but is also
 2. On your edit profile page, click "Edit WP User Avatar".
 3. Choose an image, then click "Set WP User Avatar".
 4. Click "Update Profile".
-5. In your theme, manually replace <code>get_avatar()</code> with <code>get_wp_user_avatar()</code> or leave <code>get_avatar()</code> as-is.
+5. Choose a theme that has avatar support. In your theme, manually replace <code>get_avatar()</code> with <code>get_wp_user_avatar()</code> or leave <code>get_avatar()</code> as-is. [Read about the differences here](http://wordpress.org/extend/plugins/wp-user-avatar/faq/).
 6. You can also use the shortcode <code>[avatar]</code> in your posts.
 
 **Example Usage**
@@ -98,7 +98,7 @@ Returns true if the user has a WP User Avatar image. You can specify the user ID
 
 = How do I use WP User Avatar? =
 
-You have a choice of manually replacing <code>get_avatar()</code> with <code>get_wp_user_avatar()</code> in your theme, or leaving <code>get_avatar()</code> as-is. Here are the differences:
+First, choose a theme that has avatar support. Then, you have a choice of manually replacing <code>get_avatar()</code> with <code>get_wp_user_avatar()</code> in your theme, or leaving <code>get_avatar()</code> as-is. Here are the differences:
 
 = get_wp_user_avatar() =
 
@@ -116,19 +116,19 @@ You have a choice of manually replacing <code>get_avatar()</code> with <code>get
 4. Shows the default avatar if no WP User Avatar image is set. (Choosing "Blank" still generates a transparent image file.)
 5. Requires no changes to your theme files if you are currently using <code>get_avatar()</code>.
 
-= How can I see which users have an avatar? =
-
-For administrators, WP User Avatar adds a column with avatar thumbnails to your Users admin table. If "Show Avatars" is enabled in your Discussion settings, you will see avatars to the left of each username instead of in a new column.
-
-= Will WP User Avatar work with comment author avatars? =
-
-Yes, for registered users. Non-registered comment authors will show their gravatar.com avatars.
-
 = Can I insert WP User Avatar directly into a post? =
 
 You can use the shortcode <code>[avatar]</code> in your posts. It will detect the author of the post or you can specify an author by username. You can specify a size or alignment, but they are optional.
 
 `[avatar user="admin" size="medium" align="left"]`
+
+= Will WP User Avatar work with comment author avatars? =
+
+Yes, for registered users. Non-registered comment authors will show their gravatar.com avatars.
+
+= How can I see which users have an avatar? =
+
+For administrators, WP User Avatar adds a column with avatar thumbnails to your Users admin table. If "Show Avatars" is enabled in your Discussion settings, you will see avatars to the left of each username instead of in a new column.
 
 = What CSS can I use with WP User Avatar? =
 
@@ -155,6 +155,16 @@ Outputs:
 1. WP User Avatar adds a field to your profile in edit mode.
 
 == Changelog ==
+
+= 1.1.5a =
+* Update: readme.txt
+
+= 1.1.5 =
+* Bug Fix: Remove stray curly bracket
+
+= 1.1.4 =
+* Bug Fix: change get_usermeta to get_user_meta
+* Bug Fix: Non-object warning when retrieving user ID
 
 = 1.1.3 =
 * Bug Fix: Comment author with no e-mail address
