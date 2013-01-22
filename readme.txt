@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, profile avatar, profile image, profile photo, user avatar, user image, user photo
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 1.1.5a
+Stable tag: 1.1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,11 @@ Use any image in your WordPress Media Libary as a custom user avatar.
 
 WordPress currently only allows you to use custom avatars that are uploaded through gravatar.com. WP User Avatar enables you to use any photo uploaded into your Media Library as an avatar. This means you use the same uploader and library as your posts. No extra folders or image editing functions are necessary.
 
-To use WP User Avatar in your theme, choose a theme that has avatar support. Then, manually replace [<code>get_avatar()</code>](http://codex.wordpress.org/Function_Reference/get_avatar) with <code>get_wp_user_avatar()</code> or leave <code>get_avatar()</code> as-is. <code>get_wp_user_avatar()</code> has functionality not available in <code>get_avatar()</code>. [Read about the differences here](http://wordpress.org/extend/plugins/wp-user-avatar/faq/). You can also use the shortcode <code>[avatar]</code> in your posts.
+To use WP User Avatar, choose a theme that has avatar support. In your theme, manually replace <code>get_avatar</code> with <code>get_wp_user_avatar</code> or leave <code>get_avatar</code> as-is. <code>get_wp_user_avatar</code> has functionality not available in <code>get_avatar</code>. [Read about the differences here](http://wordpress.org/extend/plugins/wp-user-avatar/faq/).
+
+You can also use the shortcode <code>[avatar]</code> in your posts. The shortcode will work with any theme, whether it has avatar support or not.
+
+Read more about the [get_avatar in WordPress's Function Reference](http://codex.wordpress.org/Function_Reference/get_avatar).
 
 This plugin uses the new Media Uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.0.
 
@@ -25,8 +29,8 @@ This plugin uses the new Media Uploader introduced in WordPress 3.5, but is also
 2. On your edit profile page, click "Edit WP User Avatar".
 3. Choose an image, then click "Set WP User Avatar".
 4. Click "Update Profile".
-5. Choose a theme that has avatar support. In your theme, manually replace <code>get_avatar()</code> with <code>get_wp_user_avatar()</code> or leave <code>get_avatar()</code> as-is. [Read about the differences here](http://wordpress.org/extend/plugins/wp-user-avatar/faq/).
-6. You can also use the shortcode <code>[avatar]</code> in your posts.
+5. Choose a theme that has avatar support. In your theme, manually replace <code>get_avatar</code> with <code>get_wp_user_avatar</code> or leave <code>get_avatar</code> as-is. [Read about the differences here](http://wordpress.org/extend/plugins/wp-user-avatar/faq/).
+6. You can also use the shortcode <code>[avatar]</code> in your posts. The shortcode will work with any theme, whether it has avatar support or not.
 
 **Example Usage**
 
@@ -64,7 +68,7 @@ If you leave the options blank, WP User Avatar will detect whether you're inside
 
 `<?php echo get_wp_user_avatar(); ?>`
 
-The function <code>get_wp_user_avatar()</code> will also fall back to <code>get_avatar()</code> if no WP User Avatar image is set. For this to work, "Show Avatars" must be checked in your Discussion settings.
+The function <code>get_wp_user_avatar</code> will also fall back to <code>get_avatar</code> if no WP User Avatar image is set. For this to work, "Show Avatars" must be checked in your Discussion settings.
 
 **Other Available Functions**
 
@@ -74,15 +78,15 @@ You can use the shortcode <code>[avatar]</code> in your posts. It will detect th
 
 `[avatar user="admin" size="medium" align="left"]`
 
-= get_wp_user_avatar_src() =
+= get_wp_user_avatar_src =
 
-Works just like <code>get_wp_user_avatar()</code> but returns just the image src. This is useful if you would like to link a thumbnail-sized avatar to a larger version of the image:
+Works just like <code>get_wp_user_avatar</code> but returns just the image src. This is useful if you would like to link a thumbnail-sized avatar to a larger version of the image:
 
 `<a href="<?php echo get_wp_user_avatar_src($user_id, 'large'); ?>">
   <?php echo get_wp_user_avatar($user_id, 'thumbnail'); ?>
 </a>`
 
-= has_wp_user_avatar() =
+= has_wp_user_avatar =
 
 Returns true if the user has a WP User Avatar image. You can specify the user ID, or leave it blank to detect the author within The Loop or author page:
 
@@ -98,9 +102,9 @@ Returns true if the user has a WP User Avatar image. You can specify the user ID
 
 = How do I use WP User Avatar? =
 
-First, choose a theme that has avatar support. Then, you have a choice of manually replacing <code>get_avatar()</code> with <code>get_wp_user_avatar()</code> in your theme, or leaving <code>get_avatar()</code> as-is. Here are the differences:
+First, choose a theme that has avatar support. In your theme, you have a choice of manually replacing <code>get_avatar</code> with <code>get_wp_user_avatar</code>, or leaving <code>get_avatar</code> as-is. Here are the differences:
 
-= get_wp_user_avatar() =
+= get_wp_user_avatar =
 
 1. Allows you to use the values "original", "large", "medium", or "thumbnail" for your avatar size.
 2. Doesn't add a fixed width and height to the image if you use the aforementioned values. This will give you more flexibility to resize the image with CSS.
@@ -108,17 +112,17 @@ First, choose a theme that has avatar support. Then, you have a choice of manual
 4. Shows nothing if no WP User Avatar image is set.
 5. Shows the default avatar only if "Show Avatars" is enabled in your Discussion settings.
 
-= get_avatar() =
+= get_avatar =
 
 1. Requires you to enable "Show Avatars" in your Discussion settings to show any avatars.
 2. Accepts only numeric values for your avatar size.
 3. Always adds a fixed width and height to your image. This may cause problems if you use responsive CSS in your theme.
 4. Shows the default avatar if no WP User Avatar image is set. (Choosing "Blank" still generates a transparent image file.)
-5. Requires no changes to your theme files if you are currently using <code>get_avatar()</code>.
+5. Requires no changes to your theme files if you are currently using <code>get_avatar</code>.
 
 = Can I insert WP User Avatar directly into a post? =
 
-You can use the shortcode <code>[avatar]</code> in your posts. It will detect the author of the post or you can specify an author by username. You can specify a size or alignment, but they are optional.
+You can use the shortcode <code>[avatar]</code> in your posts. The shortcode will work with any theme, whether it has avatar support or not. It will detect the author of the post or you can specify an author by username. You can specify a size or alignment, but they are optional.
 
 `[avatar user="admin" size="medium" align="left"]`
 
@@ -156,6 +160,12 @@ Outputs:
 
 == Changelog ==
 
+= 1.1.7 =
+* Bug Fix: Change update_usermeta to update_user_meta
+
+= 1.1.6 =
+* Bug Fix: Image not showing in user profile edit
+
 = 1.1.5a =
 * Update: readme.txt
 
@@ -163,7 +173,7 @@ Outputs:
 * Bug Fix: Remove stray curly bracket
 
 = 1.1.4 =
-* Bug Fix: change get_usermeta to get_user_meta
+* Bug Fix: Change get_usermeta to get_user_meta
 * Bug Fix: Non-object warning when retrieving user ID
 
 = 1.1.3 =
