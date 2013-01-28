@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, profile avatar, profile image, profile photo, user avatar, user image, user photo
 Requires at least: 3.0
 Tested up to: 3.5.1
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,8 +19,8 @@ To use WP User Avatar, choose a theme that has avatar support. In your theme, ma
 
 WP User Avatar also lets you:
 
-* Upload your own Default Avatar in your Discussion Settings.
-* Show the user's gravatar.com avatar or the Default Avatar if the user doesn't have a WP User Avatar image.
+* Upload your own Default Avatar in your Discussion settings.
+* Show the user's gravatar.com avatar or Default Avatar if the user doesn't have a WP User Avatar image.
 * Use the shortcode <code>[avatar]</code> in your posts. The shortcode will work with any theme, whether it has avatar support or not.
 
 [Read more about get_avatar in the WordPress Function Reference](http://codex.wordpress.org/Function_Reference/get_avatar).
@@ -33,8 +33,8 @@ This plugin uses the Media uploader introduced in WordPress 3.5, but is also bac
 2. On your edit profile page, click "Edit WP User Avatar".
 3. Choose an image, then click "Set WP User Avatar".
 4. Click "Update Profile".
-5. Choose a theme that has avatar support. In your theme, manually replace <code>get_avatar</code> with <code>get_wp_user_avatar</code> or leave <code>get_avatar</code> as-is. [Read about the differences here](http://wordpress.org/extend/plugins/wp-user-avatar/faq/).
-6. Upload your own Default Avatar in your Discussion settings (optional).
+5. Upload your own Default Avatar in your Discussion settings (optional).
+6. Choose a theme that has avatar support. In your theme, manually replace <code>get_avatar</code> with <code>get_wp_user_avatar</code> or leave <code>get_avatar</code> as-is. [Read about the differences here](http://wordpress.org/extend/plugins/wp-user-avatar/faq/).
 7. You can also use the shortcode <code>[avatar]</code> in your posts. The shortcode will work with any theme, whether it has avatar support or not.
 
 **Example Usage**
@@ -73,7 +73,7 @@ If you leave the options blank, WP User Avatar will detect whether you're inside
 
 `<?php echo get_wp_user_avatar(); ?>`
 
-The function <code>get_wp_user_avatar</code> will also fall back to <code>get_avatar</code> if no WP User Avatar image is set. For this to work, "Show Avatars" must be checked in your Discussion settings. When this setting is enabled, you will see the user's gravatar.com avatar or the Default Avatar.
+The function <code>get_wp_user_avatar</code> will also fall back to <code>get_avatar</code> if no WP User Avatar image is set. For this to work, "Show Avatars" must be checked in your Discussion settings. When this setting is enabled, you will see the user's gravatar.com avatar or Default Avatar.
 
 **Other Available Functions**
 
@@ -162,13 +162,23 @@ Outputs:
 
 **Note:** WordPress adds more CSS classes to the avatar not listed here.
 
+= What other functions are available for WP User Avatar? =
+* <code>get_wp_user_avatar_src</code> - retrieve just the image URL
+* <code>has_wp_user_avatar</code> - check if the user has a WP User Avatar image
+
+[See example usage here](http://wordpress.org/extend/plugins/wp-user-avatar/installation/)
+
 == Screenshots ==
 
 1. WP User Avatar lets you upload your own Default Avatar.
 2. WP User Avatar adds a field to your profile in edit mode.
-3. After you've set a WP User Avatar image, you can remove it.
+3. After you've set a WP User Avatar image, you will see the option to remove it.
 
 == Changelog ==
+
+= 1.2.1 =
+* Add: TinyMCE button
+* Update: Clean up redundant code
 
 = 1.2 =
 * Add: Default Avatar setting
@@ -218,7 +228,7 @@ Outputs:
 == Upgrade Notice ==
 
 = 1.2=
-* New Features: Default Avatar customization
+* New Feature: Default Avatar customization
 
 = 1.1 =
 * New Features: [avatar] shortcode, direct replacement of get_avatar() and comment author avatar, more CSS classes
