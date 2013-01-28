@@ -50,9 +50,11 @@ if(!class_exists('wp_user_avatar')){
       add_action('personal_options_update', array($this,'action_process_option_update'));
       add_action('edit_user_profile_update', array($this,'action_process_option_update'));
       add_action('discussion_update', array($this,'action_process_option_update'));
+      // Only add attachment field for WP 3.4 and older
       if(!function_exists('wp_enqueue_media')){
         add_filter('attachment_fields_to_edit', array($this, 'add_wp_user_avatar_attachment_field_to_edit'), 10, 2); 
       }
+      // Hide column in Users table if avatars are shown
       if(get_option('show_avatars') != '1'){
         add_filter('manage_users_columns', array($this, 'add_wp_user_avatar_column'), 10, 1);
         add_filter('manage_users_custom_column', array($this, 'show_wp_user_avatar_column'), 10, 3);
@@ -60,7 +62,7 @@ if(!class_exists('wp_user_avatar')){
       add_action('admin_enqueue_scripts', array($this, 'media_upload_scripts'));
     }
 
-    // Add to user profile edit
+    // Add to edit user profile
     function action_show_user_profile($user){
       $wp_user_avatar = get_user_meta($user->ID, 'wp_user_avatar', true);
       $hide_notice = has_wp_user_avatar($user->ID) ? ' style="display:none;"' : '';
@@ -88,8 +90,8 @@ if(!class_exists('wp_user_avatar')){
         </tr>
       </tbody>
     </table>
-    <?php echo edit_default_wp_user_avatar($user->display_name, $avatar_full_src, $avatar_full_src); ?>
     <?php
+    echo edit_default_wp_user_avatar($user->display_name, $avatar_full_src, $avatar_full_src);
     }
 
     // Update user meta
@@ -125,13 +127,15 @@ if(!class_exists('wp_user_avatar')){
 
     // Media uploader
     function media_upload_scripts(){
-      wp_enqueue_script('media-upload');
-      wp_enqueue_script('thickbox');
-      if(function_exists('wp_enqueue_media')){
+      if(!function_exists('wp_enqueue_media')){
+        wp_enqueue_script('jquery-1.7', 'https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js');
+        wp_enqueue_script('media-upload');
+        wp_enqueue_script('thickbox');
+        wp_enqueue_style('thickbox');
+      } else {
         wp_enqueue_media();
       }
       wp_enqueue_script('wp-user-avatar', WP_USER_AVATAR_URLPATH.'js/wp-user-avatar.js');
-      wp_enqueue_style('thickbox');
       wp_enqueue_style('wp-user-avatar', WP_USER_AVATAR_URLPATH.'css/wp-user-avatar.css');
     }
   }

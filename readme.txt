@@ -3,7 +3,7 @@
 Contributors: bangbay
 Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, profile avatar, profile image, profile photo, user avatar, user image, user photo
-Requires at least: 3.0
+Requires at least: 3.1
 Tested up to: 3.5.1
 Stable tag: 1.2.1
 License: GPLv2 or later
@@ -25,7 +25,7 @@ WP User Avatar also lets you:
 
 [Read more about get_avatar in the WordPress Function Reference](http://codex.wordpress.org/Function_Reference/get_avatar).
 
-This plugin uses the Media uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.0.
+This plugin uses the Media uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.1.
 
 == Installation ==
 
@@ -179,6 +179,7 @@ Outputs:
 = 1.2.1 =
 * Add: TinyMCE button
 * Update: Clean up redundant code
+* Update: Compability only back to WordPress 3.1
 
 = 1.2 =
 * Add: Default Avatar setting

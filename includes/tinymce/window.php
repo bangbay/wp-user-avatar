@@ -42,8 +42,10 @@
     }
   </script>
   <style type="text/css">
+    form { background: #fff; border: 1px solid #eee; }
+    p { margin: 0; padding: 12px 0 0; }
     label { width: 90px; display: inline-block; text-align: right; }
-    .mceActionPanel { text-align: center; }
+    .mceActionPanel { padding: 7px 0 12px; text-align: center; }
     .mceActionPanel #insert { float: none; width: 150px; margin: 0 auto; }
   </style>
 </head>
