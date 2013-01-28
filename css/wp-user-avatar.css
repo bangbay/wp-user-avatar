@@ -1,2 +1,4 @@
 #wp-user-avatar-message { color: #c00; display: none; }
 #wp-user-avatar-preview img { max-width: 96px; }
+.defaultavatarpicker #wp-user-avatar-preview { width: 32px; height: 32px; display: inline-block; overflow: hidden; vertical-align: middle; }
+.defaultavatarpicker #wp-user-avatar-preview img { width: 32px; }

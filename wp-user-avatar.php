@@ -1,13 +1,13 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.1.7
+ * @version 1.2
  */
 /*
 Plugin Name: WP User Avatar
 Plugin URI: http://wordpress.org/extend/plugins/wp-user-avatar/
 Description: Use any image in your WordPress Media Libary as a custom user avatar.
-Version: 1.1.7
+Version: 1.2
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
 */
@@ -17,8 +17,17 @@ define('WP_USER_AVATAR_FOLDER', basename(dirname(__FILE__)));
 define('WP_USER_AVATAR_ABSPATH', trailingslashit(str_replace('\\','/', WP_PLUGIN_DIR.'/'.WP_USER_AVATAR_FOLDER)));
 define('WP_USER_AVATAR_URLPATH', trailingslashit(plugins_url(WP_USER_AVATAR_FOLDER)));
 
+// Initialize default settings
+register_activation_hook(__FILE__, 'wp_user_avatar_options');
+
 // Remove user metadata on plugin delete
 register_uninstall_hook(__FILE__, 'wp_user_avatar_delete_setup');
+
+// Settings saved to wp_options
+function wp_user_avatar_options(){
+  add_option('avatar_default_wp_user_avatar','');
+}
+add_action('init', 'wp_user_avatar_options');
 
 // Remove user metadata
 function wp_user_avatar_delete_setup(){
@@ -26,6 +35,7 @@ function wp_user_avatar_delete_setup(){
   foreach($users as $user){
     delete_user_meta($user->ID, 'wp_user_avatar');
   }
+  delete_option('avatar_default_wp_user_avatar');
 }
 
 // WP User Avatar
@@ -49,7 +59,8 @@ if(!class_exists('wp_user_avatar')){
     // Add to user profile edit
     function action_show_user_profile($user){
       $wp_user_avatar = get_user_meta($user->ID, 'wp_user_avatar', true);
-      $hide = !has_wp_user_avatar($user->ID) ? ' style="display:none;"' : '';
+      $hide_notice = has_wp_user_avatar($user->ID) ? ' style="display:none;"' : '';
+      $hide_remove = !has_wp_user_avatar($user->ID) ? ' style="display:none;"' : '';
     ?>
     <h3><?php _e('WP User Avatar') ?></h3>
     <table class="form-table">
@@ -74,7 +85,10 @@ if(!class_exists('wp_user_avatar')){
                 ?>
               </p>
             </div>
-            <p><button type="button" class="button" id="remove-wp-user-avatar"<?php echo $hide; ?>><?php _e('Remove'); ?></button></p>
+            <?php if(get_option('show_avatars') == '1') : ?>
+              <p id="gravatar-notice"<?php echo $hide_notice; ?>>This is your <a href="http://gravatar.com/" target="_blank">gravatar.com</a> avatar.</p>
+            <?php endif; ?>
+            <p><button type="button" class="button" id="remove-wp-user-avatar"<?php echo $hide_remove; ?>><?php _e('Remove'); ?></button></p>
             <p id="wp-user-avatar-message"><?php _e('Press "Update Profile" to save your changes.'); ?></p>
           </td>
         </tr>
@@ -133,16 +147,21 @@ if(!class_exists('wp_user_avatar')){
         <?php else : // Fall back to Thickbox uploader ?>
           $('#add-wp-user-avatar').click(function(e){
             e.preventDefault();
-            tb_show('Edit WP User Avatar: <?php echo $user->display_name; ?>', 'media-upload.php?type=image&post_type=user&tab=library&TB_iframe=1');
+            tb_show('Edit WP User Avatar: <?php echo $user->display_name; ?>', 'media-upload.php?type=image&post_type=user&post_id=0&tab=library&TB_iframe=1');
           });
         <?php endif; ?>
       });
       jQuery(function($){
         $('#remove-wp-user-avatar').click(function(e){
-          var gravatar = '<img src="<?php echo includes_url().'images/blank.gif'; ?>" alt="" />';
+          <?php if(get_option('show_avatars') == '1') : ?>
+            var avatar_thumb = '<?php echo addslashes(get_avatar_original($user->ID, 96)); ?>';
+            $('#gravatar-notice').show();
+          <?php else : ?>
+            var avatar_thumb = '<img src="<?php echo includes_url(); ?>images/blank.gif" alt="" />';
+          <?php endif; ?>
           e.preventDefault();
           $(this).hide();
-          $('#wp-user-avatar-preview').find('img').replaceWith(gravatar);
+          $('#wp-user-avatar-preview').find('img').replaceWith(avatar_thumb);
           $('#wp-user-avatar').val('');
           $('#wp-user-avatar-message').show();
         });
@@ -183,6 +202,7 @@ if(!class_exists('wp_user_avatar')){
 
     // Media uploader
     function media_upload_scripts(){
+      global $pagenow;
       wp_enqueue_script('media-upload');
       wp_enqueue_script('thickbox');
       if(function_exists('wp_enqueue_media')){
@@ -268,9 +288,18 @@ function get_wp_user_avatar_src($id_or_email, $size = '', $align = ''){
   return $wp_user_avatar_image_src;
 }
 
+// Return just the image src
+function get_avatar_src($avatar, $id_or_email, $size = '', $default = '', $alt = false){
+  $avatar_image = get_avatar($id_or_email);
+  $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $avatar_image, $matches, PREG_SET_ORDER);
+  $avatar_image_src = $matches [0] [1];
+  return $avatar_image_src;
+}
+
 // Replace get_avatar()
 function get_wp_user_avatar_alt($avatar, $id_or_email, $size = '', $default = '', $alt = false){
   global $post, $pagenow, $comment;
+  $default = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar.png';
   // Find user ID on comment, author page, or post
   if(is_object($id_or_email)){
     $id_or_email = $comment->user_id != '0' ? $comment->user_id : $comment->comment_author_email;
@@ -316,5 +345,125 @@ function wp_user_avatar_shortcode($atts, $content){
   return $wp_user_avatar;
 }
 add_shortcode('avatar','wp_user_avatar_shortcode');
+
+// Add default avatar
+function add_default_wp_user_avatar($avatar_list){
+  $avatar_default = get_option('avatar_default');
+  $avatar_default_wp_user_avatar = get_option('avatar_default_wp_user_avatar');
+  if(!empty($avatar_default_wp_user_avatar)){
+    $avatar_full_src = wp_get_attachment_image_src($avatar_default_wp_user_avatar, 'medium');
+    $avatar_thumb_src = wp_get_attachment_image_src($avatar_default_wp_user_avatar, array(32,32));
+    $avatar_full = $avatar_full_src[0];
+    $avatar_thumb = $avatar_thumb_src[0];
+    $hide_remove = '';
+  } else {
+    $avatar_full = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar.png';
+    $avatar_thumb = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar-32x32.png';
+    $hide_remove = ' style="display:none;"';
+  }
+  $selected_avatar = ($avatar_default == $avatar_full) ? ' checked="checked" ' : '';
+  $avatar_thumb_img = '<div id="wp-user-avatar-preview"><img src="'.$avatar_thumb.'" width="32" /></div>';
+  $wp_user_avatar_list = '';
+  $wp_user_avatar_list .= "\n\t<label><input type='radio' name='avatar_default' id='wp_user_avatar_radio' value='$avatar_full'$selected_avatar /> ";
+  $wp_user_avatar_list .= preg_replace("/src='(.+?)'/", "src='\$1&amp;forcedefault=1'", $avatar_thumb_img);
+  $wp_user_avatar_list .= ' WP User Avatar</label>';
+  $wp_user_avatar_list .= '<p style="padding-left:15px;"><button type="button" class="button" id="add-wp-user-avatar">Edit WP User Avatar</button>';
+  $wp_user_avatar_list .= '&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="remove-wp-user-avatar"'.$hide_remove.'>Remove</a></p>';
+  $wp_user_avatar_list .= '<input type="hidden" id="wp-user-avatar" name="avatar_default_wp_user_avatar" value="'.$avatar_default_wp_user_avatar.'">';
+  $wp_user_avatar_list .= '<p id="wp-user-avatar-message">Press "Save Changes" to save your changes.</p>';
+  $wp_user_avatar_list .= edit_default_wp_user_avatar();
+  return $wp_user_avatar_list.$avatar_list;
+}
+add_filter('default_avatar_select', 'add_default_wp_user_avatar');
+
+// Uploader for default avatar
+function edit_default_wp_user_avatar(){ ?>
+  <script type="text/javascript">
+    jQuery(function($){
+      <?php if(function_exists('wp_enqueue_media')) : // Use Backbone uploader for WP 3.5+ ?>
+        wp.media.wpUserAvatar = {
+          get: function() {
+            return wp.media.view.settings.post.wpUserAvatarId;
+          },
+          set: function(id) {
+            var settings = wp.media.view.settings;
+            settings.post.wpUserAvatarId = id;
+            settings.post.wpUserAvatarSrc = $('div.attachment-info').find('img').attr('src');
+            if(settings.post.wpUserAvatarId)
+              setWPUserAvatar(settings.post.wpUserAvatarId, settings.post.wpUserAvatarSrc);
+              $('#wp_user_avatar_radio').val(settings.post.wpUserAvatarSrc).trigger('click');
+          },
+          frame: function(){
+            if(this._frame)
+              return this._frame;
+            this._frame = wp.media({
+              state: 'library',
+              states: [ new wp.media.controller.Library({ title: "Edit WP User Avatar Default Avatar" }) ]
+            });
+            this._frame.on('open', function(){
+              var selection = this.state().get('selection');
+              id = jQuery('#wp-user-avatar').val();
+              attachment = wp.media.attachment(id);
+              attachment.fetch();
+              selection.add(attachment ? [ attachment ] : []);
+            }, this._frame);
+            this._frame.on('toolbar:create:select', function(toolbar){
+              this.createSelectToolbar(toolbar, {
+                text: 'Set WP User Avatar'
+              });
+            }, this._frame);
+            this._frame.state('library').on('select', this.select);
+            return this._frame;
+          },
+          select: function(id) {
+            var settings = wp.media.view.settings,
+              selection = this.get('selection').single();
+            wp.media.wpUserAvatar.set(selection ? selection.id : -1);
+          },
+          init: function() {
+            $('body').on('click', '#add-wp-user-avatar', function(e){
+              e.preventDefault();
+              e.stopPropagation();
+              wp.media.wpUserAvatar.frame().open();
+            });
+          }
+        };
+        $(wp.media.wpUserAvatar.init);
+      <?php else : // Fall back to Thickbox uploader ?>
+        $('#add-wp-user-avatar').click(function(e){
+          e.preventDefault();
+          tb_show('Edit WP User Avatar Default Avatar', 'media-upload.php?type=image&post_type=user&post_id=0&tab=library&TB_iframe=1');
+        });
+      <?php endif; ?>
+    });
+    jQuery(function($){
+      $('#remove-wp-user-avatar').click(function(e){
+        var avatar_full = '<?php echo WP_USER_AVATAR_URLPATH; ?>images/wp-user-avatar.png';
+        var avatar_thumb = '<img src="<?php echo WP_USER_AVATAR_URLPATH; ?>images/wp-user-avatar-32x32.png" alt="" />';
+        e.preventDefault();
+        $(this).hide();
+        $('#wp-user-avatar-preview').find('img').replaceWith(avatar_thumb);
+        $('#wp-user-avatar').val('');
+        $('#wp-user-avatar-message').show();
+        $('#wp_user_avatar_radio').val(avatar_full).trigger('click');
+      });
+    });
+  </script>
+<?php
+}
+
+// Add default avatar field to whitelist
+function wp_user_avatar_whitelist_options($whitelist_options){
+  $whitelist_options['discussion'] = array( 'default_pingback_flag', 'default_ping_status', 'default_comment_status', 'comments_notify', 'moderation_notify', 'comment_moderation', 'require_name_email', 'comment_whitelist', 'comment_max_links', 'moderation_keys', 'blacklist_keys', 'show_avatars', 'avatar_rating', 'avatar_default', 'close_comments_for_old_posts', 'close_comments_days_old', 'thread_comments', 'thread_comments_depth', 'page_comments', 'comments_per_page', 'default_comments_page', 'comment_order', 'comment_registration', 'avatar_default_wp_user_avatar' );
+  return $whitelist_options;
+}
+add_filter('whitelist_options', 'wp_user_avatar_whitelist_options');
+
+// Get orginal avatar
+function get_avatar_original($avatar, $id_or_email, $size = '', $default = '', $alt = false){
+  remove_filter('get_avatar', 'get_wp_user_avatar_alt');
+  $gravatar = get_avatar($avatar);
+  return $gravatar;
+}
 
 ?>
