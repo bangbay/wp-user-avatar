@@ -82,7 +82,7 @@ if(!class_exists('wp_user_avatar')){
               <p><?php echo '<img src="'.$avatar_full.'" alt="" />'; ?></p>
             </div>
             <?php if(get_option('show_avatars') == '1') : ?>
-              <p id="gravatar-notice"<?php echo $hide_notice; ?>>This is your <a href="http://gravatar.com/" target="_blank">gravatar.com</a> avatar.</p>
+              <p id="gravatar-notice"<?php echo $hide_notice; ?>>This is your default avatar.</p>
             <?php endif; ?>
             <p><button type="button" class="button" id="remove-wp-user-avatar"<?php echo $hide_remove; ?>><?php _e('Remove'); ?></button></p>
             <p id="wp-user-avatar-message"><?php _e('Press "Update Profile" to save your changes.'); ?></p>
@@ -323,5 +323,4 @@ if(!class_exists('wp_user_avatar')){
   global $wp_user_avatar_instance;
   $wp_user_avatar_instance = new wp_user_avatar();
 }
-
 ?>
