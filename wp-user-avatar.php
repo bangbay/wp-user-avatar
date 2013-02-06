@@ -76,6 +76,8 @@ if(!class_exists('wp_user_avatar')){
       $hide_remove = !has_wp_user_avatar($user->ID) ? ' style="display:none;"' : '';
       $avatar_full_src = get_option('show_avatars') == '1' ? get_avatar_original($user->ID, 96) : includes_url().'images/blank.gif';
       $avatar_full = has_wp_user_avatar($user->ID) ?  get_wp_user_avatar_src($user->ID, 'medium') : $avatar_full_src;
+      $current_user = wp_get_current_user();
+      $profile = $current_user->ID == $user->ID ? 'Profile' : 'User';
     ?>
       <?php if(is_admin()) : ?>
         <h3><?php _e('WP User Avatar') ?></h3>
@@ -90,7 +92,7 @@ if(!class_exists('wp_user_avatar')){
                 <p id="wp-user-avatar-notice"<?php echo $hide_notice; ?>>This is your default avatar.</p>
               <?php endif; ?>
               <p><button type="button" class="button" id="remove-wp-user-avatar"<?php echo $hide_remove; ?>><?php _e('Remove'); ?></button></p>
-              <p id="wp-user-avatar-message"><?php _e('Press "Update Profile" to save your changes.'); ?></p>
+              <p id="wp-user-avatar-message"><?php _e('Press "Update '.$profile.'" to save your changes.'); ?></p>
             </td>
           </tr>
         </table>
@@ -105,7 +107,7 @@ if(!class_exists('wp_user_avatar')){
             <p id="wp-user-avatar-notice"<?php echo $hide_notice; ?>>This is your default avatar.</p>
           <?php endif; ?>
           <p><button type="button" class="button" id="remove-wp-user-avatar"<?php echo $hide_remove; ?>><?php _e('Remove'); ?></button></p>
-          <p id="wp-user-avatar-message"><?php _e('Press "Update Profile" to save your changes.'); ?></p>
+          <p id="wp-user-avatar-message"><?php _e('Press "Update '.$profile.'" to save your changes.'); ?></p>
         </fieldset>
       <?php endif; ?>
       <?php
