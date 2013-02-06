@@ -140,11 +140,11 @@ Outputs:
   <img src="{imageURL}" width="96" height="96" class="wp-user-avatar wp-user-avatar-96 alignleft" />
 </a>`
 
-= Can my Contributors or Subscribers set their own avatar? =
+= Can my Contributors or Subscribers choose their own WP User Avatar image? =
 
-WP User Avatar requires that the current user has <code>upload_files</code> capability. What this means is only Administrators, Editors, and Authors can set their own WP User Avatar image. Contributors and Subscribers cannot upload images, therefore they can't set their own WP User Avatar image. Administators can set the avatars for them.
+Users need <code>upload_files</code> capability to choose their own WP User Avatar image. This means that only Administrators, Editors, and Authors can choose their own WP User Avatar image. Contributors and Subscribers cannot upload images. Administators can choose WP User Avatar images for Contributors and Subscribers.
 
-[Read more about Roles and Capabilities here.](http://codex.wordpress.org/Roles_and_Capabilities)
+[Read more about Roles and Capabilities here](http://codex.wordpress.org/Roles_and_Capabilities).
 
 = Will WP User Avatar work with comment author avatars? =
 
@@ -152,7 +152,7 @@ Yes, for registered users. Non-registered comment authors will show their [grava
 
 = Will WP User Avatar work with [bbPress](http://wordpress.org/extend/plugins/bbpress/)? =
 
-Yes, but with the requirement that users need <code>upload_files</code> capability to set their own WP User Avatar image.
+Yes, but only users that have <code>upload_files</code> capability can choose their own WP User Avatar image.
 
 = How can I see which users have an avatar? =
 
@@ -204,7 +204,7 @@ Outputs:
 
 1. WP User Avatar lets you upload your own Default Avatar.
 2. WP User Avatar adds a field to your edit profile page.
-3. After you've set a WP User Avatar image, you will see the option to remove it.
+3. After you've chosen a WP User Avatar image, you will see the option to remove it.
 4. WP User Avatar adds a button to insert the <code>[avatar]</code> shortcode in the Visual Editor.
 5. Options for the <code>[avatar]</code> shortcode.
 
