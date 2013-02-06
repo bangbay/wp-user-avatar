@@ -140,7 +140,7 @@ Outputs:
   <img src="{imageURL}" width="96" height="96" class="wp-user-avatar wp-user-avatar-96 alignleft" />
 </a>`
 
-= Can my Contributors or Subscribers choose their own WP User Avatar image? =
+= Can Contributors or Subscribers choose their own WP User Avatar image? =
 
 Users need <code>upload_files</code> capability to choose their own WP User Avatar image. This means that only Administrators, Editors, and Authors can choose their own WP User Avatar image. Contributors and Subscribers cannot upload images. Administators can choose WP User Avatar images for Contributors and Subscribers.
 
@@ -150,7 +150,7 @@ Users need <code>upload_files</code> capability to choose their own WP User Avat
 
 Yes, for registered users. Non-registered comment authors will show their [gravatar.com](http://gravatar.com/) avatars or Default Avatar.
 
-= Will WP User Avatar work with [bbPress](http://wordpress.org/extend/plugins/bbpress/)? =
+= Will WP User Avatar work with bbPress? =
 
 Yes, but only users that have <code>upload_files</code> capability can choose their own WP User Avatar image.
 
@@ -197,16 +197,15 @@ Outputs:
 = What other functions are available for WP User Avatar? =
 * <code>get_wp_user_avatar_src</code>: retrieves just the image URL
 * <code>has_wp_user_avatar</code>: checks if the user has a WP User Avatar image
-
-[See example usage here](http://wordpress.org/extend/plugins/wp-user-avatar/installation/)
+* [See example usage here](http://wordpress.org/extend/plugins/wp-user-avatar/installation/)
 
 == Screenshots ==
 
 1. WP User Avatar lets you upload your own Default Avatar.
 2. WP User Avatar adds a field to your edit profile page.
 3. After you've chosen a WP User Avatar image, you will see the option to remove it.
-4. WP User Avatar adds a button to insert the <code>[avatar]</code> shortcode in the Visual Editor.
-5. Options for the <code>[avatar]</code> shortcode.
+4. WP User Avatar adds a button to insert the [avatar] shortcode in the Visual Editor.
+5. Options for the [avatar] shortcode.
 
 == Changelog ==
 
