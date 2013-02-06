@@ -1,13 +1,13 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.2.1
+ * @version 1.2.2
  */
 /*
 Plugin Name: WP User Avatar
 Plugin URI: http://wordpress.org/extend/plugins/wp-user-avatar/
 Description: Use any image in your WordPress Media Libary as a custom user avatar. Add your own Default Avatar.
-Version: 1.2.1
+Version: 1.2.2
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
 */
@@ -45,11 +45,15 @@ function wp_user_avatar_delete_setup(){
 if(!class_exists('wp_user_avatar')){
   class wp_user_avatar{
     function wp_user_avatar(){
-      add_action('show_user_profile', array('wp_user_avatar','action_show_user_profile'));
-      add_action('edit_user_profile', array($this,'action_show_user_profile'));
-      add_action('personal_options_update', array($this,'action_process_option_update'));
-      add_action('edit_user_profile_update', array($this,'action_process_option_update'));
-      add_action('discussion_update', array($this,'action_process_option_update'));
+      // Only works if user can upload files
+      if(current_user_can('upload_files')){
+        add_action('show_user_profile', array('wp_user_avatar','action_show_user_profile'));
+        add_action('edit_user_profile', array($this,'action_show_user_profile'));
+        add_action('personal_options_update', array($this,'action_process_option_update'));
+        add_action('edit_user_profile_update', array($this,'action_process_option_update'));
+        add_action('discussion_update', array($this,'action_process_option_update'));
+        add_action('admin_enqueue_scripts', array($this, 'media_upload_scripts'));
+      }
       // Only add attachment field for WP 3.4 and older
       if(!function_exists('wp_enqueue_media')){
         add_filter('attachment_fields_to_edit', array($this, 'add_wp_user_avatar_attachment_field_to_edit'), 10, 2); 
@@ -59,7 +63,10 @@ if(!class_exists('wp_user_avatar')){
         add_filter('manage_users_columns', array($this, 'add_wp_user_avatar_column'), 10, 1);
         add_filter('manage_users_custom_column', array($this, 'show_wp_user_avatar_column'), 10, 3);
       }
-      add_action('admin_enqueue_scripts', array($this, 'media_upload_scripts'));
+      // Load scripts in front pages for logged in bbPress users
+      if(class_exists('bbPress') && is_user_logged_in() && current_user_can('upload_files')){
+        add_action('wp_enqueue_scripts', array($this, 'media_upload_scripts'));
+      }
     }
 
     // Add to edit user profile
@@ -70,28 +77,39 @@ if(!class_exists('wp_user_avatar')){
       $avatar_full_src = get_option('show_avatars') == '1' ? get_avatar_original($user->ID, 96) : includes_url().'images/blank.gif';
       $avatar_full = has_wp_user_avatar($user->ID) ?  get_wp_user_avatar_src($user->ID, 'medium') : $avatar_full_src;
     ?>
-    <h3><?php _e('WP User Avatar') ?></h3>
-    <table class="form-table">
-      <tbody>
-        <tr>
-          <th><label for="wp_user_avatar"><?php _e('WP User Avatar'); ?></label></th>
-          <td>
-            <input type="hidden" name="wp-user-avatar" id="wp-user-avatar" value="<?php echo $wp_user_avatar; ?>" />
-            <p><button type="button" class="button" id="add-wp-user-avatar"><?php _e('Edit WP User Avatar'); ?></button></p>
-            <div id="wp-user-avatar-preview">
-              <p><?php echo '<img src="'.$avatar_full.'" alt="" />'; ?></p>
-            </div>
-            <?php if(get_option('show_avatars') == '1') : ?>
-              <p id="gravatar-notice"<?php echo $hide_notice; ?>>This is your default avatar.</p>
-            <?php endif; ?>
-            <p><button type="button" class="button" id="remove-wp-user-avatar"<?php echo $hide_remove; ?>><?php _e('Remove'); ?></button></p>
-            <p id="wp-user-avatar-message"><?php _e('Press "Update Profile" to save your changes.'); ?></p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <?php
-    echo edit_default_wp_user_avatar($user->display_name, $avatar_full_src, $avatar_full_src);
+      <?php if(is_admin()) : ?>
+        <h3><?php _e('WP User Avatar') ?></h3>
+        <table class="form-table">
+          <tr>
+            <th><label for="wp_user_avatar"><?php _e('WP User Avatar'); ?></label></th>
+            <td>
+              <input type="hidden" name="wp-user-avatar" id="wp-user-avatar" value="<?php echo $wp_user_avatar; ?>" />
+              <p><button type="button" class="button" id="add-wp-user-avatar"><?php _e('Edit WP User Avatar'); ?></button></p>
+              <p id="wp-user-avatar-preview"><?php echo '<img src="'.$avatar_full.'" alt="" />'; ?></p>
+              <?php if(get_option('show_avatars') == '1') : ?>
+                <p id="wp-user-avatar-notice"<?php echo $hide_notice; ?>>This is your default avatar.</p>
+              <?php endif; ?>
+              <p><button type="button" class="button" id="remove-wp-user-avatar"<?php echo $hide_remove; ?>><?php _e('Remove'); ?></button></p>
+              <p id="wp-user-avatar-message"><?php _e('Press "Update Profile" to save your changes.'); ?></p>
+            </td>
+          </tr>
+        </table>
+      <?php elseif(class_exists('bbPress')) : ?>
+        <h2 class="entry-title"><?php _e('WP User Avatar'); ?></h2>
+        <fieldset class="bbp-form">
+          <legend><?php _e( 'WP User Avatar'); ?></legend>
+          <input type="hidden" name="wp-user-avatar" id="wp-user-avatar" value="<?php echo $wp_user_avatar; ?>" />
+          <p><button type="button" class="button" id="add-wp-user-avatar"><?php _e('Edit WP User Avatar'); ?></button></p>
+          <p id="wp-user-avatar-preview"><?php echo '<img src="'.$avatar_full.'" alt="" />'; ?></p>
+          <?php if(get_option('show_avatars') == '1') : ?>
+            <p id="wp-user-avatar-notice"<?php echo $hide_notice; ?>>This is your default avatar.</p>
+          <?php endif; ?>
+          <p><button type="button" class="button" id="remove-wp-user-avatar"<?php echo $hide_remove; ?>><?php _e('Remove'); ?></button></p>
+          <p id="wp-user-avatar-message"><?php _e('Press "Update Profile" to save your changes.'); ?></p>
+        </fieldset>
+      <?php endif; ?>
+      <?php
+      echo edit_default_wp_user_avatar($user->display_name, $avatar_full_src, $avatar_full_src);
     }
 
     // Update user meta
@@ -147,7 +165,7 @@ if(!class_exists('wp_user_avatar')){
         <?php if(function_exists('wp_enqueue_media')) : // Backbone uploader for WP 3.5+ ?>
           openMediaUploader("<?php echo $section; ?>");
         <?php else : // Fall back to Thickbox uploader ?>
-          openThickboxUploader("<?php echo $section; ?>", "<?php echo get_upload_iframe_src('image', '0', 'library'); ?>");
+          openThickboxUploader("<?php echo $section; ?>", "<?php echo get_admin_url(); ?>media-upload.php?post_id=0&type=image&tab=library&TB_iframe=1");
         <?php endif; ?>
         removeWPUserAvatar("<?php echo $avatar_full; ?>", "<?php echo $avatar_thumb; ?>");
       });
@@ -302,10 +320,24 @@ if(!class_exists('wp_user_avatar')){
     // [avatar size="medium"]
 
     // Set shortcode attributes
-    extract(shortcode_atts(array('user' => '', 'size' => '96', 'align' => ''), $atts));
+    extract(shortcode_atts(array('user' => '', 'size' => '96', 'align' => '', 'link' => ''), $atts));
     $get_user = get_user_by('slug', $user);
     $id_or_email = !empty($get_user) ? $get_user->ID : '';
-    $wp_user_avatar = get_wp_user_avatar($id_or_email, $size, $align);
+    if(!empty($link)){
+      if($link == 'file'){
+        $image_link = get_wp_user_avatar_src($id_or_email, 'original', $align);
+        $link_class = $link;
+      } elseif($link == 'attachment'){
+        $image_link = get_attachment_link(get_the_author_meta('wp_user_avatar', $id_or_email));
+        $link_class = $link;
+      } else {
+        $image_link = $link;
+        $link_class = 'custom';
+      }
+      $wp_user_avatar = '<a href="'.$image_link.'" class="wp-user-avatar-link wp-user-avatar-'.$link_class.'">'.get_wp_user_avatar($id_or_email, $size, $align).'</a>';
+    } else {
+      $wp_user_avatar = get_wp_user_avatar($id_or_email, $size, $align);
+    }
     return $wp_user_avatar;
   }
   add_shortcode('avatar','wp_user_avatar_shortcode');
@@ -320,7 +352,10 @@ if(!class_exists('wp_user_avatar')){
   }
 
   // Initialize wp_user_avatar
-  global $wp_user_avatar_instance;
-  $wp_user_avatar_instance = new wp_user_avatar();
+  function wp_user_avatar_load(){
+    global $wp_user_avatar_instance;
+    $wp_user_avatar_instance = new wp_user_avatar();
+  }
+  add_action('plugins_loaded','wp_user_avatar_load');
 }
 ?>

@@ -2,10 +2,10 @@
 
 Contributors: bangbay
 Donate link: http://siboliban.org/donate
-Tags: author image, author photo, author avatar, avatar, profile avatar, profile image, profile photo, user avatar, user image, user photo
+Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.1
 Tested up to: 3.5.1
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,8 +18,8 @@ WordPress currently only allows you to use custom avatars that are uploaded thro
 WP User Avatar also lets you:
 
 * Upload your own Default Avatar in your Discussion settings.
-* Show the user's gravatar.com avatar or Default Avatar if the user doesn't have a WP User Avatar image.
-* Use the shortcode <code>[avatar]</code> in your posts. The shortcode will work with any theme, whether it has avatar support or not.
+* Show the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar if the user doesn't have a WP User Avatar image.
+* Use the <code>[avatar]</code> shortcode in your posts. The shortcode will work with any theme, whether it has avatar support or not.
 
 To use WP User Avatar, choose a theme that has avatar support. In your theme, manually replace <code>get_avatar</code> with <code>get_wp_user_avatar</code> or leave <code>get_avatar</code> as-is. <code>get_wp_user_avatar</code> has functionality not available in <code>get_avatar</code>. [Read about the differences here](http://wordpress.org/extend/plugins/wp-user-avatar/faq/).
 
@@ -35,11 +35,11 @@ This plugin uses the Media uploader introduced in WordPress 3.5, but is also bac
 4. Click "Update Profile".
 5. Upload your own Default Avatar in your Discussion settings (optional).
 6. Choose a theme that has avatar support. In your theme, manually replace <code>get_avatar</code> with <code>get_wp_user_avatar</code> or leave <code>get_avatar</code> as-is. [Read about the differences here](http://wordpress.org/extend/plugins/wp-user-avatar/faq/).
-7. You can also use the shortcode <code>[avatar]</code> in your posts. The shortcode will work with any theme, whether it has avatar support or not.
+7. You can also use the <code>[avatar]</code> shortcode in your posts. The shortcode will work with any theme, whether it has avatar support or not.
 
 **Example Usage**
 
-Within The Loop, you may be using:
+Within [The Loop](http://codex.wordpress.org/The_Loop), you may be using:
 
 `<?php echo get_avatar(get_the_author_meta('ID'), 96); ?>`
 
@@ -55,7 +55,7 @@ You can also add an alignment of "left", "right", or "center":
 
 `<?php echo get_wp_user_avatar(get_the_author_meta('ID'), 96, 'left'); ?>`
 
-On an author page outside of The Loop, you may be using:
+On an author page outside of [The Loop](http://codex.wordpress.org/The_Loop), you may be using:
 
 `<?php
   $user = get_user_by('slug', $author_name); 
@@ -69,19 +69,19 @@ Replace this function with:
   echo get_wp_user_avatar($user->ID, 96);
 ?>`
 
-If you leave the options blank, WP User Avatar will detect whether you're inside The Loop or on an author page and return the correct avatar in the default 96x96 size:
+If you leave the options blank, WP User Avatar will detect whether you're inside [The Loop](http://codex.wordpress.org/The_Loop) or on an author page and return the correct avatar in the default 96x96 size:
 
 `<?php echo get_wp_user_avatar(); ?>`
 
-The function <code>get_wp_user_avatar</code> will also fall back to <code>get_avatar</code> if the user has no WP User Avatar image. For this to work, "Show Avatars" must be checked in your Discussion settings. When this setting is enabled, you will see the user's gravatar.com avatar or Default Avatar.
+The function <code>get_wp_user_avatar</code> can also fall back to <code>get_avatar</code> if there is no WP User Avatar image. For this to work, "Show Avatars" must be checked in your Discussion settings. When this setting is enabled, you will see the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar.
 
 **Other Available Functions**
 
 = [avatar] shortcode =
 
-You can use the shortcode <code>[avatar]</code> in your posts. It will detect the author of the post or you can specify an author by username. You can specify a size and alignment, but they are optional.
+You can use the <code>[avatar]</code> shortcode in your posts. It will detect the author of the post or you can specify an author by username. You can specify a size, alignment, and link, but they are optional. For links, you can link to the original image file, attachment page, or a custom URL.
 
-`[avatar user="admin" size="medium" align="left"]`
+`[avatar user="admin" size="medium" align="left" link="file"]`
 
 = get_wp_user_avatar_src =
 
@@ -93,7 +93,7 @@ Works just like <code>get_wp_user_avatar</code> but returns just the image src. 
 
 = has_wp_user_avatar =
 
-Returns true if the user has a WP User Avatar image. You can specify the user ID, or leave it blank to detect the author within The Loop or author page:
+Returns true if the user has a WP User Avatar image. You can specify the user ID, or leave it blank to detect the author within [The Loop](http://codex.wordpress.org/The_Loop) or author page:
 
 `<?php
   if ( has_wp_user_avatar($user_id) ) {
@@ -115,14 +115,14 @@ First, choose a theme that has avatar support. In your theme, you have a choice 
 2. Doesn't add a fixed width and height to the image if you use the aforementioned values. This will give you more flexibility to resize the image with CSS.
 3. Optionally adds CSS classes "alignleft", "alignright", or "aligncenter" to position your avatar.
 4. Shows nothing if the user has no WP User Avatar image.
-5. Shows the user's gravatar.com avatar or Default Avatar only if "Show Avatars" is enabled in your Discussion settings.
+5. Shows the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar only if "Show Avatars" is enabled in your Discussion settings.
 
 = get_avatar =
 
 1. Requires you to enable "Show Avatars" in your Discussion settings to show any avatars.
 2. Accepts only numeric values for your avatar size.
 3. Always adds a fixed width and height to your image. This may cause problems if you use responsive CSS in your theme.
-4. Shows the user's gravatar.com avatar or Default Avatar if the user doesn't have a WP User Avatar image. (Choosing "Blank" as your Default Avatar still generates a transparent image file.)
+4. Shows the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar if the user doesn't have a WP User Avatar image. (Choosing "Blank" as your Default Avatar still generates a transparent image file.)
 5. Requires no changes to your theme files if you are currently using <code>get_avatar</code>.
 
 = Can I create a custom Default Avatar? =
@@ -130,17 +130,33 @@ In your Discussion settings, you can upload your own Default Avatar.
 
 = Can I insert WP User Avatar directly into a post? =
 
-You can use the shortcode <code>[avatar]</code> in your posts. The shortcode will work with any theme, whether it has avatar support or not. It will detect the author of the post or you can specify an author by username. You can specify a size or alignment, but they are optional.
+You can use the <code>[avatar]</code> shortcode in your posts. It will detect the author of the post or you can specify an author by username. You can specify a size, alignment, and link, but they are optional. For links, you can link to the original image file, attachment page, or a custom URL.
 
-`[avatar user="admin" size="medium" align="left"]`
+`[avatar user="admin" size="96" align="left" link="file"]`
+
+Outputs:
+
+`<a href="{fileURL}" class="wp-user-avatar-link wp-user-avatar-file">
+  <img src="{imageURL}" width="96" height="96" class="wp-user-avatar wp-user-avatar-96 alignleft" />
+</a>`
+
+= Can my Contributors or Subscribers set their own avatar? =
+
+WP User Avatar requires that the current user has <code>upload_files</code> capability. What this means is only Administrators, Editors, and Authors can set their own WP User Avatar image. Contributors and Subscribers cannot upload images, therefore they can't set their own WP User Avatar image. Administators can set the avatars for them.
+
+[Read more about Roles and Capabilities here.](http://codex.wordpress.org/Roles_and_Capabilities)
 
 = Will WP User Avatar work with comment author avatars? =
 
-Yes, for registered users. Non-registered comment authors will show their gravatar.com avatars or Default Avatar.
+Yes, for registered users. Non-registered comment authors will show their [gravatar.com](http://gravatar.com/) avatars or Default Avatar.
+
+= Will WP User Avatar work with [bbPress](http://wordpress.org/extend/plugins/bbpress/)? =
+
+Yes, but with the requirement that users need <code>upload_files</code> capability to set their own WP User Avatar image.
 
 = How can I see which users have an avatar? =
 
-For administrators, WP User Avatar adds a column with avatar thumbnails to your Users list table. If "Show Avatars" is enabled in your Discussion settings, you will see avatars to the left of each username instead of in a new column.
+For Administrators, WP User Avatar adds a column with avatar thumbnails to your Users list table. If "Show Avatars" is enabled in your Discussion settings, you will see avatars to the left of each username instead of in a new column.
 
 = What CSS can I use with WP User Avatar? =
 
@@ -152,7 +168,7 @@ Outputs:
 
 `<img src="{imageURL}" width="96" height="96" class="wp-user-avatar wp-user-avatar-96 alignleft" />`
 
-**Note:** "alignleft", "alignright", and aligncenter" are common WordPress CSS classes, but not every theme supports them. Contact the theme author to add those CSS classes if they are missing.
+**Note:** "alignleft", "alignright", and aligncenter" are common WordPress CSS classes, but not every theme supports them. Contact the theme author to add those CSS classes.
 
 If you use the values "original", "large", "medium", or "thumbnail", no width or height will be added to the image. This will give you more flexibility to resize the image with CSS:
 
@@ -164,18 +180,40 @@ Outputs:
 
 **Note:** WordPress adds more CSS classes to the avatar not listed here.
 
+If you use the <code>[avatar]</code> shortcode, WP User Avatar will add the CSS class "wp-user-avatar-link" to the link. It will also add CSS classes based on link type.
+
+* Image File: wp-user-avatar-file
+* Attachment: wp-user-avatar-attachment
+* Custom URL: wp-user-avatar-custom
+
+`[avatar user="admin" size="96" align="left" link="attachment"]`
+
+Outputs:
+
+`<a href="{attachmentURL}" class="wp-user-avatar-link wp-user-avatar-attachment">
+  <img src="{imageURL}" width="96" height="96" class="wp-user-avatar wp-user-avatar-96 alignleft" />
+</a>`
+
 = What other functions are available for WP User Avatar? =
 * <code>get_wp_user_avatar_src</code>: retrieves just the image URL
 * <code>has_wp_user_avatar</code>: checks if the user has a WP User Avatar image
-* [See example usage here](http://wordpress.org/extend/plugins/wp-user-avatar/installation/)
+
+[See example usage here](http://wordpress.org/extend/plugins/wp-user-avatar/installation/)
 
 == Screenshots ==
 
 1. WP User Avatar lets you upload your own Default Avatar.
 2. WP User Avatar adds a field to your edit profile page.
 3. After you've set a WP User Avatar image, you will see the option to remove it.
+4. WP User Avatar adds a button to insert the <code>[avatar]</code> shortcode in the Visual Editor.
+5. Options for the <code>[avatar]</code> shortcode.
 
 == Changelog ==
+
+= 1.2.2 =
+* Add: Ability for bbPress users to edit avatar on front profile page
+* Add: Link options for shortcode
+* Bug Fix: Show WP User Avatar only to users with upload_files capability
 
 = 1.2.1 =
 * Add: TinyMCE button
@@ -228,6 +266,9 @@ Outputs:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.2.2 =
+* New Features: Link options for shortcode, bbPress integration
 
 = 1.2.1 =
 * New Feature: Shortcode insertion button for Visual Editor

@@ -20,8 +20,8 @@
         ed.windowManager.open({
             // call content via admin-ajax, no need to know the full plugin path
           file : ajaxurl + '?action=wp_user_avatar_tinymce',
-          width : 300,
-          height : 175,
+          width : 400,
+          height : 260,
           inline : 1
         }, {
           plugin_url : url // Plugin absolute URL
@@ -67,7 +67,7 @@
         author    : 'Bangbay Siboliban',
         authorurl : 'http://siboliban.org/',
         infourl   : 'http://wordpress.org/extend/plugins/wp-user-avatar/',
-        version   : "1.2.1"
+        version   : "1.2.2"
       };
     }
   });
