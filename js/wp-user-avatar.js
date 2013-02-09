@@ -66,7 +66,7 @@ function setWPUserAvatar(attachment, imageURL){
   jQuery('#wp-user-avatar-preview', window.parent.document).find('img').attr('src', imageURL).removeAttr('width', '').removeAttr('height', '');
   jQuery('#wp-user-avatar-message', window.parent.document).show();
   jQuery('#remove-wp-user-avatar', window.parent.document).show();
-  jQuery('#wp-user-avatar-notice', window.parent.document).hide();
+  jQuery('#gravatar-notice', window.parent.document).hide();
   jQuery('#wp_user_avatar_radio', window.parent.document).val(imageURL).trigger('click');
   // Check if WP 3.5
   if(typeof(wp) != 'undefined'){

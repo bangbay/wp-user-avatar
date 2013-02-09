@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.1
 Tested up to: 3.5.1
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,10 +20,6 @@ WP User Avatar also lets you:
 * Upload your own Default Avatar in your Discussion settings.
 * Show the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar if the user doesn't have a WP User Avatar image.
 * Use the <code>[avatar]</code> shortcode in your posts. The shortcode will work with any theme, whether it has avatar support or not.
-
-To use WP User Avatar, choose a theme that has avatar support. In your theme, manually replace <code>get_avatar</code> with <code>get_wp_user_avatar</code> or leave <code>get_avatar</code> as-is. <code>get_wp_user_avatar</code> has functionality not available in <code>get_avatar</code>. [Read about the differences here](http://wordpress.org/extend/plugins/wp-user-avatar/faq/).
-
-[Read more about get_avatar in the WordPress Function Reference](http://codex.wordpress.org/Function_Reference/get_avatar).
 
 This plugin uses the Media uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.1.
 
@@ -125,6 +121,8 @@ First, choose a theme that has avatar support. In your theme, you have a choice 
 4. Shows the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar if the user doesn't have a WP User Avatar image. (Choosing "Blank" as your Default Avatar still generates a transparent image file.)
 5. Requires no changes to your theme files if you are currently using <code>get_avatar</code>.
 
+[Read more about get_avatar in the WordPress Function Reference](http://codex.wordpress.org/Function_Reference/get_avatar).
+
 = Can I create a custom Default Avatar? =
 In your Discussion settings, you can upload your own Default Avatar.
 
@@ -208,6 +206,10 @@ Outputs:
 5. Options for the [avatar] shortcode.
 
 == Changelog ==
+
+= 1.2.3 =
+* Bug Fix: Show default avatar when user removes custom avatar
+* Bug Fix: Default Avatar save setting
 
 = 1.2.2 =
 * Add: Ability for bbPress users to edit avatar on front profile page
