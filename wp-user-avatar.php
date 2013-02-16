@@ -1,13 +1,13 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.2.3
+ * @version 1.2.4
  */
 /*
 Plugin Name: WP User Avatar
 Plugin URI: http://wordpress.org/extend/plugins/wp-user-avatar/
 Description: Use any image in your WordPress Media Libary as a custom user avatar. Add your own Default Avatar.
-Version: 1.2.3
+Version: 1.2.4
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
 */
@@ -232,7 +232,11 @@ if(!class_exists('wp_user_avatar')){
     global $post, $comment;
     // Find user ID on comment, author page, or post
     if(is_object($id_or_email)){
-      $id_or_email = $comment->user_id != '0' ? $comment->user_id : $comment->comment_author_email;
+      if($comment->user_id != '0'){
+        $id_or_email = $comment->user_id;
+      } elseif(!empty($comment->comment_author_email)){
+        $id_or_email = $comment->comment_author_email;
+      }
       $alt = $comment->comment_author;
     } else {
       if(!empty($id_or_email)){
@@ -246,7 +250,7 @@ if(!class_exists('wp_user_avatar')){
           $user = get_user_by('id', $user_id);
         }
       }
-      $id_or_email = !empty($user) ? $user->ID: '';
+      $id_or_email = !empty($user) ? $user->ID : '';
       $alt = $user->display_name;
     }
     $wp_user_avatar_meta = !empty($id_or_email) ? get_the_author_meta('wp_user_avatar', $id_or_email) : '';
@@ -288,7 +292,11 @@ if(!class_exists('wp_user_avatar')){
     global $post, $pagenow, $comment;
     // Find user ID on comment, author page, or post
     if(is_object($id_or_email)){
-      $id_or_email = $comment->user_id != '0' ? $comment->user_id : $comment->comment_author_email;
+      if($comment->user_id != '0'){
+        $id_or_email = $comment->user_id;
+      } elseif(!empty($comment->comment_author_email)){
+        $id_or_email = $comment->comment_author_email;
+      }
       $alt = $comment->comment_author;
     } else {
       if(!empty($id_or_email)){
