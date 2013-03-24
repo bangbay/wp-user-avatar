@@ -32,7 +32,7 @@
       ed.addButton('wpUserAvatar', {
         title : 'Insert WP User Avatar',
         cmd : 'mceWpUserAvatar',
-        image : url + '/../../images/wp-user-avatar.png'
+        image : url + '/../../images/wp-user-avatar-32x32.png'
       });
 
       // Add a node change handler, selects the button in the UI when a image is selected
@@ -67,7 +67,7 @@
         author    : 'Bangbay Siboliban',
         authorurl : 'http://siboliban.org/',
         infourl   : 'http://wordpress.org/extend/plugins/wp-user-avatar/',
-        version   : "1.2.4"
+        version   : "1.3"
       };
     }
   });

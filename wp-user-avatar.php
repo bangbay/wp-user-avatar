@@ -1,13 +1,13 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.2.4
+ * @version 1.3
  */
 /*
 Plugin Name: WP User Avatar
 Plugin URI: http://wordpress.org/extend/plugins/wp-user-avatar/
 Description: Use any image in your WordPress Media Libary as a custom user avatar. Add your own Default Avatar.
-Version: 1.2.4
+Version: 1.3
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
 */
@@ -17,13 +17,20 @@ define('WP_USER_AVATAR_FOLDER', basename(dirname(__FILE__)));
 define('WP_USER_AVATAR_ABSPATH', trailingslashit(str_replace('\\','/', WP_PLUGIN_DIR.'/'.WP_USER_AVATAR_FOLDER)));
 define('WP_USER_AVATAR_URLPATH', trailingslashit(plugins_url(WP_USER_AVATAR_FOLDER)));
 
+// Define global variables
+$avatar_default = get_option('avatar_default');
+$avatar_default_wp_user_avatar = get_option('avatar_default_wp_user_avatar');
+$mustache_full = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar.png';
+$mustache_thumb = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar-32x32.png';
+$ssl = is_ssl() ? 's' : '';
+
 // Load add-ons
 include_once(WP_USER_AVATAR_ABSPATH.'includes/tinymce.php');
 
 // Initialize default settings
 register_activation_hook(__FILE__, 'wp_user_avatar_options');
 
-// Remove user metadata on plugin delete
+// Remove user metadata and options on plugin delete
 register_uninstall_hook(__FILE__, 'wp_user_avatar_delete_setup');
 
 // Settings saved to wp_options
@@ -32,13 +39,26 @@ function wp_user_avatar_options(){
 }
 add_action('init', 'wp_user_avatar_options');
 
-// Remove user metadata
+// Update default avatar to new format
+function wp_user_avatar_default_avatar(){
+  global $avatar_default, $avatar_default_wp_user_avatar;
+  if(!empty($avatar_default_wp_user_avatar)){
+    $avatar_default_wp_user_avatar_image = wp_get_attachment_image_src($avatar_default_wp_user_avatar, 'medium');
+    if($avatar_default == $avatar_default_wp_user_avatar_image[0]){
+      update_option('avatar_default', 'wp_user_avatar');
+    }
+  }
+}
+add_action('init', 'wp_user_avatar_default_avatar');
+
+// Remove user metadata and options on plugin delete
 function wp_user_avatar_delete_setup(){
   $users = get_users();
   foreach($users as $user){
     delete_user_meta($user->ID, 'wp_user_avatar');
   }
   delete_option('avatar_default_wp_user_avatar');
+  update_option('avatar_default', 'mystery');
 }
 
 // WP User Avatar
@@ -147,13 +167,14 @@ if(!class_exists('wp_user_avatar')){
 
     // Media uploader
     function media_upload_scripts(){
-      if(!function_exists('wp_enqueue_media')){
-        wp_enqueue_script('jquery-1.7', 'https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js');
+      global $ssl;
+      if(function_exists('wp_enqueue_media')){
+        wp_enqueue_media();
+      } else {
+        wp_enqueue_script('jquery-1.7', 'http'.$ssl.'://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js');
         wp_enqueue_script('media-upload');
         wp_enqueue_script('thickbox');
         wp_enqueue_style('thickbox');
-      } else {
-        wp_enqueue_media();
       }
       wp_enqueue_script('wp-user-avatar', WP_USER_AVATAR_URLPATH.'js/wp-user-avatar.js');
       wp_enqueue_style('wp-user-avatar', WP_USER_AVATAR_URLPATH.'css/wp-user-avatar.css');
@@ -177,10 +198,7 @@ if(!class_exists('wp_user_avatar')){
 
   // Add default avatar
   function add_default_wp_user_avatar($avatar_list){
-    $avatar_default = get_option('avatar_default');
-    $avatar_default_wp_user_avatar = get_option('avatar_default_wp_user_avatar');
-    $mustache_full = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar.png';
-    $mustache_thumb = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar-32x32.png';
+    global $avatar_default, $avatar_default_wp_user_avatar, $mustache_full, $mustache_thumb;
     if(!empty($avatar_default_wp_user_avatar)){
       $avatar_full_src = wp_get_attachment_image_src($avatar_default_wp_user_avatar, 'medium');
       $avatar_thumb_src = wp_get_attachment_image_src($avatar_default_wp_user_avatar, array(32,32));
@@ -192,9 +210,9 @@ if(!class_exists('wp_user_avatar')){
       $avatar_thumb = $mustache_thumb;
       $hide_remove = ' style="display:none;"';
     }
-    $selected_avatar = ($avatar_default == $avatar_full) ? ' checked="checked" ' : '';
+    $selected_avatar = ($avatar_default == 'wp_user_avatar') ? ' checked="checked" ' : '';
     $avatar_thumb_img = '<div id="wp-user-avatar-preview"><img src="'.$avatar_thumb.'" width="32" /></div>';
-    $wp_user_avatar_list = "\n\t<label><input type='radio' name='avatar_default' id='wp_user_avatar_radio' value='$avatar_full'$selected_avatar /> ";
+    $wp_user_avatar_list = "\n\t<label><input type='radio' name='avatar_default' id='wp_user_avatar_radio' value='wp_user_avatar'$selected_avatar /> ";
     $wp_user_avatar_list .= preg_replace("/src='(.+?)'/", "src='\$1&amp;forcedefault=1'", $avatar_thumb_img);
     $wp_user_avatar_list .= ' WP User Avatar</label>';
     $wp_user_avatar_list .= '<p style="padding-left:15px;"><button type="button" class="button" id="add-wp-user-avatar">Edit WP User Avatar</button>';
@@ -212,6 +230,25 @@ if(!class_exists('wp_user_avatar')){
     return $whitelist_options;
   }
   add_filter('whitelist_options', 'wp_user_avatar_whitelist_options');
+
+  // Returns true if user has Gravatar-hosted image
+  function has_gravatar($id_or_email){
+    global $ssl;
+    $user = is_numeric($id_or_email) ? get_user_by('id', $id_or_email) : get_user_by('email', $id_or_email);
+    $email = !empty($user) ? $user->user_email : '';
+    if(!empty($email)){
+      $hash = md5(strtolower(trim($email)));
+      $gravatar = 'http'.$ssl.'://www.gravatar.com/avatar/'.$hash.'?d=404';
+      $headers = @get_headers($gravatar);
+      if(!preg_match("|200|", $headers[0])){
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
 
   // Returns true if user has wp_user_avatar
   function has_wp_user_avatar($user_id = ''){
@@ -234,8 +271,12 @@ if(!class_exists('wp_user_avatar')){
     if(is_object($id_or_email)){
       if($comment->user_id != '0'){
         $id_or_email = $comment->user_id;
+        $user = get_user_by('id', $id_or_email);
+        $email = $user->user_email;
       } elseif(!empty($comment->comment_author_email)){
-        $id_or_email = $comment->comment_author_email;
+        $user = get_user_by('email', $comment->comment_author_email);
+        $id_or_email = !empty($user) ? $user->ID : $comment->comment_author_email;
+        $email = !empty($user) ? $user->user_email : $id_or_email;
       }
       $alt = $comment->comment_author;
     } else {
@@ -289,13 +330,17 @@ if(!class_exists('wp_user_avatar')){
 
   // Replace get_avatar()
   function get_wp_user_avatar_alt($avatar, $id_or_email, $size = '', $default = '', $alt = false){
-    global $post, $pagenow, $comment;
+    global $post, $pagenow, $comment, $avatar_default, $avatar_default_wp_user_avatar, $mustache_full;
     // Find user ID on comment, author page, or post
     if(is_object($id_or_email)){
       if($comment->user_id != '0'){
         $id_or_email = $comment->user_id;
+        $user = get_user_by('id', $id_or_email);
+        $email = $user->user_email;
       } elseif(!empty($comment->comment_author_email)){
-        $id_or_email = $comment->comment_author_email;
+        $user = get_user_by('email', $comment->comment_author_email);
+        $id_or_email = !empty($user) ? $user->ID : $comment->comment_author_email;
+        $email = !empty($user) ? $user->user_email : $id_or_email;
       }
       $alt = $comment->comment_author;
     } else {
@@ -311,16 +356,29 @@ if(!class_exists('wp_user_avatar')){
         }
       }
       $id_or_email = $user->ID;
+      $email = $user->user_email;
       $alt = $user->display_name;
     }
     $wp_user_avatar_meta = !empty($id_or_email) ? get_the_author_meta('wp_user_avatar', $id_or_email) : '';
     if(!empty($wp_user_avatar_meta) && $pagenow != 'options-discussion.php'){
       $wp_user_avatar_image = wp_get_attachment_image_src($wp_user_avatar_meta, array($size,$size));
       $dimensions = is_numeric($size) ? ' width="'.$wp_user_avatar_image[1].'" height="'.$wp_user_avatar_image[2].'"' : '';
-      $wp_user_avatar = '<img src="'.$wp_user_avatar_image[0].'"'.$dimensions.' alt="'.$alt.'" class="wp-user-avatar wp-user-avatar-'.$size.' avatar avatar-'.$size.' photo" />';
+      $wp_user_avatar = '<img src="'.$wp_user_avatar_image[0].'"'.$dimensions.' alt="'.$alt.'" class="wp-user-avatar wp-user-avatar-'.$size.' custom-wp-user-avatar avatar avatar-'.$size.' photo" />';
     } else {
-      $gravatar = str_replace("class='", "class='wp-user-avatar wp-user-avatar-".$size." ", $avatar);
-      $wp_user_avatar = $gravatar;
+      if(!has_gravatar($email)){
+        if($avatar_default == 'wp_user_avatar'){
+          if(!empty($avatar_default_wp_user_avatar)){
+            $avatar_default_wp_user_avatar_image = wp_get_attachment_image_src($avatar_default_wp_user_avatar, array($size,$size));
+            $default = $avatar_default_wp_user_avatar_image[0];
+            $dimensions = is_numeric($size) ? ' width="'.$avatar_default_wp_user_avatar_image[1].'" height="'.$avatar_default_wp_user_avatar_image[2].'"' : '';
+          } else {
+            $default = $mustache_full;
+            $dimensions = is_numeric($size) ? ' width="'.$size.'" height="'.$size.'"' : '';
+          }
+          $avatar = "<img src='".$default."'".$dimensions." alt='".$alt."' class='wp-user-avatar wp-user-avatar-".$size." wp-user-avatar-default avatar avatar-".$size." photo avatar-default' />";
+        }
+      }
+      $wp_user_avatar = $avatar;
     }
     return $wp_user_avatar;
   }
@@ -356,10 +414,27 @@ if(!class_exists('wp_user_avatar')){
 
   // Get original avatar
   function get_avatar_original($id_or_email, $size = '', $default = '', $alt = false){
+    global $avatar_default, $avatar_default_wp_user_avatar, $mustache_full;
     remove_filter('get_avatar', 'get_wp_user_avatar_alt');
-    $wp_user_avatar_image = get_avatar($id_or_email);
-    $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $wp_user_avatar_image, $matches, PREG_SET_ORDER);
-    $wp_user_avatar_image_src = $matches [0] [1];
+    if(has_gravatar($id_or_email)){
+      $wp_user_avatar_image = get_avatar($id_or_email);
+      $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $wp_user_avatar_image, $matches, PREG_SET_ORDER);
+      $wp_user_avatar_image_src = $matches [0] [1];
+    } else {
+      if($avatar_default == 'wp_user_avatar'){
+        if(!empty($avatar_default_wp_user_avatar)){
+          $avatar_default_wp_user_avatar_image = wp_get_attachment_image_src($avatar_default_wp_user_avatar, array($size,$size));
+          $default = $avatar_default_wp_user_avatar_image[0];
+        } else {
+          $default = $mustache_full;
+        }
+        $wp_user_avatar_image_src = $default;
+      } else {
+        $wp_user_avatar_image = get_avatar($id_or_email);
+        $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $wp_user_avatar_image, $matches, PREG_SET_ORDER);
+        $wp_user_avatar_image_src = $matches [0] [1];
+      }
+    }
     return $wp_user_avatar_image_src;
   }
 
