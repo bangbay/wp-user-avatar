@@ -48,6 +48,7 @@
   <style type="text/css">
     form { background: #fff; border: 1px solid #eee; }
     p, h4 { margin: 0; padding: 12px 0 0; }
+    h4.center { text-align: center; }
     label { width: 90px; display: inline-block; text-align: right; }
     .mceActionPanel { padding: 7px 0 12px; text-align: center; }
     .mceActionPanel #insert { float: none; width: 180px; margin: 0 auto; }
@@ -63,7 +64,7 @@
       <?php endforeach; ?>
     </select></p>
 
-    <h4 style="text-align:center;">Choose a preset size or enter a number value.</h4>
+    <h4 class="center">Choose a preset size or enter a number value.</h4>
 
     <p>
       <label for="<?php esc_attr_e('wp_user_avatar_size'); ?>"><strong><?php _e("Size:"); ?></strong></label>
@@ -86,7 +87,7 @@
       <option value="right"><?php _e("Right"); ?></option>
     </select></p>
 
-    <h4 style="text-align:center;">Link to image file, attachment page, or custom URL.</h4>
+    <h4 class="center">Link to image file, attachment page, or custom URL.</h4>
 
     <p>
       <label for="<?php esc_attr_e('wp_user_avatar_link'); ?>"><strong><?php _e("Link to:"); ?></strong></label>

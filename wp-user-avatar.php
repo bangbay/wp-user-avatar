@@ -20,8 +20,11 @@ define('WP_USER_AVATAR_URLPATH', trailingslashit(plugins_url(WP_USER_AVATAR_FOLD
 // Define global variables
 $avatar_default = get_option('avatar_default');
 $avatar_default_wp_user_avatar = get_option('avatar_default_wp_user_avatar');
-$mustache_full = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar.png';
-$mustache_thumb = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar-32x32.png';
+$mustache_original = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar.png';
+$mustache_medium = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar-300x300.png';
+$mustache_thumbnail = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar-150x150.png';
+$mustache_avatar = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar-96x96.png';
+$mustache_admin = WP_USER_AVATAR_URLPATH.'images/wp-user-avatar-32x32.png';
 $ssl = is_ssl() ? 's' : '';
 
 // Load add-ons
@@ -93,10 +96,10 @@ if(!class_exists('wp_user_avatar')){
     function action_show_user_profile($user){
       global $current_user;
       $wp_user_avatar = get_user_meta($user->ID, 'wp_user_avatar', true);
-      $hide_notice = has_wp_user_avatar($user->ID) ? ' style="display:none;"' : '';
-      $hide_remove = !has_wp_user_avatar($user->ID) ? ' style="display:none;"' : '';
-      $avatar_full_src = (get_option('show_avatars') == '1') ? get_avatar_original($user->user_email, 96) : includes_url().'images/blank.gif';
-      $avatar_full = has_wp_user_avatar($user->ID) ?  get_wp_user_avatar_src($user->ID, 'medium') : $avatar_full_src;
+      $hide_notice = has_wp_user_avatar($user->ID) ? ' class="hide-me;"' : '';
+      $hide_remove = !has_wp_user_avatar($user->ID) ? ' class="hide-me;"' : '';
+      $avatar_medium_src = (get_option('show_avatars') == '1') ? get_avatar_original($user->user_email, 96) : includes_url().'images/blank.gif';
+      $avatar_medium = has_wp_user_avatar($user->ID) ?  get_wp_user_avatar_src($user->ID, 'medium') : $avatar_medium_src;
       $profile = ($current_user->ID == $user->ID) ? 'Profile' : 'User';
     ?>
       <?php if(is_admin()) : ?>
@@ -107,7 +110,7 @@ if(!class_exists('wp_user_avatar')){
             <td>
               <input type="hidden" name="wp-user-avatar" id="wp-user-avatar" value="<?php echo $wp_user_avatar; ?>" />
               <p><button type="button" class="button" id="add-wp-user-avatar"><?php _e('Edit WP User Avatar'); ?></button></p>
-              <p id="wp-user-avatar-preview"><?php echo '<img src="'.$avatar_full.'" alt="" />'; ?></p>
+              <p id="wp-user-avatar-preview"><?php echo '<img src="'.$avatar_medium.'" alt="" />'; ?></p>
               <?php if(get_option('show_avatars') == '1') : ?>
                 <p id="wp-user-avatar-notice"<?php echo $hide_notice; ?>><?php _e('This is your default avatar.'); ?></p>
               <?php endif; ?>
@@ -122,7 +125,7 @@ if(!class_exists('wp_user_avatar')){
           <legend><?php _e('WP User Avatar'); ?></legend>
           <input type="hidden" name="wp-user-avatar" id="wp-user-avatar" value="<?php echo $wp_user_avatar; ?>" />
           <p><button type="button" class="button" id="add-wp-user-avatar"><?php _e('Edit WP User Avatar'); ?></button></p>
-          <p id="wp-user-avatar-preview"><?php echo '<img src="'.$avatar_full.'" alt="" />'; ?></p>
+          <p id="wp-user-avatar-preview"><?php echo '<img src="'.$avatar_medium.'" alt="" />'; ?></p>
           <?php if(get_option('show_avatars') == '1') : ?>
             <p id="wp-user-avatar-notice"<?php echo $hide_notice; ?>><?php _e('This is your default avatar.'); ?></p>
           <?php endif; ?>
@@ -131,7 +134,7 @@ if(!class_exists('wp_user_avatar')){
         </fieldset>
       <?php endif; ?>
       <?php
-      echo edit_default_wp_user_avatar($user->display_name, $avatar_full_src, $avatar_full_src);
+      echo edit_default_wp_user_avatar($user->display_name, $avatar_medium_src, $avatar_medium_src);
     }
 
     // Update user meta
@@ -182,7 +185,7 @@ if(!class_exists('wp_user_avatar')){
   }
 
   // Uploader scripts
-  function edit_default_wp_user_avatar($section, $avatar_full, $avatar_thumb){ ?>  
+  function edit_default_wp_user_avatar($section, $avatar_medium, $avatar_thumb){ ?>  
     <script type="text/javascript">
       jQuery(function(){
         <?php if(function_exists('wp_enqueue_media')) : // Backbone uploader for WP 3.5+ ?>
@@ -190,7 +193,7 @@ if(!class_exists('wp_user_avatar')){
         <?php else : // Fall back to Thickbox uploader ?>
           openThickboxUploader("<?php echo $section; ?>", "<?php echo get_admin_url(); ?>media-upload.php?post_id=0&type=image&tab=library&TB_iframe=1");
         <?php endif; ?>
-        removeWPUserAvatar("<?php echo htmlspecialchars_decode($avatar_full); ?>", "<?php echo htmlspecialchars_decode($avatar_thumb); ?>");
+        removeWPUserAvatar("<?php echo htmlspecialchars_decode($avatar_medium); ?>", "<?php echo htmlspecialchars_decode($avatar_thumb); ?>");
       });
     </script>
   <?php
@@ -198,27 +201,27 @@ if(!class_exists('wp_user_avatar')){
 
   // Add default avatar
   function add_default_wp_user_avatar($avatar_list, $hide_remove=''){
-    global $avatar_default, $avatar_default_wp_user_avatar, $mustache_full, $mustache_thumb;
+    global $avatar_default, $avatar_default_wp_user_avatar, $mustache_medium, $mustache_admin;
     if(!empty($avatar_default_wp_user_avatar)){
-      $avatar_full_src = wp_get_attachment_image_src($avatar_default_wp_user_avatar, 'medium');
+      $avatar_medium_src = wp_get_attachment_image_src($avatar_default_wp_user_avatar, 'medium');
       $avatar_thumb_src = wp_get_attachment_image_src($avatar_default_wp_user_avatar, array(32,32));
-      $avatar_full = $avatar_full_src[0];
+      $avatar_medium = $avatar_medium_src[0];
       $avatar_thumb = $avatar_thumb_src[0];
     } else {
-      $avatar_full = $mustache_full;
-      $avatar_thumb = $mustache_thumb;
-      $hide_remove = ' style="display:none;"';
+      $avatar_medium = $mustache_medium;
+      $avatar_thumb = $mustache_admin;
+      $hide_remove = ' class="hide-me"';
     }
     $selected_avatar = ($avatar_default == 'wp_user_avatar') ? ' checked="checked" ' : '';
     $avatar_thumb_img = '<div id="wp-user-avatar-preview"><img src="'.$avatar_thumb.'" width="32" /></div>';
     $wp_user_avatar_list = "\n\t<label><input type='radio' name='avatar_default' id='wp_user_avatar_radio' value='wp_user_avatar'$selected_avatar /> ";
     $wp_user_avatar_list .= preg_replace("/src='(.+?)'/", "src='\$1&amp;forcedefault=1'", $avatar_thumb_img);
     $wp_user_avatar_list .= ' '.__('WP User Avatar').'</label>';
-    $wp_user_avatar_list .= '<p style="padding-left:15px;"><button type="button" class="button" id="add-wp-user-avatar">'.__('Edit WP User Avatar').'</button>';
-    $wp_user_avatar_list .= '&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="remove-wp-user-avatar"'.$hide_remove.'>'.__('Remove').'</a></p>';
+    $wp_user_avatar_list .= '<p id="edit-wp-user-avatar"><button type="button" class="button" id="add-wp-user-avatar">'.__('Edit WP User Avatar').'</button>';
+    $wp_user_avatar_list .= '<a href="#" id="remove-wp-user-avatar"'.$hide_remove.'>'.__('Remove').'</a></p>';
     $wp_user_avatar_list .= '<input type="hidden" id="wp-user-avatar" name="avatar_default_wp_user_avatar" value="'.$avatar_default_wp_user_avatar.'">';
     $wp_user_avatar_list .= '<p id="wp-user-avatar-message">'.__('Press "Save Changes" to save your changes.').'</p>';
-    $wp_user_avatar_list .= edit_default_wp_user_avatar('Default Avatar', $mustache_full, $mustache_thumb);
+    $wp_user_avatar_list .= edit_default_wp_user_avatar('Default Avatar', $mustache_medium, $mustache_admin);
     return $wp_user_avatar_list.$avatar_list;
   }
   add_filter('default_avatar_select', 'add_default_wp_user_avatar');
@@ -323,7 +326,7 @@ if(!class_exists('wp_user_avatar')){
 
   // Replace get_avatar
   function get_wp_user_avatar_alt($avatar, $id_or_email, $size='', $default='', $alt=''){
-    global $post, $pagenow, $comment, $avatar_default, $avatar_default_wp_user_avatar, $mustache_full;
+    global $post, $pagenow, $comment, $avatar_default, $avatar_default_wp_user_avatar, $mustache_original, $mustache_medium, $mustache_thumbnail, $mustache_avatar, $mustache_admin;
     // Find user ID on comment, author page, or post
     if(is_object($id_or_email)){
       if($comment->user_id != '0'){
@@ -365,7 +368,17 @@ if(!class_exists('wp_user_avatar')){
           $default = $avatar_default_wp_user_avatar_image[0];
           $dimensions = is_numeric($size) ? ' width="'.$avatar_default_wp_user_avatar_image[1].'" height="'.$avatar_default_wp_user_avatar_image[2].'"' : '';
         } else {
-          $default = $mustache_full;
+          if($size > get_option('medium_size_w')){
+            $default = $mustache_original;
+          } elseif($size <= get_option('medium_size_w') && $size > get_option('thumbnail_size_w')){
+            $default = $mustache_medium;
+          } elseif($size <= get_option('thumbnail_size_w') && $size > 96){
+            $default = $mustache_thumbnail;
+          } elseif($size <= 96 && $size > 32){
+            $default = $mustache_avatar;
+          } elseif($size <= 32){
+            $default = $mustache_admin;
+          }
           $dimensions = is_numeric($size) ? ' width="'.$size.'" height="'.$size.'"' : '';
         }
         $avatar = "<img src='".$default."'".$dimensions." alt='".$alt."' class='wp-user-avatar wp-user-avatar-".$size." avatar avatar-".$size." photo avatar-default' />";
@@ -378,21 +391,21 @@ if(!class_exists('wp_user_avatar')){
 
   // Get original avatar
   function get_avatar_original($id_or_email, $size='', $default='', $alt=''){
-    global $avatar_default, $avatar_default_wp_user_avatar, $mustache_full;
+    global $avatar_default, $avatar_default_wp_user_avatar, $mustache_avatar;
     remove_filter('get_avatar', 'get_wp_user_avatar_alt');
     if(!has_gravatar($id_or_email) && $avatar_default == 'wp_user_avatar'){
       if(!empty($avatar_default_wp_user_avatar)){
         $avatar_default_wp_user_avatar_image = wp_get_attachment_image_src($avatar_default_wp_user_avatar, array($size,$size));
-        $wp_user_avatar_image_src = $avatar_default_wp_user_avatar_image[0];
+        $default = $avatar_default_wp_user_avatar_image[0];
       } else {
-        $wp_user_avatar_image_src = $mustache_full;
+        $default = $mustache_avatar;
       }
     } else {
       $wp_user_avatar_image = get_avatar($id_or_email);
       $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $wp_user_avatar_image, $matches, PREG_SET_ORDER);
-      $wp_user_avatar_image_src = $matches [0] [1];
+      $default = $matches [0] [1];
     }
-    return $wp_user_avatar_image_src;
+    return $default;
   }
 
   // Shortcode
