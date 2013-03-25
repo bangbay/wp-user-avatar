@@ -3,5 +3,5 @@
 .defaultavatarpicker #wp-user-avatar-preview { width: 32px; height: 32px; display: inline-block; overflow: hidden; vertical-align: middle; }
 .defaultavatarpicker #wp-user-avatar-preview img { width: 32px; }
 #edit-wp-user-avatar { padding-left: 15px; }
-#remove-wp-user-avatar { margin-left: 10px; }
+#edit-wp-user-avatar #remove-wp-user-avatar { margin-left: 10px; }
 .hide-me { display: none; }

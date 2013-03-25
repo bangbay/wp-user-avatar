@@ -96,8 +96,8 @@ if(!class_exists('wp_user_avatar')){
     function action_show_user_profile($user){
       global $current_user;
       $wp_user_avatar = get_user_meta($user->ID, 'wp_user_avatar', true);
-      $hide_notice = has_wp_user_avatar($user->ID) ? ' class="hide-me;"' : '';
-      $hide_remove = !has_wp_user_avatar($user->ID) ? ' class="hide-me;"' : '';
+      $hide_notice = has_wp_user_avatar($user->ID) ? ' class="hide-me"' : '';
+      $hide_remove = !has_wp_user_avatar($user->ID) ? ' class="hide-me"' : '';
       $avatar_medium_src = (get_option('show_avatars') == '1') ? get_avatar_original($user->user_email, 96) : includes_url().'images/blank.gif';
       $avatar_medium = has_wp_user_avatar($user->ID) ?  get_wp_user_avatar_src($user->ID, 'medium') : $avatar_medium_src;
       $profile = ($current_user->ID == $user->ID) ? 'Profile' : 'User';
