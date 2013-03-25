@@ -4,4 +4,4 @@
 .defaultavatarpicker #wp-user-avatar-preview img { width: 32px; }
 #edit-wp-user-avatar { padding-left: 15px; }
 #edit-wp-user-avatar #remove-wp-user-avatar { margin-left: 10px; }
-.hide-me { display: none; }
+.hide-me, .wp-core-ui .hide-me { display: none; }

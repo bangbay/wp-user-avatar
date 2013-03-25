@@ -44,7 +44,10 @@ add_action('init', 'wp_user_avatar_options');
 
 // Update default avatar to new format
 function wp_user_avatar_default_avatar(){
-  global $avatar_default, $avatar_default_wp_user_avatar;
+  global $avatar_default, $avatar_default_wp_user_avatar, $mustache_original;
+  if($avatar_default == $mustache_original){
+    update_option('avatar_default', 'wp_user_avatar');
+  }
   if(!empty($avatar_default_wp_user_avatar)){
     $avatar_default_wp_user_avatar_image = wp_get_attachment_image_src($avatar_default_wp_user_avatar, 'medium');
     if($avatar_default == $avatar_default_wp_user_avatar_image[0]){
@@ -97,7 +100,7 @@ if(!class_exists('wp_user_avatar')){
       global $current_user;
       $wp_user_avatar = get_user_meta($user->ID, 'wp_user_avatar', true);
       $hide_notice = has_wp_user_avatar($user->ID) ? ' class="hide-me"' : '';
-      $hide_remove = !has_wp_user_avatar($user->ID) ? ' class="hide-me"' : '';
+      $hide_remove = !has_wp_user_avatar($user->ID) ? ' hide-me' : '';
       $avatar_medium_src = (get_option('show_avatars') == '1') ? get_avatar_original($user->user_email, 96) : includes_url().'images/blank.gif';
       $avatar_medium = has_wp_user_avatar($user->ID) ?  get_wp_user_avatar_src($user->ID, 'medium') : $avatar_medium_src;
       $profile = ($current_user->ID == $user->ID) ? 'Profile' : 'User';
@@ -114,7 +117,7 @@ if(!class_exists('wp_user_avatar')){
               <?php if(get_option('show_avatars') == '1') : ?>
                 <p id="wp-user-avatar-notice"<?php echo $hide_notice; ?>><?php _e('This is your default avatar.'); ?></p>
               <?php endif; ?>
-              <p><button type="button" class="button" id="remove-wp-user-avatar"<?php echo $hide_remove; ?>><?php _e('Remove'); ?></button></p>
+              <p><button type="button" class="button<?php echo $hide_remove; ?>" id="remove-wp-user-avatar"><?php _e('Remove'); ?></button></p>
               <p id="wp-user-avatar-message"><?php _e('Press "Update '.$profile.'" to save your changes.'); ?></p>
             </td>
           </tr>
@@ -328,6 +331,7 @@ if(!class_exists('wp_user_avatar')){
   function get_wp_user_avatar_alt($avatar, $id_or_email, $size='', $default='', $alt=''){
     global $post, $pagenow, $comment, $avatar_default, $avatar_default_wp_user_avatar, $mustache_original, $mustache_medium, $mustache_thumbnail, $mustache_avatar, $mustache_admin;
     // Find user ID on comment, author page, or post
+    $email = '';
     if(is_object($id_or_email)){
       if($comment->user_id != '0'){
         $id_or_email = $comment->user_id;
