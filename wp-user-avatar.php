@@ -218,7 +218,7 @@ if(!class_exists('wp_user_avatar')){
     $selected_avatar = ($avatar_default == 'wp_user_avatar') ? ' checked="checked" ' : '';
     $avatar_thumb_img = '<div id="wp-user-avatar-preview"><img src="'.$avatar_thumb.'" width="32" /></div>';
     $wp_user_avatar_list = "\n\t<label><input type='radio' name='avatar_default' id='wp_user_avatar_radio' value='wp_user_avatar'$selected_avatar /> ";
-    $wp_user_avatar_list .= preg_replace("/src='(.+?)'/", "src='\$1&amp;forcedefault=1'", $avatar_thumb_img);
+    $wp_user_avatar_list .= preg_replace("/src='(.+?)'/", "src='\$1'", $avatar_thumb_img);
     $wp_user_avatar_list .= ' '.__('WP User Avatar').'</label>';
     $wp_user_avatar_list .= '<p id="edit-wp-user-avatar"><button type="button" class="button" id="add-wp-user-avatar">'.__('Edit WP User Avatar').'</button>';
     $wp_user_avatar_list .= '<a href="#" id="remove-wp-user-avatar"'.$hide_remove.'>'.__('Remove').'</a></p>';
