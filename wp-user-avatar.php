@@ -1,13 +1,13 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.2.5
+ * @version 1.2.6
  */
 /*
 Plugin Name: WP User Avatar
 Plugin URI: http://wordpress.org/extend/plugins/wp-user-avatar/
 Description: Use any image in your WordPress Media Libary as a custom user avatar. Add your own Default Avatar.
-Version: 1.2.5
+Version: 1.2.6
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
 */
@@ -182,8 +182,8 @@ if(!class_exists('wp_user_avatar')){
         wp_enqueue_script('thickbox');
         wp_enqueue_style('thickbox');
       }
-      wp_enqueue_script('wp-user-avatar', WP_USER_AVATAR_URLPATH.'js/wp-user-avatar.js');
-      wp_enqueue_style('wp-user-avatar', WP_USER_AVATAR_URLPATH.'css/wp-user-avatar.css');
+      wp_enqueue_script('wp-user-avatar', WP_USER_AVATAR_URLPATH.'js/wp-user-avatar.js', '', '1.2.6');
+      wp_enqueue_style('wp-user-avatar', WP_USER_AVATAR_URLPATH.'css/wp-user-avatar.css', '', '1.2.6');
     }
   }
 
@@ -201,40 +201,6 @@ if(!class_exists('wp_user_avatar')){
     </script>
   <?php
   }
-
-  // Add default avatar
-  function add_default_wp_user_avatar($avatar_list, $hide_remove=''){
-    global $avatar_default, $avatar_default_wp_user_avatar, $mustache_medium, $mustache_admin;
-    if(!empty($avatar_default_wp_user_avatar)){
-      $avatar_medium_src = wp_get_attachment_image_src($avatar_default_wp_user_avatar, 'medium');
-      $avatar_thumb_src = wp_get_attachment_image_src($avatar_default_wp_user_avatar, array(32,32));
-      $avatar_medium = $avatar_medium_src[0];
-      $avatar_thumb = $avatar_thumb_src[0];
-    } else {
-      $avatar_medium = $mustache_medium;
-      $avatar_thumb = $mustache_admin;
-      $hide_remove = ' class="hide-me"';
-    }
-    $selected_avatar = ($avatar_default == 'wp_user_avatar') ? ' checked="checked" ' : '';
-    $avatar_thumb_img = '<div id="wp-user-avatar-preview"><img src="'.$avatar_thumb.'" width="32" /></div>';
-    $wp_user_avatar_list = "\n\t<label><input type='radio' name='avatar_default' id='wp_user_avatar_radio' value='wp_user_avatar'$selected_avatar /> ";
-    $wp_user_avatar_list .= preg_replace("/src='(.+?)'/", "src='\$1'", $avatar_thumb_img);
-    $wp_user_avatar_list .= ' '.__('WP User Avatar').'</label>';
-    $wp_user_avatar_list .= '<p id="edit-wp-user-avatar"><button type="button" class="button" id="add-wp-user-avatar">'.__('Edit WP User Avatar').'</button>';
-    $wp_user_avatar_list .= '<a href="#" id="remove-wp-user-avatar"'.$hide_remove.'>'.__('Remove').'</a></p>';
-    $wp_user_avatar_list .= '<input type="hidden" id="wp-user-avatar" name="avatar_default_wp_user_avatar" value="'.$avatar_default_wp_user_avatar.'">';
-    $wp_user_avatar_list .= '<p id="wp-user-avatar-message">'.__('Press "Save Changes" to save your changes.').'</p>';
-    $wp_user_avatar_list .= edit_default_wp_user_avatar('Default Avatar', $mustache_medium, $mustache_admin);
-    return $wp_user_avatar_list.$avatar_list;
-  }
-  add_filter('default_avatar_select', 'add_default_wp_user_avatar');
-
-  // Add default avatar field to whitelist
-  function wp_user_avatar_whitelist_options($whitelist_options){
-    $whitelist_options['discussion'] = array('default_pingback_flag', 'default_ping_status', 'default_comment_status', 'comments_notify', 'moderation_notify', 'comment_moderation', 'require_name_email', 'comment_whitelist', 'comment_max_links', 'moderation_keys', 'blacklist_keys', 'show_avatars', 'avatar_rating', 'avatar_default', 'close_comments_for_old_posts', 'close_comments_days_old', 'thread_comments', 'thread_comments_depth', 'page_comments', 'comments_per_page', 'default_comments_page', 'comment_order', 'comment_registration', 'avatar_default_wp_user_avatar');
-    return $whitelist_options;
-  }
-  add_filter('whitelist_options', 'wp_user_avatar_whitelist_options');
 
   // Returns true if user has Gravatar-hosted image
   function has_gravatar($id_or_email, $has_gravatar=false){
@@ -360,7 +326,7 @@ if(!class_exists('wp_user_avatar')){
       $alt = $user->display_name;
     }
     $wp_user_avatar_meta = !empty($id_or_email) ? get_the_author_meta('wp_user_avatar', $id_or_email) : '';
-    if(!empty($wp_user_avatar_meta) && $pagenow != 'options-discussion.php'){
+    if(!empty($wp_user_avatar_meta)){
       $wp_user_avatar_image = wp_get_attachment_image_src($wp_user_avatar_meta, array($size,$size));
       $dimensions = is_numeric($size) ? ' width="'.$wp_user_avatar_image[1].'" height="'.$wp_user_avatar_image[2].'"' : '';
       $default = $wp_user_avatar_image[0];
@@ -438,6 +404,64 @@ if(!class_exists('wp_user_avatar')){
     return $wp_user_avatar;
   }
   add_shortcode('avatar','wp_user_avatar_shortcode');
+
+  // Add default avatar
+  function add_default_wp_user_avatar($avatar_list){
+    global $avatar_default, $avatar_default_wp_user_avatar, $mustache_medium, $mustache_admin;
+    remove_filter('get_avatar', 'get_wp_user_avatar_alt');
+    $avatar_defaults = array(
+      'mystery' => __('Mystery Man'),
+      'blank' => __('Blank'),
+      'gravatar_default' => __('Gravatar Logo'),
+      'identicon' => __('Identicon (Generated)'),
+      'wavatar' => __('Wavatar (Generated)'),
+      'monsterid' => __('MonsterID (Generated)'),
+      'retro' => __('Retro (Generated)')
+    );
+    if(empty($avatar_default)){
+      $avatar_default = 'mystery';
+    }
+    $size = 32;
+    $avatar_list = '';
+    foreach($avatar_defaults as $default_key => $default_name){
+      $selected = ($avatar_default == $default_key) ? 'checked="checked" ' : '';
+      $avatar_list .= "\n\t<label><input type='radio' name='avatar_default' id='avatar_{$default_key}' value='".esc_attr($default_key)."' {$selected}/> ";
+      $avatar = get_avatar('unknown@gravatar.com', $size, $default_key);
+      $avatar_list .= preg_replace("/src='(.+?)'/", "src='\$1&amp;forcedefault=1'", $avatar);
+      $avatar_list .= ' '.$default_name.'</label>';
+      $avatar_list .= '<br />';
+    }
+    if(!empty($avatar_default_wp_user_avatar)){
+      $avatar_medium_src = wp_get_attachment_image_src($avatar_default_wp_user_avatar, 'medium');
+      $avatar_thumb_src = wp_get_attachment_image_src($avatar_default_wp_user_avatar, array(32,32));
+      $avatar_medium = $avatar_medium_src[0];
+      $avatar_thumb = $avatar_thumb_src[0];
+      $hide_remove = '';
+    } else {
+      $avatar_medium = $mustache_medium;
+      $avatar_thumb = $mustache_admin;
+      $hide_remove = ' class="hide-me"';
+    }
+    $selected_avatar = ($avatar_default == 'wp_user_avatar') ? ' checked="checked" ' : '';
+    $avatar_thumb_img = '<div id="wp-user-avatar-preview"><img src="'.$avatar_thumb.'" width="32" /></div>';
+    $wp_user_avatar_list = "\n\t<label><input type='radio' name='avatar_default' id='wp_user_avatar_radio' value='wp_user_avatar'$selected_avatar /> ";
+    $wp_user_avatar_list .= preg_replace("/src='(.+?)'/", "src='\$1'", $avatar_thumb_img);
+    $wp_user_avatar_list .= ' '.__('WP User Avatar').'</label>';
+    $wp_user_avatar_list .= '<p id="edit-wp-user-avatar"><button type="button" class="button" id="add-wp-user-avatar">'.__('Edit WP User Avatar').'</button>';
+    $wp_user_avatar_list .= '<a href="#" id="remove-wp-user-avatar"'.$hide_remove.'>'.__('Remove').'</a></p>';
+    $wp_user_avatar_list .= '<input type="hidden" id="wp-user-avatar" name="avatar_default_wp_user_avatar" value="'.$avatar_default_wp_user_avatar.'">';
+    $wp_user_avatar_list .= '<p id="wp-user-avatar-message">'.__('Press "Save Changes" to save your changes.').'</p>';
+    $wp_user_avatar_list .= edit_default_wp_user_avatar('Default Avatar', $mustache_medium, $mustache_admin);
+    return $wp_user_avatar_list.$avatar_list;
+  }
+  add_filter('default_avatar_select', 'add_default_wp_user_avatar');
+
+  // Add default avatar field to whitelist
+  function wp_user_avatar_whitelist_options($whitelist_options){
+    $whitelist_options['discussion'] = array('default_pingback_flag', 'default_ping_status', 'default_comment_status', 'comments_notify', 'moderation_notify', 'comment_moderation', 'require_name_email', 'comment_whitelist', 'comment_max_links', 'moderation_keys', 'blacklist_keys', 'show_avatars', 'avatar_rating', 'avatar_default', 'close_comments_for_old_posts', 'close_comments_days_old', 'thread_comments', 'thread_comments_depth', 'page_comments', 'comments_per_page', 'default_comments_page', 'comment_order', 'comment_registration', 'avatar_default_wp_user_avatar');
+    return $whitelist_options;
+  }
+  add_filter('whitelist_options', 'wp_user_avatar_whitelist_options');
 
   // Initialize wp_user_avatar
   function wp_user_avatar_load(){

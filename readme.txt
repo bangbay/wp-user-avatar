@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.1
 Tested up to: 3.5.1
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -207,6 +207,9 @@ Outputs:
 
 == Changelog ==
 
+= 1.2.6 =
+* Bug Fix: options-discussion.php page doesn't show default avatars
+
 = 1.2.5 =
 * Bug Fix: Comment author showing wrong avatar
 * Bug Fix: Avatar adds fixed dimensions when non-numeric size is used
@@ -249,7 +252,7 @@ Outputs:
 * Bug Fix: Change get_usermeta to get_user_meta
 * Bug Fix: Non-object warning when retrieving user ID
 
-= 1.1.2.5 =
+= 1.1.3 =
 * Bug Fix: Comment author with no e-mail address
 
 = 1.1.2 =
