@@ -21,7 +21,7 @@ WP User Avatar also lets you:
 * Show the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar if the user doesn't have a WP User Avatar image.
 * Use the <code>[avatar]</code> shortcode in your posts. The shortcode will work with any theme, whether it has avatar support or not.
 
-This plugin uses the Media uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.1.
+This plugin uses the Media uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.1. It is also compatible with WordPress Multisite.
 
 == Installation ==
 
@@ -151,6 +151,10 @@ Yes, for registered users. Non-registered comment authors will show their [grava
 = Will WP User Avatar work with bbPress? =
 
 Yes, but only users that have <code>upload_files</code> capability can choose their own WP User Avatar image.
+
+= Will WP User Avatar work with WordPress Multisite? =
+
+Yes, however, each site has its own avatar settings. If you set a WP User Avatar image on one site, you have to set it again for different sites in your network.
 
 = How can I see which users have an avatar? =
 
