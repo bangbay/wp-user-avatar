@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.2.6
+ * @version 1.3
  */
 
 function myplugin_addbuttons() {

@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.1
 Tested up to: 3.5.1
-Stable tag: 1.2.6
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -206,6 +206,10 @@ Outputs:
 5. Options for the [avatar] shortcode.
 
 == Changelog ==
+
+= 1.3 =
+* Bug Fix: Warnings if no user found
+* Update: Add multisite support
 
 = 1.2.6 =
 * Bug Fix: options-discussion.php page doesn't show default avatars
