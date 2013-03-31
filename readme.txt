@@ -212,8 +212,9 @@ Outputs:
 == Changelog ==
 
 = 1.3 =
+* Add: Multisite support
 * Bug Fix: Warnings if no user found
-* Update: Add multisite support
+* Update: Enable action_show_user_profile for any class using show_user_profile hook
 
 = 1.2.6 =
 * Bug Fix: options-discussion.php page doesn't show default avatars
