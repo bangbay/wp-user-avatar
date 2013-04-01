@@ -289,6 +289,9 @@ Outputs:
 
 == Upgrade Notice ==
 
+= 1.3 =
+* New Feature: Multisite support
+
 = 1.2.2 =
 * New Features: Link options for shortcode, bbPress integration
 
