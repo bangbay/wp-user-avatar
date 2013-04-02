@@ -1,19 +1,19 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.3
+ * @version 1.3.1
  */
 /*
 Plugin Name: WP User Avatar
 Plugin URI: http://wordpress.org/extend/plugins/wp-user-avatar/
 Description: Use any image in your WordPress Media Libary as a custom user avatar. Add your own Default Avatar.
-Version: 1.3
+Version: 1.3.1
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
 */
 
 // Define paths and variables
-define('WP_USER_AVATAR_VERSION', '1.3');
+define('WP_USER_AVATAR_VERSION', '1.3.1');
 define('WP_USER_AVATAR_FOLDER', basename(dirname(__FILE__)));
 define('WP_USER_AVATAR_ABSPATH', trailingslashit(str_replace('\\','/', WP_PLUGIN_DIR.'/'.WP_USER_AVATAR_FOLDER)));
 define('WP_USER_AVATAR_URLPATH', trailingslashit(plugins_url(WP_USER_AVATAR_FOLDER)));
@@ -66,8 +66,10 @@ function wp_user_avatar_user_meta(){
     $users = get_users();
     foreach($users as $user){
       $wp_user_avatar = get_user_meta($user->ID, 'wp_user_avatar', true);
-      update_user_meta($user->ID, $wpdb->get_blog_prefix($blog_id).'user_avatar', $wp_user_avatar);
-      delete_user_meta($user->ID, 'wp_user_avatar');
+      if(!empty($wp_user_avatar)){
+        update_user_meta($user->ID, $wpdb->get_blog_prefix($blog_id).'user_avatar', $wp_user_avatar);
+        delete_user_meta($user->ID, 'wp_user_avatar');
+      }
     }
   }
 }
