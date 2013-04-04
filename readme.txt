@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.1
 Tested up to: 3.5.1
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,6 +70,16 @@ If you leave the options blank, WP User Avatar will detect whether you're inside
 `<?php echo get_wp_user_avatar(); ?>`
 
 The function <code>get_wp_user_avatar</code> can also fall back to <code>get_avatar</code> if there is no WP User Avatar image. For this to work, "Show Avatars" must be checked in your Discussion settings. When this setting is enabled, you will see the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar.
+
+For comments, you might have in your template:
+
+`<?php echo get_avatar($comment, 32); ?>`
+
+Replace this function with:
+
+`<?php echo get_wp_user_avatar($comment, 32); ?>`
+
+For comments, you must specify the $comment variable.
 
 **Other Available Functions**
 
@@ -210,6 +220,9 @@ Outputs:
 5. Options for the [avatar] shortcode.
 
 == Changelog ==
+
+= 1.3.2 =
+* Bug Fix: Check for user before setting name in alt tag.
 
 = 1.3.1 =
 * Bug Fix: Rename usermeta only if found

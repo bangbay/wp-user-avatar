@@ -1,19 +1,19 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.3.1
+ * @version 1.3.2
  */
 /*
 Plugin Name: WP User Avatar
 Plugin URI: http://wordpress.org/extend/plugins/wp-user-avatar/
 Description: Use any image in your WordPress Media Libary as a custom user avatar. Add your own Default Avatar.
-Version: 1.3.1
+Version: 1.3.2
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
 */
 
 // Define paths and variables
-define('WP_USER_AVATAR_VERSION', '1.3.1');
+define('WP_USER_AVATAR_VERSION', '1.3.2');
 define('WP_USER_AVATAR_FOLDER', basename(dirname(__FILE__)));
 define('WP_USER_AVATAR_ABSPATH', trailingslashit(str_replace('\\','/', WP_PLUGIN_DIR.'/'.WP_USER_AVATAR_FOLDER)));
 define('WP_USER_AVATAR_URLPATH', trailingslashit(plugins_url(WP_USER_AVATAR_FOLDER)));
@@ -292,7 +292,7 @@ if(!class_exists('wp_user_avatar')){
         }
       }
       $id_or_email = !empty($user) ? $user->ID : '';
-      $alt = $user->display_name;
+      $alt = !empty($user) ? $user->display_name : '';
     }
     $wp_user_avatar_meta = !empty($id_or_email) ? get_the_author_meta($wpdb->get_blog_prefix($blog_id).'user_avatar', $id_or_email) : '';
     $alignclass = !empty($align) ? ' align'.$align : '';
@@ -322,8 +322,11 @@ if(!class_exists('wp_user_avatar')){
   // Return just the image src
   function get_wp_user_avatar_src($id_or_email, $size='', $align=''){
     $wp_user_avatar_image = get_wp_user_avatar($id_or_email, $size, $align);
-    $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $wp_user_avatar_image, $matches, PREG_SET_ORDER);
-    $wp_user_avatar_image_src = $matches [0] [1];
+    $wp_user_avatar_image_src = '';
+    if(!empty($wp_user_avatar_image)){
+      $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $wp_user_avatar_image, $matches, PREG_SET_ORDER);
+      $wp_user_avatar_image_src = $matches [0] [1];
+    }
     return $wp_user_avatar_image_src;
   }
 
