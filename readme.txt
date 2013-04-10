@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.1
 Tested up to: 3.5.1
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,8 @@ This plugin uses the Media uploader introduced in WordPress 3.5, but is also bac
 
 **Example Usage**
 
+= Posts =
+
 Within [The Loop](http://codex.wordpress.org/The_Loop), you may be using:
 
 `<?php echo get_avatar(get_the_author_meta('ID'), 96); ?>`
@@ -50,6 +52,8 @@ You can also use the values "original", "large", "medium", or "thumbnail" for yo
 You can also add an alignment of "left", "right", or "center":
 
 `<?php echo get_wp_user_avatar(get_the_author_meta('ID'), 96, 'left'); ?>`
+
+= Author Page =
 
 On an author page outside of [The Loop](http://codex.wordpress.org/The_Loop), you may be using:
 
@@ -70,6 +74,8 @@ If you leave the options blank, WP User Avatar will detect whether you're inside
 `<?php echo get_wp_user_avatar(); ?>`
 
 The function <code>get_wp_user_avatar</code> can also fall back to <code>get_avatar</code> if there is no WP User Avatar image. For this to work, "Show Avatars" must be checked in your Discussion settings. When this setting is enabled, you will see the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar.
+
+= Comments =
 
 For comments, you might have in your template:
 
@@ -221,8 +227,12 @@ Outputs:
 
 == Changelog ==
 
+= 1.3.3 =
+* Update: Shortcode checks for user ID, login, slug, or e-mail address
+
 = 1.3.2 =
-* Bug Fix: Check for user before setting name in alt tag.
+* Bug Fix: Check for user before setting name in alt tag
+* Update: readme.txt
 
 = 1.3.1 =
 * Bug Fix: Rename usermeta only if found
