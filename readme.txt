@@ -3,9 +3,9 @@
 Contributors: bangbay
 Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
-Requires at least: 3.1
+Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.3.3
+Stable tag: 1.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +21,7 @@ WP User Avatar also lets you:
 * Show the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar if the user doesn't have a WP User Avatar image.
 * Use the <code>[avatar]</code> shortcode in your posts. The shortcode will work with any theme, whether it has avatar support or not.
 
-This plugin uses the Media uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.1. It is also compatible with WordPress Multisite.
+This plugin uses the Media uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.3. It is also compatible with WordPress Multisite.
 
 == Installation ==
 
@@ -227,8 +227,15 @@ Outputs:
 
 == Changelog ==
 
+= 1.3.5 =
+* Bug Fix: Swap TinyMCE file locations
+
+= 1.3.4 =
+* Update: Change support only to WP 3.3+ because of jQuery 1.7.1 support
+
 = 1.3.3 =
 * Update: Shortcode checks for user ID, login, slug, or e-mail address
+* Update: Move jquery to register_script for < WP 3.5
 
 = 1.3.2 =
 * Bug Fix: Check for user before setting name in alt tag
@@ -266,7 +273,7 @@ Outputs:
 = 1.2.1 =
 * Add: TinyMCE button
 * Update: Clean up redundant code
-* Update: Compatibility only back to WordPress 3.1
+* Update: Compatibility only back to WordPress 3.3
 
 = 1.2 =
 * Add: Default Avatar setting

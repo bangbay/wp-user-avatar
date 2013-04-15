@@ -1,19 +1,19 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.3.3
+ * @version 1.3.5
  */
 /*
 Plugin Name: WP User Avatar
 Plugin URI: http://wordpress.org/extend/plugins/wp-user-avatar/
 Description: Use any image in your WordPress Media Libary as a custom user avatar. Add your own Default Avatar.
-Version: 1.3.3
+Version: 1.3.5
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
 */
 
 // Define paths and variables
-define('WP_USER_AVATAR_VERSION', '1.3.3');
+define('WP_USER_AVATAR_VERSION', '1.3.5');
 define('WP_USER_AVATAR_FOLDER', basename(dirname(__FILE__)));
 define('WP_USER_AVATAR_ABSPATH', trailingslashit(str_replace('\\','/', WP_PLUGIN_DIR.'/'.WP_USER_AVATAR_FOLDER)));
 define('WP_USER_AVATAR_URLPATH', trailingslashit(plugins_url(WP_USER_AVATAR_FOLDER)));
@@ -111,6 +111,7 @@ if(!class_exists('wp_user_avatar')){
         add_action('edit_user_profile_update', array($this,'action_process_option_update'));
         add_action('discussion_update', array($this,'action_process_option_update'));
         add_action('admin_enqueue_scripts', array($this, 'media_upload_scripts'));
+        add_action('wp_enqueue_scripts', array($this, 'media_upload_scripts'));
       }
       // Only add attachment field for WP 3.4 and older
       if(!function_exists('wp_enqueue_media')){
@@ -120,10 +121,6 @@ if(!class_exists('wp_user_avatar')){
       if(get_option('show_avatars') != '1'){
         add_filter('manage_users_columns', array($this, 'add_wp_user_avatar_column'), 10, 1);
         add_filter('manage_users_custom_column', array($this, 'show_wp_user_avatar_column'), 10, 3);
-      }
-      // Load scripts in front pages for logged in users
-      if(is_user_logged_in() && current_user_can('upload_files')){
-        add_action('wp_enqueue_scripts', array($this, 'media_upload_scripts'));
       }
     }
 
@@ -211,8 +208,6 @@ if(!class_exists('wp_user_avatar')){
       if(function_exists('wp_enqueue_media')){
         wp_enqueue_media();
       } else {
-        wp_deregister_script('jquery');
-        wp_register_script('jquery', 'http'.$ssl.'://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', false, '1.7.1');
         wp_enqueue_script('media-upload');
         wp_enqueue_script('thickbox');
         wp_enqueue_style('thickbox');
