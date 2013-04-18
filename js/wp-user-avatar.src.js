@@ -77,7 +77,7 @@ function setWPUserAvatar(attachment, imageURL){
 }
 
 // Remove WP User Avatar
-function removeWPUserAvatar(avatar_full, avatar_thumb){
+function removeWPUserAvatar(avatar_thumb){
   jQuery('body').on('click', '#remove-wp-user-avatar', function(e){
     e.preventDefault();
     jQuery(this).hide();

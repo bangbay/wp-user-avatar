@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.3.5
+Stable tag: 1.3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,7 +105,7 @@ Works just like <code>get_wp_user_avatar</code> but returns just the image src. 
 
 = has_wp_user_avatar =
 
-Returns true if the user has a WP User Avatar image. You can specify the user ID, or leave it blank to detect the author within [The Loop](http://codex.wordpress.org/The_Loop) or author page:
+Returns true if the user has a WP User Avatar image. You must specify the user ID:
 
 `<?php
   if ( has_wp_user_avatar($user_id) ) {
@@ -226,6 +226,9 @@ Outputs:
 5. Options for the [avatar] shortcode.
 
 == Changelog ==
+
+= 1.3.6 =
+* Update: Clean up code and add more comments
 
 = 1.3.5 =
 * Bug Fix: Swap TinyMCE file locations
