@@ -110,15 +110,15 @@ function wp_user_avatar_delete_setup(){
 if(!class_exists('wp_user_avatar')){
   class wp_user_avatar{
     function wp_user_avatar(){
-      global $show_avatars;
+      global $current_user, $show_avatars;
       // Only works if user can upload files
       if(current_user_can('upload_files')){
-        // Adds wp_user_avatar to profile
+        // Adds WPUA to profile
         add_action('show_user_profile', array('wp_user_avatar','action_show_user_profile'));
         add_action('edit_user_profile', array($this,'action_show_user_profile'));
         add_action('personal_options_update', array($this,'action_process_option_update'));
         add_action('edit_user_profile_update', array($this,'action_process_option_update'));
-        // Adds wp_user_avatar to Discussion settings
+        // Adds WPUA to Discussion settings
         add_action('discussion_update', array($this,'action_process_option_update'));
         // Adds scripts to admin
         add_action('admin_enqueue_scripts', array($this, 'media_upload_scripts'));
@@ -138,10 +138,10 @@ if(!class_exists('wp_user_avatar')){
 
     // Add to edit user profile
     function action_show_user_profile($user){
-      global $current_user, $wpdb, $blog_id, $show_avatars;
-      // Get wp_user_avatar attachment ID
+      global $wpdb, $blog_id, $current_user, $show_avatars;
+      // Get WPUA attachment ID
       $wp_user_avatar = get_user_meta($user->ID, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
-      // Show remove button if wp_user_avatar is set
+      // Show remove button if WPUA is set
       $hide_notice = has_wp_user_avatar($user->ID) ? ' class="hide-me"' : '';
       $hide_remove = !has_wp_user_avatar($user->ID) ? ' hide-me' : '';
       // If avatars are enabled, get original avatar image or show blank
@@ -151,7 +151,7 @@ if(!class_exists('wp_user_avatar')){
       // Change text on message based on current user
       $profile = ($current_user->ID == $user->ID) ? 'Profile' : 'User';
     ?>
-      <?php if(class_exists('bbPress')) : // Add to bbPress profile with same style ?>
+      <?php if(class_exists('bbPress') && !is_admin()) : // Add to bbPress profile with same style ?>
         <h2 class="entry-title"><?php _e('WP User Avatar'); ?></h2>
         <fieldset class="bbp-form">
           <legend><?php _e('WP User Avatar'); ?></legend>
@@ -170,7 +170,7 @@ if(!class_exists('wp_user_avatar')){
       <?php endif; ?>
       <p><button type="button" class="button<?php echo $hide_remove; ?>" id="remove-wp-user-avatar"><?php _e('Remove'); ?></button></p>
       <p id="wp-user-avatar-message"><?php _e('Press "Update '.$profile.'" to save your changes.'); ?></p>
-      <?php if(class_exists('bbPress')) : // Add to bbPress profile with same style ?>
+      <?php if(class_exists('bbPress') && !is_admin()) : // Add to bbPress profile with same style ?>
         </fieldset>
       <?php else : // Add to profile with admin style ?>
             </td>
@@ -245,12 +245,14 @@ if(!class_exists('wp_user_avatar')){
   }
 
   // Returns true if user has Gravatar-hosted image
-  function has_gravatar($id_or_email, $has_gravatar=false){
+  function has_gravatar($id_or_email, $has_gravatar=false, $user='', $email=''){
     global $ssl;
-    // Find user by ID or e-mail address
-    $user = is_numeric($id_or_email) ? get_user_by('id', $id_or_email) : get_user_by('email', $id_or_email);
-    // If registered user, get e-mail address from profile, otherwise e-mail address should be value
-    $email = !empty($user) ? $user->user_email : $id_or_email;
+    if(!is_object($id_or_email) && !empty($id_or_email)){
+      // Find user by ID or e-mail address
+      $user = is_numeric($id_or_email) ? get_user_by('id', $id_or_email) : get_user_by('email', $id_or_email);
+      // Get registered user e-mail address from profile, otherwise e-mail address should be value
+      $email = !empty($user) ? $user->user_email : '';
+    }
     // Check if Gravatar image returns 200 (OK) or 404 (Not Found)
     if(!empty($email)){
       $hash = md5(strtolower(trim($email)));
@@ -262,75 +264,42 @@ if(!class_exists('wp_user_avatar')){
   }
 
   // Returns true if user has wp_user_avatar
-  function has_wp_user_avatar($user_id='', $has_wp_user_avatar=false){
+  function has_wp_user_avatar($id_or_email='', $has_wp_user_avatar=false, $user='', $user_id=''){
     global $wpdb, $blog_id;
+    if(!is_object($id_or_email) && !empty($id_or_email)){
+      // Find user by ID or e-mail address
+      $user = is_numeric($id_or_email) ? get_user_by('id', $id_or_email) : get_user_by('email', $id_or_email);
+      // Get registered user e-mail address from profile, otherwise e-mail address should be value
+      $user_id = !empty($user) ? $user->ID : '';
+    }
     $wp_user_avatar = get_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
     $has_wp_user_avatar = !empty($wp_user_avatar) ? true : false;
     return $has_wp_user_avatar;
   }
 
-  // Replace get_avatar globally
+  // Replace get_avatar only in get_wp_user_avatar
   function get_avatar_filter($avatar, $id_or_email, $size='', $default='', $alt=''){
-    global $post, $comment, $avatar_default, $avatar_default_wp_user_avatar, $mustache_original, $mustache_medium, $mustache_thumbnail, $mustache_avatar, $mustache_admin, $wpdb, $blog_id;
-    // Variable for Gravatar check
-    $email = '';
-    // Checks if comment
+    global $post, $comment, $avatar_default, $avatar_default_wp_user_avatar, $mustache_original, $mustache_medium, $mustache_thumbnail, $mustache_avatar, $mustache_admin;
+    // User has WPUA
     if(is_object($id_or_email)){
-      // Checks if comment author is registered user by user ID
-      if($comment->user_id != '0'){
-        $id_or_email = $comment->user_id;
-        $user = get_user_by('id', $id_or_email);
-        $email = $user->user_email;
-      // Checks that comment author isn't anonymous
-      } elseif(!empty($comment->comment_author_email)){
-        // Checks if comment author is registered user by e-mail address
-        $user = get_user_by('email', $comment->comment_author_email);
-        // If registered user, get info from profile, otherwise e-mail address should be value
-        $id_or_email = !empty($user) ? $user->ID : $comment->comment_author_email;
-        $email = !empty($user) ? $user->user_email : $id_or_email;
-      }
-      $alt = $comment->comment_author;
-    } else {
-      if(!empty($id_or_email)){
-        // Find user by ID or e-mail address
-        $user = is_numeric($id_or_email) ? get_user_by('id', $id_or_email) : get_user_by('email', $id_or_email);
+      if(!empty($comment->comment_author_email)){
+        $avatar = get_wp_user_avatar($comment->comment_author_email, $size, $default, $alt);
       } else {
-        // Find author's name if id_or_email is empty
-        $author_name = get_query_var('author_name');
-        if(is_author()){
-          // On author page, get user by page slug
-          $user = get_user_by('slug', $author_name);
-        } else {
-          // On post, get user by author meta
-          $user_id = get_the_author_meta('ID');
-          $user = get_user_by('id', $user_id);
-        }
+        $avatar = get_wp_user_avatar('unknown@gravatar.com', $size, $default, $alt);
       }
-      // Set user's ID and name
-      if(!empty($user)){
-        $id_or_email = $user->ID;
-        $alt = $user->display_name;
-        $email = $user->user_email;
-      }
-    }
-    // Checks if user has wp_user_avatar image
-    $wp_user_avatar_meta = !empty($id_or_email) ? get_the_author_meta($wpdb->get_blog_prefix($blog_id).'user_avatar', $id_or_email) : '';
-    // If user has a wp_user_avatar image, bypass get_avatar
-    if(!empty($wp_user_avatar_meta)){
-      // Get image src
-      $wp_user_avatar_image = wp_get_attachment_image_src($wp_user_avatar_meta, array($size,$size));
-      // Add dimensions if numeric size
-      $dimensions = is_numeric($size) ? ' width="'.$wp_user_avatar_image[1].'" height="'.$wp_user_avatar_image[2].'"' : '';
-      // Construct the img tag
-      $wp_user_avatar = '<img src="'.$wp_user_avatar_image[0].'"'.$dimensions.' alt="'.$alt.'" class="wp-user-avatar wp-user-avatar-'.$size.' avatar avatar-'.$size.' photo" />';
     } else {
-      // If user doesn't Gravatar and Default Avatar is wp_user_avatar, show custom Default Avatar
-      if(!has_gravatar($email) && $avatar_default == 'wp_user_avatar'){
+      if(has_wp_user_avatar($id_or_email)){
+        $avatar = get_wp_user_avatar($id_or_email, $size, $default, $alt);
+      // User has Gravatar
+      } elseif(has_gravatar($id_or_email)){
+        $avatar = $avatar;
+      // User doesn't have WPUA or Gravatar and Default Avatar is wp_user_avatar, show custom Default Avatar
+      } elseif($avatar_default == 'wp_user_avatar'){
         // Show custom Default Avatar
         if(!empty($avatar_default_wp_user_avatar)){
-          // Get image src
+          // Get image
           $avatar_default_wp_user_avatar_image = wp_get_attachment_image_src($avatar_default_wp_user_avatar, array($size,$size));
-          // Set default variable
+          // Image src
           $default = $avatar_default_wp_user_avatar_image[0];
           // Add dimensions if numeric size
           $dimensions = is_numeric($size) ? ' width="'.$avatar_default_wp_user_avatar_image[1].'" height="'.$avatar_default_wp_user_avatar_image[2].'"' : '';
@@ -349,13 +318,13 @@ if(!class_exists('wp_user_avatar')){
           }
           // Add dimensions if numeric size
           $dimensions = is_numeric($size) ? ' width="'.$size.'" height="'.$size.'"' : '';
+          $defaultcss = ' avatar-default';
         }
         // Construct the img tag
-        $avatar = "<img src='".$default."'".$dimensions." alt='".$alt."' class='wp-user-avatar wp-user-avatar-".$size." avatar avatar-".$size." photo avatar-default' />";
+        $avatar = "<img src='".$default."'".$dimensions." alt='".$alt."' class='wp-user-avatar wp-user-avatar-".$size." avatar avatar-".$size." photo'".$defaultcss." />";
       }
-      $wp_user_avatar = $avatar;
     }
-    return $wp_user_avatar;
+    return $avatar;
   }
   add_filter('get_avatar', 'get_avatar_filter', 10, 6);
 
@@ -363,8 +332,8 @@ if(!class_exists('wp_user_avatar')){
   function get_avatar_original($id_or_email, $size='', $default='', $alt=''){
     global $avatar_default, $avatar_default_wp_user_avatar, $mustache_avatar;
     // Remove get_avatar filter
-    remove_filter('get_avatar', 'get_avatar_filter_full');
-    // If user doesn't Gravatar and Default Avatar is wp_user_avatar, show custom Default Avatar
+    remove_filter('get_avatar', 'get_avatar_filter');
+    // User doesn't Gravatar and Default Avatar is wp_user_avatar, show custom Default Avatar
     if(!has_gravatar($id_or_email) && $avatar_default == 'wp_user_avatar'){
       // Show custom Default Avatar
       if(!empty($avatar_default_wp_user_avatar)){
@@ -383,25 +352,21 @@ if(!class_exists('wp_user_avatar')){
     return $default;
   }
 
-  // Find wp_user_avatar, show get_avatar if empty
+  // Find WPUA, show get_avatar if empty
   function get_wp_user_avatar($id_or_email='', $size='96', $align='', $alt=''){
     global $post, $comment, $avatar_default, $wpdb, $blog_id;
-    // Variable for Gravatar check
-    $email = '';
     // Checks if comment
     if(is_object($id_or_email)){
       // Checks if comment author is registered user by user ID
       if($comment->user_id != '0'){
         $id_or_email = $comment->user_id;
         $user = get_user_by('id', $id_or_email);
-        $email = $user->user_email;
       // Checks that comment author isn't anonymous
       } elseif(!empty($comment->comment_author_email)){
         // Checks if comment author is registered user by e-mail address
         $user = get_user_by('email', $comment->comment_author_email);
-        // If registered user, get info from profile, otherwise e-mail address should be value
+        // Get registered user info from profile, otherwise e-mail address should be value
         $id_or_email = !empty($user) ? $user->ID : $comment->comment_author_email;
-        $email = !empty($user) ? $user->user_email : $id_or_email;
       }
       $alt = $comment->comment_author;
     } else {
@@ -424,16 +389,15 @@ if(!class_exists('wp_user_avatar')){
       if(!empty($user)){
         $id_or_email = $user->ID;
         $alt = $user->display_name;
-        $email = $user->user_email;
       }
     }
-    // Checks if user has wp_user_avatar image
+    // Checks if user has WPUA
     $wp_user_avatar_meta = !empty($id_or_email) ? get_the_author_meta($wpdb->get_blog_prefix($blog_id).'user_avatar', $id_or_email) : '';
     // Add alignment class
     $alignclass = !empty($align) ? ' align'.$align : '';
-    // If user has a wp_user_avatar image, bypass get_avatar
+    // User has WPUA, bypass get_avatar
     if(!empty($wp_user_avatar_meta)){
-      // If numeric size was specified, use size array
+      // Numeric size use size array
       $get_size = is_numeric($size) ? array($size,$size) : $size;
       // Get image src
       $wp_user_avatar_image = wp_get_attachment_image_src($wp_user_avatar_meta, $get_size);
@@ -449,8 +413,8 @@ if(!class_exists('wp_user_avatar')){
         // Numeric sizes leave as-is
         $get_size = $size;
       }
-      // User with no wp_user_avatar uses get_avatar
-      $avatar = get_avatar($email, $get_size, $default='', $alt='');
+      // User with no WPUA uses get_avatar
+      $avatar = get_avatar($id_or_email, $get_size, $default='', $alt='');
       // Remove width and height for non-numeric sizes
       if(!is_numeric($size)){
         $avatar = preg_replace("/(width|height)=\'\d*\'\s/", '', $avatar);
@@ -508,7 +472,7 @@ if(!class_exists('wp_user_avatar')){
       // Wrap the avatar inside the link
       $avatar = '<a href="'.$image_link.'" class="wp-user-avatar-link wp-user-avatar-'.$link_class.'"'.$target_link.'>'.get_wp_user_avatar($id_or_email, $size, $align).'</a>';
     } else {
-      // Get wp_user_avatar as normal
+      // Get WPUA as normal
       $avatar = get_wp_user_avatar($id_or_email, $size, $align);
     }
     return $avatar;
@@ -519,7 +483,7 @@ if(!class_exists('wp_user_avatar')){
   function add_default_wp_user_avatar($avatar_list){
     global $avatar_default, $avatar_default_wp_user_avatar, $mustache_medium, $mustache_admin;
     // Remove get_avatar filter
-    remove_filter('get_avatar', 'get_avatar_filter_full');
+    remove_filter('get_avatar', 'get_avatar_filter');
     // Set avatar_list variable
     $avatar_list = '';
     // Set avatar defaults
@@ -532,7 +496,7 @@ if(!class_exists('wp_user_avatar')){
       'monsterid' => __('MonsterID (Generated)'),
       'retro' => __('Retro (Generated)')
     );
-    // If no default avatar is set, set it to Mystery Man
+    // No Default Avatar, set to Mystery Man
     if(empty($avatar_default)){
       $avatar_default = 'mystery';
     }
@@ -554,11 +518,11 @@ if(!class_exists('wp_user_avatar')){
       $avatar_thumb = $mustache_admin;
       $hide_remove = ' class="hide-me"';
     }
-    // If avatar_default is wp_user_avatar, check the radio button next to it
+    // Default Avatar is wp_user_avatar, check the radio button next to it
     $selected_avatar = ($avatar_default == 'wp_user_avatar') ? ' checked="checked" ' : '';
-    // Wrap wp_user_avatar in div with ID
+    // Wrap WPUA in div
     $avatar_thumb_img = '<div id="wp-user-avatar-preview"><img src="'.$avatar_thumb.'" width="32" /></div>';
-    // Add wp_user_avatar to list
+    // Add WPUA to list
     $wp_user_avatar_list = "\n\t<label><input type='radio' name='avatar_default' id='wp_user_avatar_radio' value='wp_user_avatar'$selected_avatar /> ";
     $wp_user_avatar_list .= preg_replace("/src='(.+?)'/", "src='\$1'", $avatar_thumb_img);
     $wp_user_avatar_list .= ' '.__('WP User Avatar').'</label>';
@@ -578,7 +542,7 @@ if(!class_exists('wp_user_avatar')){
   }
   add_filter('whitelist_options', 'wp_user_avatar_whitelist_options', 10);
 
-  // Initialize wp_user_avatar after other plugins are loaded
+  // Initialize WPUA after other plugins are loaded
   function wp_user_avatar_load(){
     global $wp_user_avatar_instance;
     $wp_user_avatar_instance = new wp_user_avatar();
