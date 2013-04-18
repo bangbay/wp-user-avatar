@@ -13,9 +13,9 @@
   <title>WP User Avatar</title>
   <meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo get_option('blog_charset'); ?>" />
   <base target="_self" />
+  <script type="text/javascript" src="<?php echo site_url(); ?>/wp-includes/js/jquery/jquery.js"></script>
   <script type="text/javascript" src="<?php echo site_url(); ?>/wp-includes/js/tinymce/tiny_mce_popup.js"></script>
   <script type="text/javascript" src="<?php echo site_url(); ?>/wp-includes/js/tinymce/utils/form_utils.js"></script>
-  <script type="text/javascript" src="<?php echo site_url(); ?>/wp-includes/js/jquery/jquery.js"></script>
   <script type="text/javascript">
     function insert_wp_user_avatar(){
       // Custom shortcode values
@@ -26,6 +26,7 @@
       var align = document.getElementById('wp_user_avatar_align').value;
       var link = document.getElementById('wp_user_avatar_link').value;
       var link_external = document.getElementById('wp_user_avatar_link_external').value;
+      var target = document.getElementById('wp_user_avatar_target').value;
 
       // Add tag to shortcode only if not blank
       var user_tag = (user != '') ? ' user="' + user + '"' : '';
@@ -34,8 +35,9 @@
       var align_tag = (align != '') ? ' align="' + align + '"' : '';
       var link_tag = (link != '' && link_external == '') ? ' link="' + link + '"' : '';
       link_tag = (link_external != '') ? ' link="' + link_external + '"' : link_tag;
+      var target_tag = document.getElementById('wp_user_avatar_target').checked && (link_tag != '') ? ' target="' + target + '"' : '';
  
-      shortcode = "<p>[avatar" + user_tag + size_tag + align_tag + link_tag + "]</p>";
+      shortcode = "<p>[avatar" + user_tag + size_tag + align_tag + link_tag + target_tag + "]</p>";
 
       if(window.tinyMCE) {
         window.tinyMCE.execInstanceCommand(window.tinyMCE.activeEditor.id, 'mceInsertContent', false, shortcode);
@@ -100,7 +102,12 @@
 
     <p>
       <label for="<?php esc_attr_e('wp_user_avatar_link_external'); ?>">or</label>
-      <input type="text" size="36" id="<?php esc_attr_e('wp_user_avatar_link_external'); ?>" name="<?php esc_attr_e('wp_user_avatar_link'); ?>" value="" />
+      <input type="text" size="36" id="<?php esc_attr_e('wp_user_avatar_link_external'); ?>" name="<?php esc_attr_e('wp_user_avatar_link_external'); ?>" value="" />
+    </p>
+
+    <p>
+      <label for="<?php esc_attr_e('wp_user_avatar_target'); ?>"></label>
+      <input type="checkbox" id="<?php esc_attr_e('wp_user_avatar_target'); ?>" name="<?php esc_attr_e('wp_user_avatar_target'); ?>" value="_blank" /> <strong>Open link in a new window</strong>
     </p>
 
     <div class="mceActionPanel">

@@ -228,6 +228,7 @@ Outputs:
 == Changelog ==
 
 = 1.3.6 =
+* Add: Target for link in shortcode
 * Update: Clean up code and add more comments
 
 = 1.3.5 =
