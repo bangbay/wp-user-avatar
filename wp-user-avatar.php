@@ -386,6 +386,7 @@ if(!class_exists('wp_user_avatar')){
   // Find wp_user_avatar, show get_avatar if empty
   function get_wp_user_avatar($id_or_email='', $size='96', $align='', $alt=''){
     global $post, $comment, $avatar_default, $wpdb, $blog_id;
+    // Variable for Gravatar check
     $email = '';
     // Checks if comment
     if(is_object($id_or_email)){
