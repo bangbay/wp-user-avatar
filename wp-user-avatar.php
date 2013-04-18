@@ -302,7 +302,7 @@ if(!class_exists('wp_user_avatar')){
           // Image src
           $default = $avatar_default_wp_user_avatar_image[0];
           // Add dimensions if numeric size
-          $dimensions = is_numeric($size) ? ' width="'.$avatar_default_wp_user_avatar_image[1].'" height="'.$avatar_default_wp_user_avatar_image[2].'"' : '';
+          $dimensions = ' width="'.$avatar_default_wp_user_avatar_image[1].'" height="'.$avatar_default_wp_user_avatar_image[2].'"';
         } else {
           // Get mustache image based on numeric size comparison
           if($size > get_option('medium_size_w')){
@@ -317,7 +317,7 @@ if(!class_exists('wp_user_avatar')){
             $default = $mustache_admin;
           }
           // Add dimensions if numeric size
-          $dimensions = is_numeric($size) ? ' width="'.$size.'" height="'.$size.'"' : '';
+          $dimensions = ' width="'.$size.'" height="'.$size.'"';
           $defaultcss = ' avatar-default';
         }
         // Construct the img tag
