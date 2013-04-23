@@ -1,19 +1,19 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.3.6
+ * @version 1.3.7
  */
 /*
 Plugin Name: WP User Avatar
 Plugin URI: http://wordpress.org/extend/plugins/wp-user-avatar/
 Description: Use any image in your WordPress Media Libary as a custom user avatar. Add your own Default Avatar.
-Version: 1.3.6
+Version: 1.3.7
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
 */
 
 // Define paths and variables
-define('WP_USER_AVATAR_VERSION', '1.3.6');
+define('WP_USER_AVATAR_VERSION', '1.3.7');
 define('WP_USER_AVATAR_FOLDER', basename(dirname(__FILE__)));
 define('WP_USER_AVATAR_ABSPATH', trailingslashit(str_replace('\\','/', WP_PLUGIN_DIR.'/'.WP_USER_AVATAR_FOLDER)));
 define('WP_USER_AVATAR_URLPATH', trailingslashit(plugins_url(WP_USER_AVATAR_FOLDER)));
@@ -112,7 +112,7 @@ if(!class_exists('wp_user_avatar')){
     function wp_user_avatar(){
       global $current_user, $show_avatars;
       // Only works if user can upload files
-      if(current_user_can('upload_files')){
+      if(current_user_can('upload_files') && is_admin_bar_showing()){
         // Adds WPUA to profile
         add_action('show_user_profile', array('wp_user_avatar','action_show_user_profile'));
         add_action('edit_user_profile', array($this,'action_show_user_profile'));
@@ -124,10 +124,10 @@ if(!class_exists('wp_user_avatar')){
         add_action('admin_enqueue_scripts', array($this, 'media_upload_scripts'));
         // Adds scripts to front pages
         add_action('wp_enqueue_scripts', array($this, 'media_upload_scripts'));
-      }
-      // Only add attachment field for WP 3.4 and older
-      if(!function_exists('wp_enqueue_media')){
-        add_filter('attachment_fields_to_edit', array($this, 'add_wp_user_avatar_attachment_field_to_edit'), 10, 2); 
+        // Only add attachment field for WP 3.4 and older
+        if(!function_exists('wp_enqueue_media')){
+          add_filter('attachment_fields_to_edit', array($this, 'add_wp_user_avatar_attachment_field_to_edit'), 10, 2); 
+        }
       }
       // Hide column in Users table if default avatars are enabled
       if($show_avatars != '1'){
