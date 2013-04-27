@@ -332,8 +332,8 @@ Outputs:
 == Upgrade Notice ==
 
 = 1.4 =
-* WARNING: WP User Avatar 1.4 only supports WordPress 3.4 and above. If you are using an older version of WordPress, please upgrade your version of WordPress first.
 * New Features: Settings to allow all users to upload avatars and add TinyMCE avatar button. Media states for avatar images.
+* Notice: WP User Avatar 1.4 only supports WordPress 3.4 and above. If you are using an older version of WordPress, please upgrade your version of WordPress first.
 
 = 1.3 =
 * New Feature: Multisite support

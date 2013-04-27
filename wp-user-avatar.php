@@ -15,7 +15,7 @@ Author URI: http://siboliban.org/
 // Define paths and variables
 define('WPUA_VERSION', '1.4');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
-define('WPUA_ABSPATH', trailingslashit(str_replace('\\','/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
+define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
 
 // Define global variables
@@ -46,9 +46,9 @@ register_activation_hook(__FILE__, 'wpua_options');
 
 // Settings saved to wp_options
 function wpua_options(){
-  add_option('avatar_default_wp_user_avatar','');
-  add_option('wp_user_avatar_tinymce','1');
-  add_option('wp_user_avatar_allow_upload','0');
+  add_option('avatar_default_wp_user_avatar', '');
+  add_option('wp_user_avatar_tinymce', '1');
+  add_option('wp_user_avatar_allow_upload', '0');
 }
 add_action('init', 'wpua_options');
 
@@ -67,7 +67,7 @@ if(empty($wpua_default_avatar_updated)){
         update_option('avatar_default', 'wp_user_avatar');
       }
     }
-    add_option('wp_user_avatar_default_avatar_updated','1');
+    update_option('wp_user_avatar_default_avatar_updated', '1');
   }
   add_action('init', 'wpua_default_avatar');
 }
@@ -84,12 +84,12 @@ if(empty($wpua_users_updated)){
       foreach($users as $user){
         $wpua = get_user_meta($user->ID, 'wp_user_avatar', true);
         if(!empty($wpua)){
-          update_user_meta($user->ID, $wpdb->get_blog_prefix($blog_id).'user_avatar', $wpua);
+          update_user_meta($user->ID, $wpua_metakey, $wpua);
           delete_user_meta($user->ID, 'wp_user_avatar');
         }
       }
     }
-    add_option('wp_user_avatar_users_updated','1'); 
+    update_option('wp_user_avatar_users_updated', '1'); 
   }
   add_action('init', 'wpua_user_meta');
 }
@@ -99,11 +99,12 @@ if(empty($wpua_media_updated)){
   function wpua_media_state(){
     global $wpdb, $blog_id;
     // Find all users with WPUA
-    $wpuas = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->usermeta WHERE meta_key = %d AND meta_value != %s AND meta_value != ''", $wpdb->get_blog_prefix($blog_id).'user_avatar', '0'));
+    $wpua_metakey = $wpdb->get_blog_prefix($blog_id).'user_avatar';
+    $wpuas = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->usermeta WHERE meta_key = %s AND meta_value != %d AND meta_value != %d", $wpua_metakey, 0, ''));
     foreach($wpuas as $usermeta){
       add_post_meta($usermeta->meta_value, '_wp_attachment_wp_user_avatar', $usermeta->user_id);
     }
-    add_option('wp_user_avatar_media_updated','1'); 
+    update_option('wp_user_avatar_media_updated', '1'); 
   }
   add_action('init', 'wpua_media_state');
 }
@@ -115,10 +116,10 @@ if(!class_exists('wp_user_avatar')){
       global $current_user, $show_avatars, $wpua_allow_upload ;
       // Adds WPUA to profile
       if(current_user_can('upload_files') || ($wpua_allow_upload == '1' && is_user_logged_in())){
-        add_action('show_user_profile', array('wp_user_avatar','wpua_action_show_user_profile'));
-        add_action('edit_user_profile', array($this,'wpua_action_show_user_profile'));
-        add_action('personal_options_update', array($this,'wpua_action_process_option_update'));
-        add_action('edit_user_profile_update', array($this,'wpua_action_process_option_update'));
+        add_action('show_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
+        add_action('edit_user_profile', array($this, 'wpua_action_show_user_profile'));
+        add_action('personal_options_update', array($this, 'wpua_action_process_option_update'));
+        add_action('edit_user_profile_update', array($this, 'wpua_action_process_option_update'));
         if(is_admin()){
           // Adds scripts to admin
           add_action('admin_enqueue_scripts', array($this, 'wpua_media_upload_scripts'));
@@ -187,7 +188,7 @@ if(!class_exists('wp_user_avatar')){
         <p><button type="button" class="button" id="add-wp-user-avatar" name="add-wp-user-avatar"><?php _e('Edit WP User Avatar'); ?></button></p>
       <?php elseif(!current_user_can('upload_files') && !has_wp_user_avatar($current_user->ID)) : ?>
         <input name="wp-user-avatar-file" id="wp-user-avatar-file" type="file" />
-         <button type="submit" class="button" id="add-wp-user-avatar" name="add-wp-user-avatar" value="<?php _e('Upload'); ?>"><?php _e('Upload'); ?></button>
+         <button type="submit" class="button" id="upload-wp-user-avatar" name="upload-wp-user-avatar" value="<?php _e('Upload'); ?>"><?php _e('Upload'); ?></button>
         <?php if(isset($_GET['errors']) && $_GET['errors'] == 'type') : ?>
           <p id="wp-user-avatar-errors"><?php _e('File format is not allowed.'); ?></p>
         <?php endif; ?>
@@ -224,7 +225,7 @@ if(!class_exists('wp_user_avatar')){
       // Check if user has upload_files capability
       if(current_user_can('upload_files')){
         $wpua_id = isset($_POST['wp-user-avatar']) ? intval($_POST['wp-user-avatar']) : '';
-        $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->postmeta WHERE meta_key = %d AND meta_value = %s", '_wp_attachment_wp_user_avatar', $user_id));
+        $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %d", '_wp_attachment_wp_user_avatar', $user_id));
         add_post_meta($wpua_id, '_wp_attachment_wp_user_avatar', $user_id);
         update_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', $wpua_id);
       } else {
@@ -240,7 +241,7 @@ if(!class_exists('wp_user_avatar')){
           update_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', '');
         }
         // Create attachment from upload
-        if(isset($_POST['add-wp-user-avatar']) && $_POST['add-wp-user-avatar']){
+        if(isset($_POST['upload-wp-user-avatar']) && $_POST['upload-wp-user-avatar']){
           if(!function_exists('wp_handle_upload')){
             require_once(ABSPATH.'wp-admin/includes/admin.php');
             require_once(ABSPATH.'wp-admin/includes/file.php');
@@ -281,7 +282,7 @@ if(!class_exists('wp_user_avatar')){
           if(!is_wp_error($attachment_id)){
             require_once(ABSPATH.'wp-admin/includes/image.php');
             wp_update_attachment_metadata($attachment_id, wp_generate_attachment_metadata($attachment_id, $file));
-            $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->postmeta WHERE meta_key = %d AND meta_value = %s", '_wp_attachment_wp_user_avatar', $user_id));
+            $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %d", '_wp_attachment_wp_user_avatar', $user_id));
             add_post_meta($attachment_id, '_wp_attachment_wp_user_avatar', $user_id);
             update_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', $attachment_id);
           }
@@ -335,11 +336,7 @@ if(!class_exists('wp_user_avatar')){
         wp_enqueue_script('thickbox');
         wp_enqueue_style('thickbox');
       }
-      if(current_user_can('upload_files')){
-        wp_enqueue_script('wp-user-avatar', WPUA_URLPATH.'js/wp-user-avatar.js', '', WPUA_VERSION);
-      } else {
-        wp_enqueue_script('wp-user-avatar', WPUA_URLPATH.'js/wp-user-avatar-subscriber.js', '', WPUA_VERSION);
-      }
+      wp_enqueue_script('wp-user-avatar', WPUA_URLPATH.'js/wp-user-avatar.js', '', WPUA_VERSION);
       wp_enqueue_style('wp-user-avatar', WPUA_URLPATH.'css/wp-user-avatar.css', '', WPUA_VERSION);
     }
   }
@@ -594,7 +591,7 @@ if(!class_exists('wp_user_avatar')){
     }
     return $avatar;
   }
-  add_shortcode('avatar','wpua_shortcode');
+  add_shortcode('avatar', 'wpua_shortcode');
 
   // Add default avatar
   function wpua_add_default_avatar($avatar_list=null){
@@ -640,7 +637,6 @@ if(!class_exists('wp_user_avatar')){
     // Wrap WPUA in div
     $avatar_thumb_img = '<div id="wp-user-avatar-preview"><img src="'.$avatar_thumb.'" width="32" /></div>';
     // Add WPUA to list
-    $wpua_list = "<a name='avatars'></a>";
     $wpua_list = "\n\t<label><input type='radio' name='avatar_default' id='wp_user_avatar_radio' value='wp_user_avatar'$selected_avatar /> ";
     $wpua_list .= preg_replace("/src='(.+?)'/", "src='\$1'", $avatar_thumb_img);
     $wpua_list .= ' '.__('WP User Avatar').'</label>';
@@ -677,7 +673,7 @@ if(!class_exists('wp_user_avatar')){
   // Check if image is used as WPUA
   function wpua_image($attachment_id, $user_id, $wpua_image=false){
     global $wpdb;
-    $wpua = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = %s AND meta_value != %s", $attachment_id, '_wp_attachment_wp_user_avatar', $user_id));
+    $wpua = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = %s AND meta_value != %d", $attachment_id, '_wp_attachment_wp_user_avatar', $user_id));
     if(!empty($wpua)){
       $wpua_image = true;
     }
@@ -788,6 +784,6 @@ if(!class_exists('wp_user_avatar')){
     global $wpua_instance;
     $wpua_instance = new wp_user_avatar();
   }
-  add_action('plugins_loaded','wpua_load');
+  add_action('plugins_loaded', 'wpua_load');
 }
 ?>
