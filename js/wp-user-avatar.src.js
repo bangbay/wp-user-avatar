@@ -88,6 +88,7 @@ function removeWPUserAvatar(avatar_thumb){
   });
 }
 
+// All uploads in profile form
 jQuery(document).ready(function(){
   jQuery('#your-profile', '#bbp-your-profile').attr('enctype', 'multipart/form-data');
 });
