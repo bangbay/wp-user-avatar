@@ -87,3 +87,7 @@ function removeWPUserAvatar(avatar_thumb){
     jQuery('#wp_user_avatar_radio').trigger('click');
   });
 }
+
+jQuery(document).ready(function(){
+  jQuery('#your-profile', '#bbp-your-profile').attr('enctype', 'multipart/form-data');
+});

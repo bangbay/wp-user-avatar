@@ -3,9 +3,9 @@
 Contributors: bangbay
 Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
-Requires at least: 3.3
+Requires at least: 3.4
 Tested up to: 3.5.1
-Stable tag: 1.3.7
+Stable tag: 1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +21,7 @@ WP User Avatar also lets you:
 * Show the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar if the user doesn't have a WP User Avatar image.
 * Use the <code>[avatar]</code> shortcode in your posts. The shortcode will work with any theme, whether it has avatar support or not.
 
-This plugin uses the Media uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.3. It is also compatible with WordPress Multisite.
+This plugin uses the Media uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.4. It is also compatible with WordPress Multisite.
 
 == Installation ==
 
@@ -155,10 +155,7 @@ Outputs:
 </a>`
 
 = Can Contributors or Subscribers choose their own WP User Avatar image? =
-
-Users need <code>upload_files</code> capability to choose their own WP User Avatar image. This means that only Administrators, Editors, and Authors can choose their own WP User Avatar image. Contributors and Subscribers cannot upload images. Administators can choose WP User Avatar images for Contributors and Subscribers.
-
-[Read more about Roles and Capabilities here](http://codex.wordpress.org/Roles_and_Capabilities).
+Yes, if you enable "Allow Contributors & Subscribers to upload avatars" in the WP User Avatar settings.
 
 = Will WP User Avatar work with comment author avatars? =
 
@@ -166,7 +163,7 @@ Yes, for registered users. Non-registered comment authors will show their [grava
 
 = Will WP User Avatar work with bbPress? =
 
-Yes, but only users that have <code>upload_files</code> capability can choose their own WP User Avatar image.
+Yes!
 
 = Will WP User Avatar work with WordPress Multisite? =
 
@@ -227,8 +224,11 @@ Outputs:
 
 == Changelog ==
 
-= 1.3.7 =
-* Bug Fix: Load scripts only if admin bar is visible
+= 1.4 =
+* Add: Uploader for Subscribers and Contributors
+* Add: Media states for avatar images
+* Add: Plugin admin settings
+* Update: Change support only to WP 3.4+
 
 = 1.3.6 =
 * Add: Target for link in shortcode
@@ -328,6 +328,10 @@ Outputs:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.4 =
+* WARNING: WP User Avatar 1.4 only supports WordPress 3.4 and above. If you are using an older version of WordPress, please upgrade your version of WordPress first.
+* New Features: Settings to allow all users to upload avatars and add TinyMCE avatar button. Media states for avatar images.
 
 = 1.3 =
 * New Feature: Multisite support
