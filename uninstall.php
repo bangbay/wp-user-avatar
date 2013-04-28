@@ -6,8 +6,9 @@
 
 // Remove user metadata and options on plugin delete
 if(!defined('WP_UNINSTALL_PLUGIN')){
-  exit();
+  die('You are not allowed to call this page directly.');
 }
+
 global $wpdb, $blog_id, $switched;
 $users = get_users();
 // Remove settings for all sites in multisite

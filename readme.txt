@@ -156,7 +156,7 @@ Outputs:
 </a>`
 
 = Can Contributors or Subscribers choose their own WP User Avatar image? =
-Yes, if you enable "Allow Contributors & Subscribers to upload avatars" in the WP User Avatar settings.
+Yes, if you enable "Allow Contributors & Subscribers to upload avatars" in the WP User Avatar settings. These users will see a slightly different interface because they are allowed only one image upload.
 
 = Will WP User Avatar work with comment author avatars? =
 

@@ -12,6 +12,11 @@ Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
 */
 
+if(!defined('ABSPATH')){
+  die('You are not allowed to call this page directly.');
+  @header('Content-Type:'.get_option('html_type').';charset='.get_option('blog_charset'));
+}
+
 // Define paths and variables
 define('WPUA_VERSION', '1.4');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
@@ -345,7 +350,7 @@ if(!class_exists('wp_user_avatar')){
           if($file['error'] || !preg_match('/(jpe?g|gif|png)$/i', $type)){
             $redirect = add_query_arg('errors', 'type', wp_get_referer());
             wp_safe_redirect($redirect);
-            exit();
+            die();
           }
           // Break out file info
           $name_parts = pathinfo($name);
@@ -838,13 +843,9 @@ if(!class_exists('wp_user_avatar')){
                 <legend class="screen-reader-text"><span><?php _e('Maximum Rating'); ?></span></legend>
                 <?php
                   $ratings = array(
-                    /* translators: Content suitability rating: http://bit.ly/89QxZA */
                     'G' => __('G &#8212; Suitable for all audiences'),
-                    /* translators: Content suitability rating: http://bit.ly/89QxZA */
                     'PG' => __('PG &#8212; Possibly offensive, usually for audiences 13 and above'),
-                    /* translators: Content suitability rating: http://bit.ly/89QxZA */
                     'R' => __('R &#8212; Intended for adult audiences above 17'),
-                    /* translators: Content suitability rating: http://bit.ly/89QxZA */
                     'X' => __('X &#8212; Even more mature than above')
                   );
                   foreach ($ratings as $key => $rating) :
