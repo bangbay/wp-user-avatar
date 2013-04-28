@@ -66,7 +66,7 @@ function setWPUserAvatar(attachment, imageURL){
   jQuery('#wp-user-avatar-preview', window.parent.document).find('img').attr('src', imageURL).removeAttr('width', '').removeAttr('height', '');
   jQuery('#wp-user-avatar-message', window.parent.document).show();
   jQuery('#remove-wp-user-avatar', window.parent.document).show();
-  jQuery('#wp-user-avatar-notice', window.parent.document).hide();
+  jQuery('#wp-user-avatar-thumbnail', window.parent.document).hide();
   jQuery('#wp_user_avatar_radio', window.parent.document).trigger('click');
   // Check if WP 3.5
   if(typeof(wp) != 'undefined'){
@@ -81,9 +81,10 @@ function removeWPUserAvatar(avatar_thumb){
   jQuery('body').on('click', '#remove-wp-user-avatar', function(e){
     e.preventDefault();
     jQuery(this).hide();
+    jQuery('#edit-wp-user-avatar, #wp-user-avatar-thumbnail').hide();
     jQuery('#wp-user-avatar-preview').find('img').attr('src', avatar_thumb).removeAttr('width', '').removeAttr('height', '');
     jQuery('#wp-user-avatar').val('');
-    jQuery('#wp-user-avatar-message, #wp-user-avatar-notice').show();
+    jQuery('#wp-user-avatar-message').show();
     jQuery('#wp_user_avatar_radio').trigger('click');
   });
 }

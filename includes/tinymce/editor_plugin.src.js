@@ -21,7 +21,7 @@
             // call content via admin-ajax, no need to know the full plugin path
           file : ajaxurl + '?action=wp_user_avatar_tinymce',
           width : 400,
-          height : 285,
+          height : 295,
           inline : 1
         }, {
           plugin_url : url // Plugin absolute URL
