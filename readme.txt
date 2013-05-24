@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.4
 Tested up to: 3.5.1
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -225,6 +225,9 @@ Outputs:
 6. WP User Avatar admin settings.
 
 == Changelog ==
+
+= 1.4.2 =
+* Bug Fix: Include screen.php for get_current_screen function
 
 = 1.4.1 =
 * Bug Fix: Allow multipart data in form

@@ -1,13 +1,13 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.4.1
+ * @version 1.4.2
  */
 /*
 Plugin Name: WP User Avatar
 Plugin URI: http://wordpress.org/extend/plugins/wp-user-avatar/
 Description: Use any image in your WordPress Media Libary as a custom user avatar. Add your own Default Avatar.
-Version: 1.4.1
+Version: 1.4.2
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
 */
@@ -18,7 +18,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', '1.4.1');
+define('WPUA_VERSION', '1.4.2');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -207,7 +207,7 @@ function wpua_deactivate(){
 if(!class_exists('wp_user_avatar')){
   class wp_user_avatar{
     function wp_user_avatar(){
-      global $current_user, $show_avatars, $wpua_allow_upload, $pagenow;
+      global $current_user, $current_screen, $show_avatars, $wpua_allow_upload, $pagenow;
       // Adds WPUA to profile
       if(current_user_can('upload_files') || ($wpua_allow_upload == 1 && is_user_logged_in())){
         add_action('show_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
@@ -221,6 +221,9 @@ if(!class_exists('wp_user_avatar')){
           add_action('admin_menu', 'wpua_admin');
           add_filter('plugin_action_links', array($this, 'wpua_plugin_settings_links'), 10, 2);
         } else {
+          if(!function_exists('get_current_screen')){
+            require_once(ABSPATH.'wp-admin/includes/screen.php');
+          }
           // Adds scripts to front pages
           add_action('wp_enqueue_scripts', array($this, 'wpua_media_upload_scripts'));
         }
@@ -229,7 +232,7 @@ if(!class_exists('wp_user_avatar')){
           add_filter('attachment_fields_to_edit', array($this, 'wpua_add_attachment_field_to_edit'), 10, 2); 
         }
         // Hide column in Users table if default avatars are enabled
-        if(is_admin() && $show_avatars != '1'){
+        if(is_admin() && $show_avatars != 1){
           add_filter('manage_users_columns', array($this, 'wpua_add_column'), 10, 1);
           add_filter('manage_users_custom_column', array($this, 'wpua_show_column'), 10, 3);
         }
