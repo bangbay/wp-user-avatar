@@ -1,5 +1,5 @@
-#wp-user-avatar-errors { color: #c00; font-weight: 700; }
-#wp-user-avatar-message { color: #c00; display: none; }
+#wp-user-avatar-errors, #wp-user-avatar-message, #wp-readable-size-error { color: #c00; font-weight: 700; }
+#wp-user-avatar-message, #wp-readable-size-error { display: none; }
 #wp-user-avatar-preview, #wp-user-avatar-thumbnail { display: inline-block; text-align: center; vertical-align: top; }
 #wp-user-avatar-preview { margin-right: 10px; }
 #wp-user-avatar-preview img, #wp-user-avatar-thumbnail img { height: 96px; border: 1px solid #dfdfdf; display: block; }
@@ -8,3 +8,5 @@
 #edit-wp-user-avatar { padding-left: 15px; }
 #edit-wp-user-avatar #remove-wp-user-avatar { margin-left: 10px; }
 .hide-me, .wp-core-ui .hide-me { display: none; }
+#wp-user-avatar-slider { width: 22.75em; }
+.wpua_label { display: block; }
