@@ -228,7 +228,8 @@ Outputs:
 
 = 1.5 =
 * Add: Ability to disable Gravatar
-* Add: Upload size limiter
+* Add: Upload size limiter for Contributors & Subscribers
+* Add: French and German translations.
 
 = 1.4.2 =
 * Bug Fix: Include screen.php for get_current_screen function

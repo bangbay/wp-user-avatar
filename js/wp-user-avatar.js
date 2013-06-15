@@ -1,1 +1,90 @@
-eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('5 16(c){0.7.k={s:5(){x 0.7.y.B.i.o},X:5(a){v b=0.7.y.B;b.i.o=a;b.i.T=2(\'19.j-18\').K(\'M\').p(\'q\');r(b.i.o){R(b.i.o,b.i.T);2(\'#t\').u(\'g\')}},w:5(){r(4.8){x 4.8}4.8=0.7({z:\'Q\',12:[11 0.7.1d.1a({13:"U H I G: "+c})]});4.8.f(\'O\',5(){v a=4.z().s(\'l\');L=2(\'#0-3-6\').F();j=0.7.j(L);j.17();a.E(j?[j]:[])},4.8);4.8.f(\'1b:1c:m\',5(a){4.1e(a,{1f:\'1g H I G\'})},4.8);4.8.z(\'Q\').f(\'m\',4.m);x 4.8},m:5(a){v b=0.7.y.B,l=4.s(\'l\').1h();0.7.k.X(l?l.L:-1)},P:5(){2(\'C\').f(\'g\',\'#E-0-3-6\',5(e){e.A();e.14();0.7.k.w().O()})}};2(0.7.k.P)}5 15(a,b){2(\'C\').f(\'g\',\'#E-0-3-6\',5(e){e.A();1o(\'U H I G: \'+a,b)})}5 R(a,b){2(\'#0-3-6\',d.9.h).F(a);2(\'#0-3-6-S\',d.9.h).K(\'M\').p(\'q\',b).n(\'N\',\'\').n(\'V\',\'\');2(\'#0-3-6-W\',d.9.h).J();2(\'#Y-0-3-6\',d.9.h).J();2(\'#0-3-6-Z\',d.9.h).D();2(\'#t\',d.9.h).u(\'g\');r(1i(0)!=\'1j\'){0.7.k.w().1k()}1l{d.9.1m()}}5 1n(a){2(\'C\').f(\'g\',\'#Y-0-3-6\',5(e){e.A();2(4).D();2(\'#10-0-3-6, #0-3-6-Z\').D();2(\'#0-3-6-S\').K(\'M\').p(\'q\',a).n(\'N\',\'\').n(\'V\',\'\');2(\'#0-3-6\').F(\'\');2(\'#0-3-6-W\').J();2(\'#t\').u(\'g\')})}',62,87,'wp||jQuery|user|this|function|avatar|media|_frame|parent||||window||on|click|document|post|attachment|wpUserAvatar|selection|select|removeAttr|wpUserAvatarId|attr|src|if|get|wp_user_avatar_radio|trigger|var|frame|return|view|state|preventDefault|settings|body|hide|add|val|Avatar|WP|User|show|find|id|img|width|open|init|library|setWPUserAvatar|preview|wpUserAvatarSrc|Edit|height|message|set|remove|thumbnail|edit|new|states|title|stopPropagation|openThickboxUploader|openMediaUploader|fetch|info|div|Library|toolbar|create|controller|createSelectToolbar|text|Set|single|typeof|undefined|close|else|tb_remove|removeWPUserAvatar|tb_show'.split('|'),0,{}))
+// Backbone uploader for WP 3.5
+function openMediaUploader(section, edit_text, insert_text){
+  wp.media.wpUserAvatar = {
+    get: function(){
+      return wp.media.view.settings.post.wpUserAvatarId;
+    },
+    set: function(id){
+      var settings = wp.media.view.settings;
+      settings.post.wpUserAvatarId = id;
+      settings.post.wpUserAvatarSrc = jQuery('div.attachment-info').find('img').attr('src');
+      if(settings.post.wpUserAvatarId){
+        setWPUserAvatar(settings.post.wpUserAvatarId, settings.post.wpUserAvatarSrc);
+        jQuery('#wp_user_avatar_radio').trigger('click');
+      }
+    },
+    frame: function(){
+      if(this._frame){
+        return this._frame;
+      }
+      this._frame = wp.media({
+        state: 'library',
+        states: [ new wp.media.controller.Library({ title: edit_text + " WP User Avatar: " + section }) ]
+      });
+      this._frame.on('open', function(){
+        var selection = this.state().get('selection');
+        id = jQuery('#wp-user-avatar').val();
+        attachment = wp.media.attachment(id);
+        attachment.fetch();
+        selection.add(attachment ? [ attachment ] : []);
+      }, this._frame);
+      this._frame.on('toolbar:create:select', function(toolbar){
+        this.createSelectToolbar(toolbar, {
+          text: insert_text + ' WP User Avatar'
+        });
+      }, this._frame);
+      this._frame.state('library').on('select', this.select);
+      return this._frame;
+    },
+    select: function(id){
+      var settings = wp.media.view.settings,
+         selection = this.get('selection').single();
+      wp.media.wpUserAvatar.set(selection ? selection.id : -1);
+    },
+    init: function(){
+      jQuery('body').on('click', '#add-wp-user-avatar', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        wp.media.wpUserAvatar.frame().open();
+      });
+    }
+  };
+  jQuery(wp.media.wpUserAvatar.init);
+}
+
+// Thickbox uploader
+function openThickboxUploader(section, iframe){
+  jQuery('body').on('click', '#add-wp-user-avatar', function(e){
+    e.preventDefault();
+    tb_show('WP User Avatar: ' + section, iframe);
+  });
+}
+
+// Set WP User Avatar
+function setWPUserAvatar(attachment, imageURL){
+  jQuery('#wp-user-avatar', window.parent.document).val(attachment);
+  jQuery('#wp-user-avatar-preview', window.parent.document).find('img').attr('src', imageURL).removeAttr('width', '').removeAttr('height', '');
+  jQuery('#wp-user-avatar-message', window.parent.document).show();
+  jQuery('#remove-wp-user-avatar', window.parent.document).show();
+  jQuery('#wp-user-avatar-thumbnail', window.parent.document).hide();
+  jQuery('#wp_user_avatar_radio', window.parent.document).trigger('click');
+  // Check if WP 3.5
+  if(typeof(wp) != 'undefined'){
+    wp.media.wpUserAvatar.frame().close()
+  } else {
+    window.parent.tb_remove();
+  }
+}
+
+// Remove WP User Avatar
+function removeWPUserAvatar(avatar_thumb){
+  jQuery('body').on('click', '#remove-wp-user-avatar', function(e){
+    e.preventDefault();
+    jQuery(this).hide();
+    jQuery('#edit-wp-user-avatar, #wp-user-avatar-thumbnail').hide();
+    jQuery('#wp-user-avatar-preview').find('img').attr('src', avatar_thumb).removeAttr('width', '').removeAttr('height', '');
+    jQuery('#wp-user-avatar').val('');
+    jQuery('#wp-user-avatar-message').show();
+    jQuery('#wp_user_avatar_radio').trigger('click');
+  });
+}

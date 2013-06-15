@@ -1,5 +1,5 @@
 // Backbone uploader for WP 3.5
-function openMediaUploader(section){
+function openMediaUploader(section, edit_text, insert_text){
   wp.media.wpUserAvatar = {
     get: function(){
       return wp.media.view.settings.post.wpUserAvatarId;
@@ -19,7 +19,7 @@ function openMediaUploader(section){
       }
       this._frame = wp.media({
         state: 'library',
-        states: [ new wp.media.controller.Library({ title: "Edit WP User Avatar: " + section }) ]
+        states: [ new wp.media.controller.Library({ title: edit_text + " WP User Avatar: " + section }) ]
       });
       this._frame.on('open', function(){
         var selection = this.state().get('selection');
@@ -30,7 +30,7 @@ function openMediaUploader(section){
       }, this._frame);
       this._frame.on('toolbar:create:select', function(toolbar){
         this.createSelectToolbar(toolbar, {
-          text: 'Set WP User Avatar'
+          text: insert_text + ' WP User Avatar'
         });
       }, this._frame);
       this._frame.state('library').on('select', this.select);
@@ -56,7 +56,7 @@ function openMediaUploader(section){
 function openThickboxUploader(section, iframe){
   jQuery('body').on('click', '#add-wp-user-avatar', function(e){
     e.preventDefault();
-    tb_show('Edit WP User Avatar: ' + section, iframe);
+    tb_show('WP User Avatar: ' + section, iframe);
   });
 }
 

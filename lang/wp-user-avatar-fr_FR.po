@@ -1,0 +1,85 @@
+# French (fr_FR) translation for  WP User Avatar.
+# Copyright (C) 2013 Bangbay Siboliban.
+# This file is distributed under the same license as the WP User Avatar package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: WP User Avatar 1.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-02-27 17:11-0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: wp-user-avatar.php:323
+msgid "Allowed file formats"
+msgstr ""
+
+#: wp-user-avatar.php:338 wp-user-avatar.php:792
+msgid "Press"
+msgstr ""
+
+#: wp-user-avatar.php:338 wp-user-avatar.php:792
+msgid "to save your changes"
+msgstr ""
+
+#: wp-user-avatar.php:493
+msgid "Set"
+msgstr "Utiliser"
+
+#: wp-user-avatar.php:856 wp-user-avatar.php:859
+msgid "WP User Avatar Settings"
+msgstr ""
+
+#: wp-user-avatar.php:862
+msgid "Add avatar button to Visual Editor"
+msgstr ""
+
+#: wp-user-avatar.php:866
+msgid "Allow Contributors &amp; Subscribers to upload avatars"
+msgstr ""
+
+#: wp-user-avatar.php:870
+msgid "Disable Gravatar &mdash; Use only local avatars"
+msgstr ""
+
+#: wp-user-avatar.php:876
+msgid "Upload Size Limit"
+msgstr ""
+
+#: wp-user-avatar.php:876
+msgid "only for Contributors & Subscribers"
+msgstr ""
+
+#: wp-user-avatar.php:880
+msgid "Upload size limit cannot be larger than the maximum"
+msgstr ""
+
+#: includes/tinymce/window.php:62
+msgid "User"
+msgstr ""
+
+#: includes/tinymce/window.php:81
+msgid "or"
+msgstr "ou"
+
+#: includes/tinymce/window.php:70
+msgid "Choose a preset size or enter a number value"
+msgstr ""
+
+#: includes/tinymce/window.php:93
+msgid "Link to image file, attachment page, or custom URL"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WP User Avatar"
+msgstr "WP User Avatar"
+
+#. Description of the plugin/theme
+msgid "Use any image in your WordPress Media Libary as a custom user avatar. Add your own Default Avatar."
+msgstr ""
+

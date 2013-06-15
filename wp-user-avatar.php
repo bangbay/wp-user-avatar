@@ -13,7 +13,7 @@ Author URI: http://siboliban.org/
 */
 
 if(!defined('ABSPATH')){
-  die('You are not allowed to call this page directly.');
+  die(__('You are not allowed to call this page directly.'));
   @header('Content-Type:'.get_option('html_type').';charset='.get_option('blog_charset'));
 }
 
@@ -66,6 +66,9 @@ $wpua_upload_size_limit_with_units = (int) $wpua_user_upload_size_limit.'KB';
 if($wpua_tinymce == 1){
   include_once(WPUA_ABSPATH.'includes/tinymce.php');
 }
+
+// Load translations
+load_plugin_textdomain('wp-user-avatar', false, WPUA_FOLDER.'/lang');
 
 // Initialize default settings
 register_activation_hook(WPUA_ABSPATH.'wp-user-avatar.php', 'wpua_options');
@@ -149,6 +152,17 @@ if($wpua_allow_upload == 1){
   }
   add_action('user_edit_form_tag', 'wpua_add_edit_form_multipart_encoding');
 
+  // Add enctype with JavaScript as backup
+  function wpua_add_edit_form_multipart_encoding_js(){ ?>
+    <script type="text/javascript">
+      jQuery(function(){
+        jQuery('#your-profile').attr('enctype', 'multipart/form-data');
+      });
+    </script>
+  <?php
+  }
+  add_action('wp_head', 'wpua_add_edit_form_multipart_encoding_js');
+
   // Check user role
   function check_user_role($role, $user_id=null){
     global $current_user;
@@ -230,13 +244,17 @@ function wpua_deactivate(){
 if(!class_exists('wp_user_avatar')){
   class wp_user_avatar{
     function wp_user_avatar(){
-      global $current_user, $current_screen, $show_avatars, $wpua_allow_upload, $pagenow;
+      global $current_screen, $current_user, $pagenow, $show_avatars, $wpua_allow_upload, $wpua_upload_size_limit;
       // Adds WPUA to profile
       if(current_user_can('upload_files') || ($wpua_allow_upload == 1 && is_user_logged_in())){
         add_action('show_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
         add_action('edit_user_profile', array($this, 'wpua_action_show_user_profile'));
         add_action('personal_options_update', array($this, 'wpua_action_process_option_update'));
         add_action('edit_user_profile_update', array($this, 'wpua_action_process_option_update'));
+        // Prefilter upload size
+        if(!current_user_can('upload_files')){
+          add_filter('wp_handle_upload_prefilter',  array($this, 'wpua_handle_upload_prefilter'), 10, 1);
+        }
         if(is_admin()){
           // Adds scripts to admin
           add_action('admin_enqueue_scripts', array($this, 'wpua_media_upload_scripts'));
@@ -276,48 +294,48 @@ if(!class_exists('wp_user_avatar')){
       // Check if user has wp_user_avatar, if not show image from above
       $avatar_thumbnail = has_wp_user_avatar($user->ID) ? get_wp_user_avatar_src($user->ID, 96) : $avatar_medium_src;
       // Change text on message based on current user
-      $profile = ($current_user->ID == $user->ID) ? 'Profile' : 'User';
+      $profile = ($current_user->ID == $user->ID) ? __('Update Profile') : __('Update User');
       // Max upload size
       if(!function_exists('wp_max_upload_size')){
         require_once(ABSPATH.'wp-admin/includes/template.php');
       }
     ?>
       <?php if(class_exists('bbPress') && !is_admin()) : // Add to bbPress profile with same style ?>
-        <h2 class="entry-title"><?php _e('WP User Avatar'); ?></h2>
+        <h2 class="entry-title"><?php _e('WP User Avatar', 'wp-user-avatar'); ?></h2>
         <fieldset class="bbp-form">
-          <legend><?php _e('WP User Avatar'); ?></legend>
+          <legend><?php _e('WP User Avatar', 'wp-user-avatar'); ?></legend>
       <?php else : // Add to profile with admin style ?>
-        <h3><?php _e('WP User Avatar') ?></h3>
+        <h3><?php _e('WP User Avatar', 'wp-user-avatar') ?></h3>
         <table class="form-table">
           <tr>
-            <th><label for="wp_user_avatar"><?php _e('WP User Avatar'); ?></label></th>
+            <th><label for="wp_user_avatar"><?php _e('WP User Avatar', 'wp-user-avatar'); ?></label></th>
             <td>
       <?php endif; ?>
       <input type="hidden" name="wp-user-avatar" id="wp-user-avatar" value="<?php echo $wpua; ?>" />
       <?php if(current_user_can('upload_files')) : // Button to launch Media uploader ?>
-        <p><button type="button" class="button" id="add-wp-user-avatar" name="add-wp-user-avatar"><?php _e('Edit WP User Avatar'); ?></button></p>
+        <p><button type="button" class="button" id="add-wp-user-avatar" name="add-wp-user-avatar"><?php _e('Edit'); ?> <?php _e('WP User Avatar', 'wp-user-avatar'); ?></button></p>
       <?php elseif(!current_user_can('upload_files') && !has_wp_user_avatar($current_user->ID)) : // Upload button ?>
         <input name="wp-user-avatar-file" id="wp-user-avatar-file" type="file" />
-         <button type="submit" class="button" id="upload-wp-user-avatar" name="upload-wp-user-avatar" value="<?php _e('Upload'); ?>"><?php _e('Upload'); ?></button>
+        <button type="submit" class="button" id="upload-wp-user-avatar" name="upload-wp-user-avatar" value="<?php _e('Upload'); ?>"><?php _e('Upload'); ?></button>
         <p>
-          <?php _e('Maximum upload file size: '.esc_html($wpua_upload_size_limit_with_units)); ?>
+          <?php printf(__( 'Maximum upload file size: %d%s.'), esc_html($wpua_upload_size_limit_with_units  ), esc_html('KB')); ?>
           <br />
-          <?php _e('Allowed file formats: JPG, GIF, PNG'); ?>
+          <?php _e('Allowed file formats', 'wp-user-avatar'); ?>: <?php _e('JPG, GIF, PNG', 'wp-user-avatar'); ?>
         </p>
       <?php elseif(!current_user_can('upload_files') && has_wp_user_avatar($current_user->ID) && wpua_author($wpua, $current_user->ID)) : // Edit button ?>
         <?php $edit_attachment_link = function_exists('wp_enqueue_media') ? add_query_arg(array('post' => $wpua, 'action' => 'edit'), admin_url('post.php')) : add_query_arg(array('attachment_id' => $wpua, 'action' => 'edit'), admin_url('media.php')) ?>
-        <p><button type="button" class="button" id="edit-wp-user-avatar" name="edit-wp-user-avatar" onclick="window.open('<?php echo $edit_attachment_link; ?>', '_self');"><?php _e('Edit WP User Avatar'); ?></button></p>
+        <p><button type="button" class="button" id="edit-wp-user-avatar" name="edit-wp-user-avatar" onclick="window.open('<?php echo $edit_attachment_link; ?>', '_self');"><?php _e('Edit'); ?> <?php _e('WP User Avatar', 'wp-user-avatar'); ?></button></p>
       <?php endif; ?>
       <p id="wp-user-avatar-preview">
         <img src="<?php echo $avatar_medium; ?>" alt="" />
-        <?php _e('Original'); ?>
+        <?php _e('Original', 'wp-user-avatar'); ?>
       </p>
       <p id="wp-user-avatar-thumbnail">
         <img src="<?php echo $avatar_thumbnail; ?>" alt="" />
         <?php _e('Thumbnail'); ?>
       </p>
       <p><button type="button" class="button<?php echo $hide_remove; ?>" id="remove-wp-user-avatar" name="remove-wp-user-avatar"><?php _e('Remove'); ?></button></p>
-      <p id="wp-user-avatar-message"><?php _e('Press "Update '.$profile.'" to save your changes.'); ?></p>
+      <p id="wp-user-avatar-message"><?php _e('Press', 'wp-user-avatar'); ?> &ldquo;<?php echo $profile; ?>&rdquo; <?php _e('to save your changes', 'wp-user-avatar'); ?>.</p>
       <?php if(class_exists('bbPress') && !is_admin()) : // Add to bbPress profile with same style ?>
         </fieldset>
       <?php else : // Add to profile with admin style ?>
@@ -327,6 +345,16 @@ if(!class_exists('wp_user_avatar')){
       <?php endif; ?>
       <?php echo wpua_js($user->display_name, $avatar_medium_src); // Add JS ?>
       <?php
+    }
+
+    // Set upload size limit for users without upload_files capability
+    function wpua_handle_upload_prefilter($file){
+      global $wpua_upload_size_limit, $wpua_upload_size_limit_with_units;
+      $size = $file['size'];
+      if($size > $wpua_upload_size_limit){
+        $file['error'] = __('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.');
+      }
+      return $file;
     }
 
     // Update user meta
@@ -407,7 +435,7 @@ if(!class_exists('wp_user_avatar')){
       $image = wp_get_attachment_image_src($post->ID, "medium");
       $button = '<button type="button" class="button" id="set-wp-user-avatar-image" name="set-wp-user-avatar-image" onclick="setWPUserAvatar(\''.$post->ID.'\', \''.$image[0].'\')">Set WP User Avatar</button>';
       $fields['wp-user-avatar'] = array(
-        'label' => __('WP User Avatar'),
+        'label' => __('WP User Avatar', 'wp-user-avatar'),
         'input' => 'html',
         'html' => $button
       );
@@ -425,7 +453,7 @@ if(!class_exists('wp_user_avatar')){
 
     // Add column to Users table
     function wpua_add_column($columns){
-      return $columns + array('wp-user-avatar' => __('WP User Avatar'));
+      return $columns + array('wp-user-avatar' => __('WP User Avatar', 'wp-user-avatar'));
     }
 
     // Show thumbnail in Users table
@@ -462,12 +490,12 @@ if(!class_exists('wp_user_avatar')){
       jQuery(function(){
         <?php if(current_user_can('upload_files')) : ?>
           <?php if(function_exists('wp_enqueue_media')) : // Backbone uploader for WP 3.5+ ?>
-            openMediaUploader("<?php echo $section; ?>");
+            openMediaUploader('<?php echo $section; ?>', "<?php _e('Edit'); ?>", "<?php _e('Set', 'wp-user-avatar'); ?>");
           <?php else : // Fall back to Thickbox uploader ?>
-            openThickboxUploader("<?php echo $section; ?>", "<?php echo get_admin_url(); ?>media-upload.php?post_id=0&type=image&tab=library&TB_iframe=1");
+            openThickboxUploader('<?php echo $section; ?>', '<?php echo get_admin_url(); ?>media-upload.php?post_id=0&type=image&tab=library&TB_iframe=1');
           <?php endif; ?>
         <?php endif; ?>
-        removeWPUserAvatar("<?php echo htmlspecialchars_decode($avatar_thumb); ?>");
+        removeWPUserAvatar('<?php echo htmlspecialchars_decode($avatar_thumb); ?>');
       });
     </script>
   <?php
@@ -758,11 +786,11 @@ if(!class_exists('wp_user_avatar')){
     $wpua_list = "\n\t<label><input type='radio' name='avatar_default' id='wp_user_avatar_radio' value='wp_user_avatar'$selected_avatar /> ";
     $wpua_list .= preg_replace("/src='(.+?)'/", "src='\$1'", $avatar_thumb_img);
     $wpua_list .= ' '.__('WP User Avatar').'</label>';
-    $wpua_list .= '<p id="edit-wp-user-avatar"><button type="button" class="button" id="add-wp-user-avatar" name="add-wp-user-avatar">'.__('Edit WP User Avatar').'</button>';
+    $wpua_list .= '<p id="edit-wp-user-avatar"><button type="button" class="button" id="add-wp-user-avatar" name="add-wp-user-avatar">'.__('Edit').' '.__('WP User Avatar').'</button>';
     $wpua_list .= '<a href="#" id="remove-wp-user-avatar"'.$hide_remove.'>'.__('Remove').'</a></p>';
     $wpua_list .= '<input type="hidden" id="wp-user-avatar" name="avatar_default_wp_user_avatar" value="'.$wpua_avatar_default.'">';
-    $wpua_list .= '<p id="wp-user-avatar-message">'.__('Press "Save Changes" to save your changes.').'</p>';
-    $wpua_list .= wpua_js('Default Avatar', $mustache_admin);
+    $wpua_list .= '<p id="wp-user-avatar-message">'.__('Press', 'wp-user-avatar').' &ldquo;'.__('Save Changes').'&rdquo; '.__('to save your changes', 'wp-user-avatar').'.</p>';
+    $wpua_list .= wpua_js(__('Default Avatar'), $mustache_admin);
     return $wpua_list.$avatar_list;
   }
   add_filter('default_avatar_select', 'wpua_add_default_avatar', 10);
@@ -819,37 +847,37 @@ if(!class_exists('wp_user_avatar')){
   ?>
     <div class="wrap">
       <?php screen_icon(); ?>
-      <h2><?php _e('WP User Avatar'); ?></h2>
+      <h2><?php _e('WP User Avatar', 'wp-user-avatar'); ?></h2>
       <form method="post" action="options.php">
         <?php settings_fields('wpua-settings-group'); ?>
         <?php do_settings_fields('wpua-settings-group', ""); ?>
         <table class="form-table">
           <tr valign="top">
-            <th scope="row"><?php _e('WP User Avatar Settings') ?></th>
+            <th scope="row"><?php _e('WP User Avatar Settings', 'wp-user-avatar'); ?></th>
             <td>
               <fieldset>
-                <legend class="screen-reader-text"><span><?php _e('WP User Avatar Settings'); ?></span></legend>
+                <legend class="screen-reader-text"><span><?php _e('WP User Avatar Settings', 'wp-user-avatar'); ?>/span></legend>
                 <label for="wp_user_avatar_tinymce" class="wpua_label">
                   <input name="wp_user_avatar_tinymce" type="checkbox" id="wp_user_avatar_tinymce" value="1" <?php checked('1', get_option('wp_user_avatar_tinymce')); ?> />
-                  <?php _e('Add avatar button to Visual Editor'); ?>
+                  <?php _e('Add avatar button to Visual Editor', 'wp-user-avatar'); ?>
                 </label>
                 <label for="wp_user_avatar_allow_upload" class="wpua_label">
                   <input name="wp_user_avatar_allow_upload" type="checkbox" id="wp_user_avatar_allow_upload" value="1" <?php checked('1', get_option('wp_user_avatar_allow_upload')); ?> />
-                  <?php _e('Allow Contributors &amp; Subscribers to upload avatars'); ?>
+                  <?php _e('Allow Contributors &amp; Subscribers to upload avatars', 'wp-user-avatar'); ?>
                 </label>
                 <label for="wp_user_avatar_disable_gravatar" class="wpua_label">
                   <input name="wp_user_avatar_disable_gravatar" type="checkbox" id="wp_user_avatar_disable_gravatar" value="1" <?php checked('1', get_option('wp_user_avatar_disable_gravatar')); ?> />
-                  <?php _e('Disable Gravatar &mdash; Use only local avatars'); ?>
+                  <?php _e('Disable Gravatar &mdash; Use only local avatars', 'wp-user-avatar'); ?>
                 </label>
               </fieldset>
             </td>
           </tr>
           <tr id="wp-size-upload-limit-settings" valign="top"<?php echo $hide_size; ?>>
-            <th scope="row"><label for="wp_user_avatar_upload_size_limit" class="wpua_label">Upload Size Limit (only for Contributors &amp; Subscribers)</label></th>
+            <th scope="row"><label for="wp_user_avatar_upload_size_limit" class="wpua_label"><?php _e('Upload Size Limit', 'wp-user-avatar'); ?> (<?php _e('only for Contributors &amp; Subscribers', 'wp-user-avatar'); ?>)</label></th>
             <td>
               <input name="wp_user_avatar_upload_size_limit" type="text" id="wp_user_avatar_upload_size_limit" value="<?php echo $wpua_upload_size_limit; ?>" class="regular-text" />
               <span id="wp-readable-size">(<?php echo $wpua_upload_size_limit_with_units; ?>)</span>
-              <span id="wp-readable-size-error"><?php _e('Upload size limit cannot be larger than server limit.'); ?></span>
+              <span id="wp-readable-size-error"><?php _e('Upload size limit cannot be larger than the maximum', 'wp-user-avatar'); ?>.</span>
               <div id="wp-user-avatar-slider"></div>
               <script type="text/javascript">
                 jQuery(function(){
@@ -880,7 +908,7 @@ if(!class_exists('wp_user_avatar')){
                   jQuery('#wp_user_avatar_upload_size_limit').val(jQuery('#wp-user-avatar-slider').slider('value'));
                 });
               </script>
-              <span class="description"><?php _e('Your current server limit: '.wp_max_upload_size().' bytes ('.$upload_size_limit_with_units.')'); ?></span>
+              <span class="description"><?php printf(__( 'Maximum upload file size: %d%s.'), esc_html(wp_max_upload_size()), esc_html(' bytes ('.$upload_size_limit_with_units.')')); ?></span>
             </td>
           </tr>
         </table>
