@@ -20,7 +20,7 @@
         ed.windowManager.open({
             // call content via admin-ajax, no need to know the full plugin path
           file : ajaxurl + '?action=wp_user_avatar_tinymce',
-          width : 400,
+          width : 500,
           height : 295,
           inline : 1
         }, {

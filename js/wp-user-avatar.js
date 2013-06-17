@@ -19,7 +19,7 @@ function openMediaUploader(section, edit_text, insert_text){
       }
       this._frame = wp.media({
         state: 'library',
-        states: [ new wp.media.controller.Library({ title: edit_text + " WP User Avatar: " + section }) ]
+        states: [ new wp.media.controller.Library({ title: edit_text + ": " + section }) ]
       });
       this._frame.on('open', function(){
         var selection = this.state().get('selection');
@@ -30,7 +30,7 @@ function openMediaUploader(section, edit_text, insert_text){
       }, this._frame);
       this._frame.on('toolbar:create:select', function(toolbar){
         this.createSelectToolbar(toolbar, {
-          text: insert_text + ' WP User Avatar'
+          text: insert_text
         });
       }, this._frame);
       this._frame.state('library').on('select', this.select);

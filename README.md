@@ -10,7 +10,9 @@ WP User Avatar also lets you:
 
 * Upload your own Default Avatar in your Discussion settings.
 * Show the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar if the user doesn't have a WP User Avatar image.
+* Disable [gravatar.com](http://gravatar.com/) avatars and use only local avatars.
 * Use the <code>[avatar]</code> shortcode in your posts. The shortcode will work with any theme, whether it has avatar support or not.
 * Allow Contributors and Subscribers to upload their own avatars.
+* Limit upload file size for Contributors and Subscribers.
 
 This plugin uses the Media uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.4. It is also compatible with WordPress Multisite.

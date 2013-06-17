@@ -9,7 +9,7 @@ Stable tag: 1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Use any image in your WordPress Media Libary as a custom user avatar. Add your own Default Avatar.
+Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 
 == Description ==
 
@@ -17,10 +17,12 @@ WordPress currently only allows you to use custom avatars that are uploaded thro
 
 WP User Avatar also lets you:
 
-* Upload your own Default Avatar in your Discussion settings.
+* Upload your own Default Avatar in your WP User Avatar settings.
 * Show the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar if the user doesn't have a WP User Avatar image.
+* Disable gravatar.com avatars and use only local avatars.
 * Use the <code>[avatar]</code> shortcode in your posts. The shortcode will work with any theme, whether it has avatar support or not.
 * Allow Contributors and Subscribers to upload their own avatars.
+* Limit upload file size for Contributors and Subscribers.
 
 This plugin uses the Media uploader introduced in WordPress 3.5, but is also backwards-compatible to WordPress 3.4. It is also compatible with WordPress Multisite.
 
@@ -30,7 +32,7 @@ This plugin uses the Media uploader introduced in WordPress 3.5, but is also bac
 2. On your edit profile page, click "Edit WP User Avatar".
 3. Choose an image, then click "Set WP User Avatar".
 4. Click "Update Profile".
-5. Upload your own Default Avatar in your Discussion settings (optional).
+5. Upload your own Default Avatar in your WP User Avatar settings (optional).
 6. Choose a theme that has avatar support. In your theme, manually replace <code>get_avatar</code> with <code>get_wp_user_avatar</code> or leave <code>get_avatar</code> as-is. [Read about the differences here](http://wordpress.org/extend/plugins/wp-user-avatar/faq/).
 7. You can also use the <code>[avatar]</code> shortcode in your posts. The shortcode will work with any theme, whether it has avatar support or not.
 
@@ -74,7 +76,7 @@ If you leave the options blank, WP User Avatar will detect whether you're inside
 
 `<?php echo get_wp_user_avatar(); ?>`
 
-The function <code>get_wp_user_avatar</code> can also fall back to <code>get_avatar</code> if there is no WP User Avatar image. For this to work, "Show Avatars" must be checked in your Discussion settings. When this setting is enabled, you will see the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar.
+The function <code>get_wp_user_avatar</code> can also fall back to <code>get_avatar</code> if there is no WP User Avatar image. For this to work, "Show Avatars" must be checked in your WP User Avatar settings. When this setting is enabled, you will see the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar.
 
 = Comments =
 
@@ -128,11 +130,11 @@ First, choose a theme that has avatar support. In your theme, you have a choice 
 2. Doesn't add a fixed width and height to the image if you use the aforementioned values. This will give you more flexibility to resize the image with CSS.
 3. Optionally adds CSS classes "alignleft", "alignright", or "aligncenter" to position your avatar.
 4. Shows nothing if the user has no WP User Avatar image.
-5. Shows the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar only if "Show Avatars" is enabled in your Discussion settings.
+5. Shows the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar only if "Show Avatars" is enabled in your WP User Avatar settings.
 
 = get_avatar =
 
-1. Requires you to enable "Show Avatars" in your Discussion settings to show any avatars.
+1. Requires you to enable "Show Avatars" in your WP User Avatar settings to show any avatars.
 2. Accepts only numeric values for your avatar size.
 3. Always adds a fixed width and height to your image. This may cause problems if you use responsive CSS in your theme.
 4. Shows the user's [gravatar.com](http://gravatar.com/) avatar or Default Avatar if the user doesn't have a WP User Avatar image. (Choosing "Blank" as your Default Avatar still generates a transparent image file.)
@@ -141,7 +143,7 @@ First, choose a theme that has avatar support. In your theme, you have a choice 
 [Read more about get_avatar in the WordPress Function Reference](http://codex.wordpress.org/Function_Reference/get_avatar).
 
 = Can I create a custom Default Avatar? =
-In your Discussion settings, you can upload your own Default Avatar.
+In your WP User Avatar settings, you can upload your own Default Avatar.
 
 = Can I insert WP User Avatar directly into a post? =
 
@@ -162,6 +164,10 @@ Yes, if you enable "Allow Contributors & Subscribers to upload avatars" in the W
 
 Yes, for registered users. Non-registered comment authors will show their [gravatar.com](http://gravatar.com/) avatars or Default Avatar.
 
+= Can I disable all Gravatar avatars? =
+
+In your WP User Avatar settings, you can select "Disable Gravatar — Use only local avatars" to disable all [gravatar.com](http://gravatar.com/) avatars on your site and replace them with your Default Avatar. This will affect your registered users and non-registered comment authors.
+
 = Will WP User Avatar work with bbPress? =
 
 Yes!
@@ -172,7 +178,7 @@ Yes, however, each site has its own avatar settings. If you set a WP User Avatar
 
 = How can I see which users have an avatar? =
 
-For Administrators, WP User Avatar adds a column with avatar thumbnails to your Users list table. If "Show Avatars" is enabled in your Discussion settings, you will see avatars to the left of each username instead of in a new column.
+For Administrators, WP User Avatar adds a column with avatar thumbnails to your Users list table. If "Show Avatars" is enabled in your WP User Avatar settings, you will see avatars to the left of each username instead of in a new column.
 
 = What CSS can I use with WP User Avatar? =
 
@@ -227,9 +233,9 @@ Outputs:
 == Changelog ==
 
 = 1.5 =
-* Add: Ability to disable Gravatar
+* Add: Ability to disable Gravatar avatars
 * Add: Upload size limiter for Contributors & Subscribers
-* Add: French and German translations.
+* Add: French, German, and Spanish translations
 
 = 1.4.2 =
 * Bug Fix: Include screen.php for get_current_screen function
@@ -342,6 +348,11 @@ Outputs:
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.5 =
+* New Feature: Ability to disable Gravatar avatars
+* New Feature: Upload size limiter for Contributors & Subscribers
+* New Feature: French and German translations
 
 = 1.4 =
 * New Feature: Setting to allow all users to upload avatars
