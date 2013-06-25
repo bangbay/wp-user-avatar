@@ -4,90 +4,44 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.5\n"
+"Project-Id-Version: WP User Avatar 1.5.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
 "POT-Creation-Date: 2013-06-17 00:00-0000\n"
-"PO-Revision-Date: 2013-06-17 00:00-0000\n"
-"Last-Translator: Google Translate\n"
-"Language-Team: Google Translate\n"
+"PO-Revision-Date: 2013-06-25 00:00-0000\n"
+"Last-Translator: WP User Avatar\n"
+"Language-Team: WP User Avatar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: wp-user-avatar.php:881
+#: wp-user-avatar.php:341
+#: wp-user-avatar.php:808
+msgid "Click %s to save your changes"
+msgstr "Klicken Sie %s, um Ihre Änderungen zu speichern"
+
+#: wp-user-avatar.php:882
 msgid "Add avatar button to Visual Editor"
-msgstr "In avatar-Taste, um Visueller Editor"
+msgstr "Einen Avatar-Knopf zum WYSIWYG-Editor hinzufügen"
 
-#: wp-user-avatar.php:885
-msgid "Allow Contributors &amp; Subscribers to upload avatars"
-msgstr "Erlauben Anbieter & Abonnenten Avatare hochladen"
+#: wp-user-avatar.php:886
+msgid "Allow Contributors & Subscribers to upload avatars"
+msgstr "Mitarbeiter und Abonnenten erlauben, Avatare hochzuladen"
 
-#: wp-user-avatar.php:327
-msgid "Allowed file formats"
-msgstr "Erlaubte Dateiformate"
+#: wp-user-avatar.php:890
+msgid "Disable Gravatar and use only local avatars"
+msgstr "Gravatar deaktivieren und nur lokale Avatare verwenden"
 
-#: wp-user-avatar.php:889
-msgid "Disable Gravatar &mdash; Use only local avatars"
-msgstr "Deaktivieren Gravatar &mdash; Verwenden Sie nur lokale Avatare"
+#: wp-user-avatar.php:894
+msgid "Allow users to upload avatars in front pages"
+msgstr "Benutzer erlaubt, Avatare im Front-End hochladen"
 
-#: wp-user-avatar.php:320
-#: wp-user-avatar.php:331
-#: wp-user-avatar.php:500
-#: wp-user-avatar.php:508
-msgid "Edit WP User Avatar"
-msgstr "WP User Avatar bearbeiten"
-
-#: wp-user-avatar.php:327
-msgid "JPG, GIF, PNG"
-msgstr "JPG, GIF, PNG"
-
-#: wp-user-avatar.php:335
-msgid "Original"
-msgstr "Original"
-
-#: wp-user-avatar.php:342
-#: wp-user-avatar.php:508
-msgid "Press %s to save your changes"
-msgstr "Drücken %s um Ihre Änderungen zu speichern"
-
-#: wp-user-avatar.php:351
-#: wp-user-avatar.php:500
-msgid "Set WP User Avatar"
-msgstr "WP User Avatar festlegen"
-
-#: wp-user-avatar.php:895
+#: wp-user-avatar.php:902
 msgid "Upload Size Limit (only for Contributors & Subscribers)"
-msgstr "Hochladen Size Limit (nur für Autoren & Abonnenten)"
-
-#: wp-user-avatar.php:899
-msgid "Upload Size Limit cannot be larger than the maximum"
-msgstr "Hochladen Size Limit kann nicht größer sein als die maximale"
-
-#: wp-user-avatar.php:875
-#: wp-user-avatar.php:878
-msgid "WP User Avatar Settings"
-msgstr "Einstellungen > WP User Avatar"
-
-#: window.php:70
-msgid "Choose a preset size or enter a number value"
-msgstr "Wählen Sie eine voreingestellte Größe oder geben Sie einen Zahlenwert"
-
-#: window.php:93
-msgid "Link to image file, attachment page, or custom URL"
-msgstr "Link zur Bild-Datei, Anhang-Seite, oder benutzerdefinierte URL"
-
-#: window.php:62
-msgid "User"
-msgstr "Benutzer"
-
-#: window.php:81
-#: window.php:105
-msgid "or"
-msgstr "oder"
+msgstr "Dateigrößenbeschränkung (nur für Mitarbeiter und Abonnenten)"
 
 #. Plugin Name of the plugin/theme
 msgid "WP User Avatar"
-msgstr "WP User Avatar"
+msgstr "WP-Benutzer-Avatar"
 
 #. Plugin URI of the plugin/theme
 msgid "http://wordpress.org/plugins/wp-user-avatar/"
@@ -95,7 +49,7 @@ msgstr "http://wordpress.org/plugins/wp-user-avatar/"
 
 #. Description of the plugin/theme
 msgid "Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar."
-msgstr "Verwenden Sie ein beliebiges Bild in Ihrem WordPress Mediathek als benutzerdefinierte avatar. Fügen Sie Ihre eigenen Standardavatar."
+msgstr "Verwenden Sie ein beliebiges Bild aus Ihrer WordPress-Mediathek als ihren Benutzer-Avatar. Fügen Sie einen eigenen Standardavatar hinzu."
 
 #. Author of the plugin/theme
 msgid "Bangbay Siboliban"

@@ -4,90 +4,44 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.5\n"
+"Project-Id-Version: WP User Avatar 1.5.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
 "POT-Creation-Date: 2013-06-17 00:00-0000\n"
-"PO-Revision-Date: 2013-06-17 00:00-0000\n"
-"Last-Translator: Google Translate\n"
-"Language-Team: Google Translate\n"
+"PO-Revision-Date: 2013-06-25 00:00-0000\n"
+"Last-Translator: WP User Avatar\n"
+"Language-Team: WP User Avatar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: wp-user-avatar.php:881
+#: wp-user-avatar.php:341
+#: wp-user-avatar.php:808
+msgid "Click %s to save your changes"
+msgstr "Cliquez sur %s pour enregistrer vos modifications"
+
+#: wp-user-avatar.php:882
 msgid "Add avatar button to Visual Editor"
-msgstr "Ajouter bouton avatar sur Éditeur visuel"
+msgstr "Ajouter le bouton avatar sur l'éditeur visuel"
 
-#: wp-user-avatar.php:885
-msgid "Allow Contributors &amp; Subscribers to upload avatars"
-msgstr "Permettre aux contributeurs et aux abonnés d'envoyer avatars"
+#: wp-user-avatar.php:886
+msgid "Allow Contributors & Subscribers to upload avatars"
+msgstr "Permettre aux contributeurs et aux abonnés d'envoyer des avatars"
 
-#: wp-user-avatar.php:327
-msgid "Allowed file formats"
-msgstr "Formats acceptés"
+#: wp-user-avatar.php:890
+msgid "Disable Gravatar and use only local avatars"
+msgstr "Désactiver Gravatar et utiliser les avatars fournis"
 
-#: wp-user-avatar.php:889
-msgid "Disable Gravatar &mdash; Use only local avatars"
-msgstr "Désactiver Gravatar &mdash; Utilisez seulement des avatars locaux"
+#: wp-user-avatar.php:894
+msgid "Allow users to upload avatars in front pages"
+msgstr "Permettre aux utilisateurs d'envoyer dans les pages frontales"
 
-#: wp-user-avatar.php:320
-#: wp-user-avatar.php:331
-#: wp-user-avatar.php:500
-#: wp-user-avatar.php:508
-msgid "Edit WP User Avatar"
-msgstr "Modifier WP User Avatar"
-
-#: wp-user-avatar.php:327
-msgid "JPG, GIF, PNG"
-msgstr "JPG, GIF, PNG"
-
-#: wp-user-avatar.php:335
-msgid "Original"
-msgstr "Originale"
-
-#: wp-user-avatar.php:342
-#: wp-user-avatar.php:508
-msgid "Press %s to save your changes"
-msgstr "Appuyez %s pour enregistrer vos modifications"
-
-#: wp-user-avatar.php:351
-#: wp-user-avatar.php:500
-msgid "Set WP User Avatar"
-msgstr "Utiliser WP User Avatar"
-
-#: wp-user-avatar.php:895
+#: wp-user-avatar.php:902
 msgid "Upload Size Limit (only for Contributors & Subscribers)"
-msgstr "Téléchargez limite de taille (seulement pour les contributeurs et abonnés)"
-
-#: wp-user-avatar.php:899
-msgid "Upload Size Limit cannot be larger than the maximum"
-msgstr "Téléchargez la limite de taille ne peut pas être supérieure au maximum"
-
-#: wp-user-avatar.php:875
-#: wp-user-avatar.php:878
-msgid "WP User Avatar Settings"
-msgstr "Réglages de WP User Avatar"
-
-#: window.php:70
-msgid "Choose a preset size or enter a number value"
-msgstr "Choisissez une taille prédéfinie ou entrez une valeur numérique"
-
-#: window.php:93
-msgid "Link to image file, attachment page, or custom URL"
-msgstr "Lier à fichier d'image, page du fichier attaché ou lien personnalisé"
-
-#: window.php:62
-msgid "User"
-msgstr "Utilisateur"
-
-#: window.php:81
-#: window.php:105
-msgid "or"
-msgstr "ou"
+msgstr "Taille limite d'envoi de fichiers (pour contributeurs et abonnés)"
 
 #. Plugin Name of the plugin/theme
 msgid "WP User Avatar"
-msgstr "WP User Avatar"
+msgstr "WP-Utilisateur-Avatar"
 
 #. Plugin URI of the plugin/theme
 msgid "http://wordpress.org/plugins/wp-user-avatar/"
@@ -95,7 +49,7 @@ msgstr "http://wordpress.org/plugins/wp-user-avatar/"
 
 #. Description of the plugin/theme
 msgid "Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar."
-msgstr "Utilisez n'importe quelle image dans votre médiathèque WordPress comme un avatar de l'utilisateur personnalisé. Ajoutez votre propre avatar par défaut."
+msgstr "Utiliser n'importe quelle image dans votre Bibliothèque de médias de WordPress comme un avatar personnalisé. Ajouter votre propre avatar par défaut."
 
 #. Author of the plugin/theme
 msgid "Bangbay Siboliban"

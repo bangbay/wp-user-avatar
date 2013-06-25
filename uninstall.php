@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.5
+ * @version 1.5.1
  */
 
 // Remove user metadata and options on plugin delete
@@ -24,6 +24,9 @@ if(is_multisite()){
     delete_option('avatar_default_wp_user_avatar');
     delete_option('wp_user_avatar_tinymce');
     delete_option('wp_user_avatar_allow_upload');
+    delete_option('wp_user_avatar_disable_gravatar');
+    delete_option('wp_user_avatar_load_scripts');
+    delete_option('wp_user_avatar_upload_size_limit');
     delete_option('wp_user_avatar_default_avatar_updated');
     delete_option('wp_user_avatar_users_updated');
     delete_option('wp_user_avatar_media_updated');
@@ -35,6 +38,9 @@ if(is_multisite()){
   delete_option('avatar_default_wp_user_avatar');
   delete_option('wp_user_avatar_tinymce');
   delete_option('wp_user_avatar_allow_upload');
+  delete_option('wp_user_avatar_disable_gravatar');
+  delete_option('wp_user_avatar_load_scripts');
+  delete_option('wp_user_avatar_upload_size_limit');
   delete_option('wp_user_avatar_default_avatar_updated');
   delete_option('wp_user_avatar_users_updated');
   delete_option('wp_user_avatar_media_updated');

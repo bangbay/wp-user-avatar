@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.5
+ * @version 1.5.1
  */
 
 if(!defined('ABSPATH')){
@@ -11,7 +11,7 @@ if(!defined('ABSPATH')){
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title>WP User Avatar</title>
+  <title><?php _e('WP User Avatar', 'wp-user-avatar'); ?></title>
   <meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo get_option('blog_charset'); ?>" />
   <base target="_self" />
   <script type="text/javascript" src="<?php echo site_url(); ?>/wp-includes/js/jquery/jquery.js"></script>
@@ -34,7 +34,7 @@ if(!defined('ABSPATH')){
       var size_tag = (size != '' && size_number == '') ? ' size="' + size + '"' : '';
       size_tag = (size_number != '') ? ' size="' + size_number + '"' : size_tag;
       var align_tag = (align != '') ? ' align="' + align + '"' : '';
-      var link_tag = (link != '' && link_external == '') ? ' link="' + link + '"' : '';
+      var link_tag = (link != '' && link != 'custom-url' && link_external == '') ? ' link="' + link + '"' : '';
       link_tag = (link_external != '') ? ' link="' + link_external + '"' : link_tag;
       var target_tag = document.getElementById('wp_user_avatar_target').checked && (link_tag != '') ? ' target="' + target + '"' : '';
  
@@ -47,19 +47,28 @@ if(!defined('ABSPATH')){
       }
       return;
     }
+    jQuery(function(){
+      jQuery('#wp_user_avatar_link').change(function(){
+        jQuery('#wp_user_avatar_link_external_section').toggle(jQuery('#wp_user_avatar_link').val() == 'custom-url');
+      });
+      jQuery('#wp_user_avatar_size').change(function(){
+        jQuery('#wp_user_avatar_size_number_section').toggle(jQuery('#wp_user_avatar_size').val() == 'custom');
+      });
+    });
   </script>
   <style type="text/css">
     form { background: #fff; border: 1px solid #eee; }
     p, h4 { margin: 0; padding: 12px 0 0; }
     h4.center { text-align: center; }
-    label { width: 90px; display: inline-block; text-align: right; }
+    label { width: 150px; display: inline-block; text-align: right; }
     .mceActionPanel { padding: 7px 0 12px; text-align: center; }
     .mceActionPanel #insert { float: none; width: 180px; margin: 0 auto; }
+    #wp_user_avatar_size_number_section, #wp_user_avatar_link_external_section { display: none; }
   </style>
 </head>
 <body id="link" class="wp-core-ui" onload="document.body.style.display='';" style="display:none;">
   <form name="wpUserAvatar" action="#">
-    <p><label for="<?php esc_attr_e('wp_user_avatar_user'); ?>"><strong><?php _e('User', 'wp-user-avatar'); ?>:</strong></label>
+    <p><label for="<?php esc_attr_e('wp_user_avatar_user'); ?>"><strong><?php _e('User Name'); ?>:</strong></label>
     <select id="<?php esc_attr_e('wp_user_avatar_user'); ?>" name="<?php esc_attr_e('wp_user_avatar_user'); ?>">
       <option value=""></option>
       <?php $users = get_users(); foreach($users as $user) : ?>
@@ -67,18 +76,20 @@ if(!defined('ABSPATH')){
       <?php endforeach; ?>
     </select></p>
 
-    <h4 class="center"><?php _e('Choose a preset size or enter a number value', 'wp-user-avatar'); ?>.</h4>
-
     <p>
       <label for="<?php esc_attr_e('wp_user_avatar_size'); ?>"><strong><?php _e('Size'); ?>:</strong></label>
       <select id="<?php esc_attr_e('wp_user_avatar_size'); ?>" name="<?php esc_attr_e('wp_user_avatar_size'); ?>">
         <option value=""></option>
-        <option value="original"><?php _e('Original'); ?></option>
+        <option value="original"><?php _e('Original Size'); ?></option>
         <option value="large"><?php _e('Large'); ?></option>
         <option value="medium"><?php _e('Medium'); ?></option>
         <option value="thumbnail"><?php _e('Thumbnail'); ?></option>
+        <option value="custom"><?php _e('Custom'); ?></option>
       </select>
-      <?php _e('or', 'wp-user-avatar'); ?>
+    </p>
+
+    <p id="<?php esc_attr_e('wp_user_avatar_size_number_section'); ?>">
+      <label for="<?php esc_attr_e('wp_user_avatar_size_number'); ?>"><?php _e('Size'); ?></label>
       <input type="text" size="8" id="<?php esc_attr_e('wp_user_avatar_size_number'); ?>" name="<?php esc_attr_e('wp_user_avatar_size'); ?>" value="" />
     </p>
 
@@ -90,19 +101,18 @@ if(!defined('ABSPATH')){
       <option value="right"><?php _e('Right'); ?></option>
     </select></p>
 
-    <h4 class="center"><?php _e('Link to image file, attachment page, or custom URL', 'wp-user-avatar'); ?>.</h4>
-
     <p>
       <label for="<?php esc_attr_e('wp_user_avatar_link'); ?>"><strong><?php _e('Link To'); ?>:</strong></label>
       <select id="<?php esc_attr_e('wp_user_avatar_link'); ?>" name="<?php esc_attr_e('wp_user_avatar_link'); ?>">
         <option value=""></option>
         <option value="file"><?php _e('Image File'); ?></option>
         <option value="attachment"><?php _e('Attachment Page'); ?></option>
+        <option value="custom-url"><?php _e('Custom URL'); ?></option>
       </select>
     </p>
 
-    <p>
-      <label for="<?php esc_attr_e('wp_user_avatar_link_external'); ?>"><?php _e('or', 'wp-user-avatar'); ?></label>
+    <p id="<?php esc_attr_e('wp_user_avatar_link_external_section'); ?>">
+      <label for="<?php esc_attr_e('wp_user_avatar_link_external'); ?>"><?php _e('URL'); ?></label>
       <input type="text" size="36" id="<?php esc_attr_e('wp_user_avatar_link_external'); ?>" name="<?php esc_attr_e('wp_user_avatar_link_external'); ?>" value="" />
     </p>
 
@@ -112,7 +122,7 @@ if(!defined('ABSPATH')){
     </p>
 
     <div class="mceActionPanel">
-      <input type="submit" id="insert" class="button-primary" name="insert" value="<?php _e('Insert'); ?> <?php _e('WP User Avatar'); ?>" onclick="insert_wp_user_avatar();" />
+      <input type="submit" id="insert" class="button-primary" name="insert" value="<?php _e('Insert into Post'); ?>" onclick="insert_wp_user_avatar();" />
     </div>
   </form>
 </body>

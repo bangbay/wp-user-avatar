@@ -1,12 +1,12 @@
-#wp-user-avatar-errors, #wp-user-avatar-message, #wp-readable-size-error { color: #c00; font-weight: 700; }
-#wp-user-avatar-message, #wp-readable-size-error { display: none; }
-#wp-user-avatar-preview, #wp-user-avatar-thumbnail { display: inline-block; text-align: center; vertical-align: top; }
-#wp-user-avatar-preview { margin-right: 10px; }
-#wp-user-avatar-preview img, #wp-user-avatar-thumbnail img { height: 96px; border: 1px solid #dfdfdf; display: block; }
-.defaultavatarpicker #wp-user-avatar-preview { width: 32px; height: 32px; margin-right: 0; display: inline-block; overflow: hidden; vertical-align: middle; }
-.defaultavatarpicker #wp-user-avatar-preview img { width: 32px; height: auto; border: 0; }
-#edit-wp-user-avatar { padding-left: 15px; }
-#edit-wp-user-avatar #remove-wp-user-avatar { margin-left: 10px; }
+#wpua-errors, #wpua-message, #wpua-readable-size-error, .wpua-error { color: #c00; font-weight: 700; }
+#wpua-message, #wpua-readable-size-error { display: none; }
+#wpua-preview, #wpua-thumbnail { display: inline-block; text-align: center; vertical-align: top; }
+#wpua-preview { margin-right: 10px; }
+#wpua-preview img, #wpua-thumbnail img { height: 96px; border: 1px solid #dfdfdf; display: block; }
+.defaultavatarpicker #wpua-preview { width: 32px; height: 32px; margin-right: 0; display: inline-block; overflow: hidden; vertical-align: middle; }
+.defaultavatarpicker #wpua-preview img { width: 32px; height: auto; border: 0; }
+#wpua-edit { padding-left: 15px; }
+#wpua-edit #wpua-remove { margin-left: 10px; }
 .hide-me, .wp-core-ui .hide-me { display: none; }
-#wp-user-avatar-slider { width: 22.75em; }
+#wpua-slider { width: 22.75em; }
 .wpua_label { display: block; }
