@@ -318,7 +318,7 @@ if(!class_exists('wp_user_avatar')){
             <th><label for="wp_user_avatar"><?php _e('WP User Avatar', 'wp-user-avatar'); ?></label></th>
             <td>
       <?php endif; ?>
-      <input type="hidden" name="wp-user-avatar" id="wpua" value="<?php echo $wpua; ?>" />
+      <input type="hidden" name="wp-user-avatar" id="wp-user-avatar" value="<?php echo $wpua; ?>" />
       <?php if(current_user_can('upload_files')) : // Button to launch Media uploader ?>
         <p><button type="button" class="button" id="wpua-add" name="wpua-add"><?php _e('Edit Image'); ?></button></p>
       <?php elseif(!current_user_can('upload_files') && !has_wp_user_avatar($current_user->ID)) : // Upload button ?>
@@ -808,7 +808,7 @@ if(!class_exists('wp_user_avatar')){
     $wpua_list .= ' '.__('WP User Avatar', 'wp-user-avatar').'</label>';
     $wpua_list .= '<p id="wpua-edit"><button type="button" class="button" id="wpua-add" name="wpua-add">'.__('Edit Image').'</button>';
     $wpua_list .= '<a href="#" id="wpua-remove"'.$hide_remove.'>'.__('Remove').'</a></p>';
-    $wpua_list .= '<input type="hidden" id="wpua" name="avatar_default_wp_user_avatar" value="'.$wpua_avatar_default.'">';
+    $wpua_list .= '<input type="hidden" id="wp-user-avatar" name="avatar_default_wp_user_avatar" value="'.$wpua_avatar_default.'">';
     $wpua_list .= '<p id="wpua-message">'.sprintf(__('Click %s to save your changes', 'wp-user-avatar'), '&ldquo;'.__('Save Changes').'&rdquo;').'</p>';
     $wpua_list .= wpua_js(__('Default Avatar'), $mustache_admin);
     if($wpua_disable_gravatar != 1){

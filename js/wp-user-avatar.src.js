@@ -23,7 +23,7 @@ function openMediaUploader(section, edit_text, insert_text){
       });
       this._frame.on('open', function(){
         var selection = this.state().get('selection');
-        id = jQuery('#wpua').val();
+        id = jQuery('#wp-user-avatar').val();
         attachment = wp.media.attachment(id);
         attachment.fetch();
         selection.add(attachment ? [ attachment ] : []);
@@ -62,7 +62,7 @@ function openThickboxUploader(section, iframe){
 
 // Set WP User Avatar
 function setWPUserAvatar(attachment, imageURL){
-  jQuery('#wpua', window.parent.document).val(attachment);
+  jQuery('#wp-user-avatar', window.parent.document).val(attachment);
   jQuery('#wpua-preview', window.parent.document).find('img').attr('src', imageURL).removeAttr('width', '').removeAttr('height', '');
   jQuery('#wpua-message', window.parent.document).show();
   jQuery('#wpua-remove', window.parent.document).show();
@@ -83,7 +83,7 @@ function removeWPUserAvatar(avatar_thumb){
     jQuery(this).hide();
     jQuery('#wpua-edit, #wpua-thumbnail').hide();
     jQuery('#wpua-preview').find('img').attr('src', avatar_thumb).removeAttr('width', '').removeAttr('height', '');
-    jQuery('#wpua').val('');
+    jQuery('#wp-user-avatar').val('');
     jQuery('#wpua-message').show();
     jQuery('#wp_user_avatar_radio').trigger('click');
   });
