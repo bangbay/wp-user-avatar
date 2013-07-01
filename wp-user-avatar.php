@@ -87,7 +87,6 @@ register_deactivation_hook(WPUA_ABSPATH.'wp-user-avatar.php', 'wpua_deactivate')
 
 // Settings saved to wp_options
 function wpua_options(){
-  global $wp_user_roles;
   add_option('avatar_default_wp_user_avatar', "");
   add_option('wp_user_avatar_tinymce', '1');
   add_option('wp_user_avatar_allow_upload', '0');
@@ -208,6 +207,16 @@ if((bool) $wpua_allow_upload == 1){
   }
   add_action('admin_menu', 'wpua_subscriber_remove_menu_pages');
 
+  // Remove menu bar items
+  function wpua_subscriber_remove_menu_bar_items(){
+    global $current_user, $wp_admin_bar;
+    if(check_user_role('subscriber', $current_user->ID)){
+      $wp_admin_bar->remove_menu('comments');
+      $wp_admin_bar->remove_menu('new-content');
+    }
+  }
+  add_action('wp_before_admin_bar_render', 'wpua_subscriber_remove_menu_bar_items');
+
   // Remove dashboard items
   function wpua_subscriber_remove_dashboard_widgets(){
     global $current_user;
@@ -263,7 +272,7 @@ if(!class_exists('wp_user_avatar')){
         add_action('edit_user_profile_update', array($this, 'wpua_action_process_option_update'));
         // Prefilter upload size
         if(!current_user_can('upload_files')){
-          add_filter('wp_handle_upload_prefilter',  array($this, 'wpua_handle_upload_prefilter'), 10, 1);
+          add_filter('wp_handle_upload_prefilter', array($this, 'wpua_handle_upload_prefilter'), 10, 1);
         }
         if(is_admin()){
           // Add scripts to admin
@@ -488,7 +497,7 @@ if(!class_exists('wp_user_avatar')){
         }
          wp_enqueue_script('jquery-ui-slider');
       }
-      wp_enqueue_script('wp-user-avatar', WPUA_URLPATH.'js/wp-user-avatar.js', "", WPUA_VERSION);
+      wp_enqueue_script('wp-user-avatar', WPUA_URLPATH.'js/wp-user-avatar.js', array('jquery'), WPUA_VERSION);
       wp_enqueue_style('wp-user-avatar', WPUA_URLPATH.'css/wp-user-avatar.css', "", WPUA_VERSION);
       if($pagenow == 'options-general.php'){
         wp_enqueue_style('wp-user-avatar-jqueryui', WPUA_URLPATH.'css/jquery.ui.slider.css', "", null);
@@ -905,52 +914,55 @@ if(!class_exists('wp_user_avatar')){
               <label for="wp_user_avatar_upload_size_limit" class="wpua_label">
                 <?php _e('Upload Size Limit (only for Contributors & Subscribers)', 'wp-user-avatar'); ?>
               </label>
-            </th>
+             </th>
             <td>
-              <input name="wp_user_avatar_upload_size_limit" type="text" id="wp_user_avatar_upload_size_limit" value="<?php echo $wpua_upload_size_limit; ?>" class="regular-text" />
-              <span id="wpua-readable-size"><?php echo $wpua_upload_size_limit_with_units; ?></span>
-              <span id="wpua-readable-size-error"><?php printf(__('%s exceeds the maximum upload size for this site.'), ''); ?></span>
-              <div id="wpua-slider"></div>
-              <script type="text/javascript">
-                jQuery(function(){
-                  // Show size info only if allow uploads is checked
-                  jQuery('#wp_user_avatar_allow_upload').change(function(){
-                    jQuery('#wp-size-upload-limit-settings').toggle(jQuery('#wp_user_avatar_allow_upload').is(':checked'));
+              <fieldset>
+                <legend class="screen-reader-text"><span><?php _e('Upload Size Limit (only for Contributors & Subscribers)', 'wp-user-avatar'); ?></span></legend>
+                <input name="wp_user_avatar_upload_size_limit" type="text" id="wp_user_avatar_upload_size_limit" value="<?php echo $wpua_upload_size_limit; ?>" class="regular-text" />
+                <span id="wpua-readable-size"><?php echo $wpua_upload_size_limit_with_units; ?></span>
+                <span id="wpua-readable-size-error"><?php printf(__('%s exceeds the maximum upload size for this site.'), ''); ?></span>
+                <div id="wpua-slider"></div>
+                <script type="text/javascript">
+                  jQuery(function(){
+                    // Show size info only if allow uploads is checked
+                    jQuery('#wp_user_avatar_allow_upload').change(function(){
+                      jQuery('#wp-size-upload-limit-settings').toggle(jQuery('#wp_user_avatar_allow_upload').is(':checked'));
+                    });
+                    // Hide Gravatars if disable Gravatars is checked
+                    jQuery('#wp_user_avatar_disable_gravatar').change(function(){
+                      if(jQuery('#wp-avatars').length){
+                        jQuery('#wp-avatars').toggle(!jQuery('#wp_user_avatar_disable_gravatar').is(':checked'));
+                        jQuery('#wp_user_avatar_radio').trigger('click');
+                      }
+                      jQuery('#wpua-message').show();
+                    });
+                    // Add size slider
+                    jQuery('#wpua-slider').slider({
+                      value: <?php echo $wpua_upload_size_limit; ?>,
+                      min: 0,
+                      max: <?php echo wp_max_upload_size(); ?>,
+                      step: 1,
+                      slide: function(event, ui){
+                        jQuery('#wp_user_avatar_upload_size_limit').val(ui.value);
+                        jQuery('#wpua-readable-size').html(Math.floor(ui.value / 1024) + 'KB');
+                        jQuery('#wpua-readable-size-error').hide();
+                        jQuery('#wpua-readable-size').removeClass('wpua-error');
+                      }
+                    });
+                    // Update readable size on keyup
+                    jQuery('#wp_user_avatar_upload_size_limit').keyup(function(){
+                      var wpua_upload_size_limit = jQuery(this).val();
+                      wpua_upload_size_limit = wpua_upload_size_limit.replace(/\D/g, '');
+                      // jQuery(this).val(wpua_upload_size_limit);
+                      jQuery('#wpua-readable-size').html(Math.floor(wpua_upload_size_limit / 1024) + 'KB');
+                      jQuery('#wpua-readable-size-error').toggle(wpua_upload_size_limit > <?php echo wp_max_upload_size(); ?>);
+                      jQuery('#wpua-readable-size').toggleClass('wpua-error', wpua_upload_size_limit > <?php echo wp_max_upload_size(); ?>);
+                    });
+                    jQuery('#wp_user_avatar_upload_size_limit').val(jQuery('#wpua-slider').slider('value'));
                   });
-                  // Hide Gravatars if disable Gravatars is checked
-                  jQuery('#wp_user_avatar_disable_gravatar').change(function(){
-                    if(jQuery('#wp-avatars').length){
-                      jQuery('#wp-avatars').toggle(!jQuery('#wp_user_avatar_disable_gravatar').is(':checked'));
-                      jQuery('#wp_user_avatar_radio').trigger('click');
-                    }
-                    jQuery('#wpua-message').show();
-                  });
-                  // Add size slider
-                  jQuery('#wpua-slider').slider({
-                    value: <?php echo $wpua_upload_size_limit; ?>,
-                    min: 0,
-                    max: <?php echo wp_max_upload_size(); ?>,
-                    step: 1,
-                    slide: function(event, ui){
-                      jQuery('#wp_user_avatar_upload_size_limit').val(ui.value);
-                      jQuery('#wpua-readable-size').html(Math.floor(ui.value / 1024) + 'KB');
-                      jQuery('#wpua-readable-size-error').hide();
-                      jQuery('#wpua-readable-size').removeClass('wpua-error');
-                    }
-                  });
-                  // Update readable size on keyup
-                  jQuery('#wp_user_avatar_upload_size_limit').keyup(function(){
-                    var wpua_upload_size_limit = jQuery(this).val();
-                    wpua_upload_size_limit = wpua_upload_size_limit.replace(/\D/g, '');
-                    // jQuery(this).val(wpua_upload_size_limit);
-                    jQuery('#wpua-readable-size').html(Math.floor(wpua_upload_size_limit / 1024) + 'KB');
-                    jQuery('#wpua-readable-size-error').toggle(wpua_upload_size_limit > <?php echo wp_max_upload_size(); ?>);
-                    jQuery('#wpua-readable-size').toggleClass('wpua-error', wpua_upload_size_limit > <?php echo wp_max_upload_size(); ?>);
-                  });
-                  jQuery('#wp_user_avatar_upload_size_limit').val(jQuery('#wpua-slider').slider('value'));
-                });
-              </script>
-              <span class="description"><?php printf(__('Maximum upload file size: %d%s.'), esc_html(wp_max_upload_size()), esc_html(' bytes ('.$upload_size_limit_with_units.')')); ?></span>
+                </script>
+                <span class="description"><?php printf(__('Maximum upload file size: %d%s.'), esc_html(wp_max_upload_size()), esc_html(' bytes ('.$upload_size_limit_with_units.')')); ?></span>
+              </fieldset>
             </td>
           </tr>
         </table>

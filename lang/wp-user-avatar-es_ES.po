@@ -14,28 +14,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: wp-user-avatar.php:341
-#: wp-user-avatar.php:808
+#: wp-user-avatar.php:345
+#: wp-user-avatar.php:812
 msgid "Click %s to save your changes"
 msgstr "Haz clic %s para guardar los cambios"
 
-#: wp-user-avatar.php:882
+#: wp-user-avatar.php:886
 msgid "Add avatar button to Visual Editor"
 msgstr "Añadir botón avatar al editor visual"
 
-#: wp-user-avatar.php:886
+#: wp-user-avatar.php:890
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Permitir los colaboradores y los suscriptores subir avatares"
 
-#: wp-user-avatar.php:890
+#: wp-user-avatar.php:894
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Desactivar Gravatar y utilizar sólo los avatares locales"
 
-#: wp-user-avatar.php:894
+#: wp-user-avatar.php:898
 msgid "Allow users to upload avatars in front pages"
 msgstr "Permitir a los usuarios subir avatares en el páginas frontales"
 
-#: wp-user-avatar.php:902
+#: wp-user-avatar.php:906
+#: wp-user-avatar.php:911
 msgid "Upload Size Limit (only for Contributors & Subscribers)"
 msgstr "Sube límite de tamaño (para colaboradores y suscriptores)"
 
