@@ -870,7 +870,7 @@ if(!class_exists('wp_user_avatar')){
 
   // Admin page
   function wpua_options_page(){
-    global $upload_size_limit_with_units, $wpua_allow_upload, $wpua_upload_size_limit, $wpua_upload_size_limit_with_units;
+    global $show_avatars, $upload_size_limit_with_units, $wpua_allow_upload, $wpua_disable_gravatar, $wpua_load_scripts, $wpua_tinymce, $wpua_upload_size_limit, $wpua_upload_size_limit_with_units;
     // Give subscribers edit_posts capability
     if(isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true' && empty($wpua_allow_upload)){
       wpua_subscriber_remove_cap();
@@ -891,19 +891,19 @@ if(!class_exists('wp_user_avatar')){
               <fieldset>
                 <legend class="screen-reader-text"><span><?php _e('Settings'); ?></span></legend>
                 <label for="wp_user_avatar_tinymce" class="wpua_label">
-                  <input name="wp_user_avatar_tinymce" type="checkbox" id="wp_user_avatar_tinymce" value="1" <?php checked(get_option('wp_user_avatar_tinymce'), 1); ?> />
+                  <input name="wp_user_avatar_tinymce" type="checkbox" id="wp_user_avatar_tinymce" value="1" <?php checked($wpua_tinymce, 1); ?> />
                   <?php _e('Add avatar button to Visual Editor', 'wp-user-avatar'); ?>
                 </label>
                 <label for="wp_user_avatar_allow_upload" class="wpua_label">
-                  <input name="wp_user_avatar_allow_upload" type="checkbox" id="wp_user_avatar_allow_upload" value="1" <?php checked(get_option('wp_user_avatar_allow_upload'), 1); ?> />
+                  <input name="wp_user_avatar_allow_upload" type="checkbox" id="wp_user_avatar_allow_upload" value="1" <?php checked($wpua_allow_upload, 1); ?> />
                   <?php _e('Allow Contributors & Subscribers to upload avatars', 'wp-user-avatar'); ?>
                 </label>
                 <label for="wp_user_avatar_disable_gravatar" class="wpua_label">
-                  <input name="wp_user_avatar_disable_gravatar" type="checkbox" id="wp_user_avatar_disable_gravatar" value="1" <?php checked(get_option('wp_user_avatar_disable_gravatar'), 1); ?> />
+                  <input name="wp_user_avatar_disable_gravatar" type="checkbox" id="wp_user_avatar_disable_gravatar" value="1" <?php checked($wpua_disable_gravatar, 1); ?> />
                   <?php _e('Disable Gravatar and use only local avatars', 'wp-user-avatar'); ?>
                 </label>
                 <label for="wp_user_avatar_load_scripts" class="wpua_label">
-                  <input name="wp_user_avatar_load_scripts" type="checkbox" id="wp_user_avatar_load_scripts" value="1" <?php checked(get_option('wp_user_avatar_load_scripts'), 1); ?> />
+                  <input name="wp_user_avatar_load_scripts" type="checkbox" id="wp_user_avatar_load_scripts" value="1" <?php checked($wpua_load_scripts, 1); ?> />
                   <?php _e('Allow users to upload avatars in front pages', 'wp-user-avatar'); ?>
                 </label>
               </fieldset>
@@ -975,7 +975,7 @@ if(!class_exists('wp_user_avatar')){
             <fieldset>
               <legend class="screen-reader-text"><span><?php _e('Avatar Display'); ?></span></legend>
               <label for="show_avatars">
-              <input type="checkbox" id="show_avatars" name="show_avatars" value="1" <?php checked(get_option('show_avatars'), 1); ?> />
+              <input type="checkbox" id="show_avatars" name="show_avatars" value="1" <?php checked($show_avatars, 1); ?> />
               <?php _e('Show Avatars'); ?>
               </label>
             </fieldset>
