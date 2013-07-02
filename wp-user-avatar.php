@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.5.1
+ * @version 1.5.2
  */
 /*
 Plugin Name: WP User Avatar
@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.5.1
+Version: 1.5.2
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -20,7 +20,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', '1.5.1');
+define('WPUA_VERSION', '1.5.2');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -282,7 +282,7 @@ if(!class_exists('wp_user_avatar')){
           add_filter('plugin_action_links', array($this, 'wpua_plugin_settings_links'), 10, 2);
         }
         // Add scripts to front pages
-        if(!is_admin() && (bool) $wpua_load_scripts == 0){
+        if(!is_admin() && (bool) $wpua_load_scripts == 1){
           if(!function_exists('get_current_screen')){
             require_once(ABSPATH.'wp-admin/includes/screen.php');
           }

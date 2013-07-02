@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.4
 Tested up to: 3.5.2
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -231,6 +231,9 @@ Outputs:
 6. Options for the [avatar] shortcode.
 
 == Changelog ==
+
+= 1.5.2 =
+* Bug Fix: Ability to disable scripts in front pages
 
 = 1.5.1 =
 * Add: Ability to disable scripts in front pages
