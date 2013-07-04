@@ -1,0 +1,60 @@
+# Translation of WP User Avatar in Swedish
+# This file is distributed under the same license as the WP User Avatar package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2013-07-04 20:30+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.5.5\n"
+"Project-Id-Version: WP User Avatar sv_SE\n"
+"POT-Creation-Date: \n"
+"Last-Translator: Mattias Tengblad <mst@eyesx.com>\n"
+"Language-Team: WordPress Sverige <info@wpsv.se>\n"
+"Language: Svenska\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: wp-user-avatar.php:345 wp-user-avatar.php:812
+msgid "Click %s to save your changes"
+msgstr "Klicka på %s för att spara dina ändringar"
+
+#: wp-user-avatar.php:886
+msgid "Add avatar button to Visual Editor"
+msgstr "Lägg till knapp för avatarer i den visuella redigeraren"
+
+#: wp-user-avatar.php:890
+msgid "Allow Contributors & Subscribers to upload avatars"
+msgstr "Tillåt medarbetare & prenumeranter att ladda upp avatarer"
+
+#: wp-user-avatar.php:894
+msgid "Disable Gravatar and use only local avatars"
+msgstr "Inaktivera Gravatar och använd endast lokala avatarer"
+
+#: wp-user-avatar.php:898
+msgid "Allow users to upload avatars in front pages"
+msgstr "Tillåt användare att ladda upp avatarer på själva webbplatsen"
+
+#: wp-user-avatar.php:906 wp-user-avatar.php:911
+msgid "Upload Size Limit (only for Contributors & Subscribers)"
+msgstr ""
+"Storleksgräns för uppladdningar (endast för medarbetare & prenumeranter)"
+
+msgid "WP User Avatar"
+msgstr "Visningsbild (avatar)"
+
+msgid "http://wordpress.org/plugins/wp-user-avatar/"
+msgstr "http://wordpress.org/plugins/wp-user-avatar/"
+
+msgid ""
+"Use any image from your WordPress Media Library as a custom user avatar. Add "
+"your own Default Avatar."
+msgstr ""
+"Använd valfri bild från ditt mediabibliotek i WordPress som en anpassad "
+"visningsbild (avatar). Lägg till fördefinierad standardbild."
+
+msgid "Bangbay Siboliban"
+msgstr "Bangbay Siboliban"
+
+msgid "http://siboliban.org/"
+msgstr "http://siboliban.org/"
