@@ -296,7 +296,7 @@ if(!class_exists('wp_user_avatar')){
       // Get WPUA attachment ID
       $wpua = get_user_meta($user->ID, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
       // Show remove button if WPUA is set
-      $hide_remove = !has_wp_user_avatar($user->ID) ? ' hide-me' : "";
+      $hide_remove = !has_wp_user_avatar($user->ID) ? ' wpua-hide' : "";
       // If avatars are enabled, get original avatar image or show blank
       $avatar_medium_src = (bool) $show_avatars == 1 ? wpua_get_avatar_original($user->user_email, 96) : includes_url().'images/blank.gif';
       // Check if user has wp_user_avatar, if not show image from above
@@ -306,7 +306,7 @@ if(!class_exists('wp_user_avatar')){
       // Change text on message based on current user
       $profile = ($current_user->ID == $user->ID) ? '&ldquo;'.__('Update Profile').'&rdquo;' : '&ldquo;'.__('Update User').'&rdquo;';
     ?>
-      <?php if(class_exists('bbPress') && !is_admin() && $post->ID == 0) : // Add to bbPress profile with same style ?>
+      <?php if(class_exists('bbPress') && bbp_is_edit()) : // Add to bbPress profile with same style ?>
         <h2 class="entry-title"><?php _e('Avatar'); ?></h2>
         <fieldset class="bbp-form">
           <legend><?php _e('Image'); ?></legend>
@@ -342,7 +342,7 @@ if(!class_exists('wp_user_avatar')){
       </p>
       <p><button type="button" class="button<?php echo $hide_remove; ?>" id="wpua-remove" name="wpua-remove"><?php _e('Remove'); ?></button></p>
       <p id="wpua-message"><?php printf(__('Click %s to save your changes', 'wp-user-avatar'), $profile); ?></p>
-      <?php if(class_exists('bbPress') && !is_admin() && $post->ID == 0) : // Add to bbPress profile with same style ?>
+      <?php if(class_exists('bbPress') && bbp_is_edit()) : // Add to bbPress profile with same style ?>
         </fieldset>
       <?php else : // Add to profile with admin style ?>
             </td>
@@ -785,7 +785,7 @@ if(!class_exists('wp_user_avatar')){
       $hide_remove = "";
     } else {
       $avatar_thumb = $mustache_admin;
-      $hide_remove = ' class="hide-me"';
+      $hide_remove = ' class="wpua-hide"';
     }
     // Default Avatar is wp_user_avatar, check the radio button next to it
     $selected_avatar = ($avatar_default == 'wp_user_avatar' || (bool) $wpua_disable_gravatar == 1) ? ' checked="checked" ' : "";
@@ -855,7 +855,7 @@ if(!class_exists('wp_user_avatar')){
     if(isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true' && empty($wpua_allow_upload)){
       wpua_subscriber_remove_cap();
     }
-    $hide_size = ($wpua_allow_upload != 1) ? ' class="hide-me"' : "";
+    $hide_size = ($wpua_allow_upload != 1) ? ' class="wpua-hide"' : "";
     
   ?>
     <div class="wrap">

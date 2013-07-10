@@ -1,12 +1,12 @@
-#wpua-errors, #wpua-message, #wpua-readable-size-error, .wpua-error { color: #c00; font-weight: 700; }
+#wpua-errors, #wpua-message, #wpua-readable-size-error, .wpua-error { color: #c00 !important; font-weight: 700 !important; }
 #wpua-message, #wpua-readable-size-error { display: none; }
-#wpua-preview, #wpua-thumbnail { display: inline-block; text-align: center; vertical-align: top; }
-#wpua-preview { margin-right: 10px; }
+#wpua-preview, #wpua-thumbnail { display: inline-block !important; text-align: center; vertical-align: top; }
+#wpua-preview { margin-right: 10px !important; }
 #wpua-preview img, #wpua-thumbnail img { height: 96px; border: 1px solid #dfdfdf; display: block; }
 .defaultavatarpicker #wpua-preview { width: 32px; height: 32px; margin-right: 0; display: inline-block; overflow: hidden; vertical-align: middle; }
 .defaultavatarpicker #wpua-preview img { width: 32px; height: auto; border: 0; }
-#wpua-edit { padding-left: 15px; }
-#wpua-edit #wpua-remove { margin-left: 10px; }
-.hide-me, .wp-core-ui .hide-me { display: none; }
+#wpua-edit { padding-left: 15px !important; }
+#wpua-edit #wpua-remove { margin-left: 10px !important; }
+.wpua-hide, .wp-core-ui .wpua-hide { display: none; }
 #wpua-slider { width: 22.75em; }
 .wpua_label { display: block; }
