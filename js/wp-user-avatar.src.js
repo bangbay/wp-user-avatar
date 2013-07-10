@@ -1,5 +1,5 @@
 // Media uploader
-function openMediaUploader(section, edit_text, insert_text){
+function wpuaMediaUploader(section, edit_text, insert_text){
   wp.media.wpUserAvatar = {
     get: function(){
       return wp.media.view.settings.post.wpUserAvatarId;
@@ -9,7 +9,7 @@ function openMediaUploader(section, edit_text, insert_text){
       settings.post.wpUserAvatarId = id;
       settings.post.wpUserAvatarSrc = jQuery('div.attachment-info').find('img').attr('src');
       if(settings.post.wpUserAvatarId){
-        setWPUserAvatar(settings.post.wpUserAvatarId, settings.post.wpUserAvatarSrc);
+        wpuaSetAvatar(settings.post.wpUserAvatarId, settings.post.wpUserAvatarSrc);
         jQuery('#wp_user_avatar_radio').trigger('click');
       }
     },
@@ -53,7 +53,7 @@ function openMediaUploader(section, edit_text, insert_text){
 }
 
 // Set WP User Avatar
-function setWPUserAvatar(attachment, imageURL){
+function wpuaSetAvatar(attachment, imageURL){
   jQuery('#wp-user-avatar', window.parent.document).val(attachment);
   jQuery('#wpua-preview', window.parent.document).find('img').attr('src', imageURL).removeAttr('width', '').removeAttr('height', '');
   jQuery('#wpua-message', window.parent.document).show();
@@ -64,7 +64,7 @@ function setWPUserAvatar(attachment, imageURL){
 }
 
 // Remove WP User Avatar
-function removeWPUserAvatar(avatar_thumb){
+function wpuaRemoveAvatar(avatar_thumb){
   jQuery('body').on('click', '#wpua-remove', function(e){
     e.preventDefault();
     jQuery(this).hide();

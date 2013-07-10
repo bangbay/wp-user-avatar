@@ -439,7 +439,7 @@ if(!class_exists('wp_user_avatar')){
     // Add button to attach image for WP 3.4 and older
     function wpua_add_attachment_field_to_edit($fields, $post){
       $image = wp_get_attachment_image_src($post->ID, "medium");
-      $button = '<button type="button" class="button" id="set-wp-user-avatar-image" name="set-wp-user-avatar-image" onclick="setWPUserAvatar(\''.$post->ID.'\', \''.$image[0].'\')">'.__('Select Image').'</button>';
+      $button = '<button type="button" class="button" id="set-wp-user-avatar-image" name="set-wp-user-avatar-image" onclick="wpuaSetAvatar(\''.$post->ID.'\', \''.$image[0].'\')">'.__('Select Image').'</button>';
       $fields['wp-user-avatar'] = array(
         'label' => __('WP User Avatar', 'wp-user-avatar'),
         'input' => 'html',
@@ -494,9 +494,9 @@ if(!class_exists('wp_user_avatar')){
     <script type="text/javascript">
       jQuery(function(){
         <?php if(current_user_can('upload_files')) : ?>
-          openMediaUploader('<?php echo $section; ?>', "<?php _e('Edit Image'); ?>", "<?php _e('Select Image'); ?>");
+          wpuaMediaUploader('<?php echo $section; ?>', "<?php _e('Edit Image'); ?>", "<?php _e('Select Image'); ?>");
         <?php endif; ?>
-        removeWPUserAvatar('<?php echo htmlspecialchars_decode($avatar_thumb); ?>');
+        wpuaRemoveAvatar('<?php echo htmlspecialchars_decode($avatar_thumb); ?>');
       });
     </script>
   <?php
