@@ -275,10 +275,6 @@ if(!class_exists('wp_user_avatar')){
         if($pagenow == 'options-discussion.php' || ($pagenow == 'options-general.php' && $_GET['page'] == 'wp-user-avatar')){
           add_action('admin_enqueue_scripts', array($this, 'wpua_media_upload_scripts'));
         }
-        // Only add attachment field for WP 3.4 and older
-        if(!function_exists('wp_enqueue_media') && $pagenow == 'media-upload.php'){
-          add_filter('attachment_fields_to_edit', array($this, 'wpua_add_attachment_field_to_edit'), 10, 2); 
-        }
         // Prefilter upload size
         if(!current_user_can('upload_files')){
           add_filter('wp_handle_upload_prefilter', array($this, 'wpua_handle_upload_prefilter'), 10, 1);
@@ -311,14 +307,14 @@ if(!class_exists('wp_user_avatar')){
       $profile = ($current_user->ID == $user->ID) ? '&ldquo;'.__('Update Profile').'&rdquo;' : '&ldquo;'.__('Update User').'&rdquo;';
     ?>
       <?php if(class_exists('bbPress') && !is_admin() && $post->ID == 0) : // Add to bbPress profile with same style ?>
-        <h2 class="entry-title"><?php _e('WP User Avatar', 'wp-user-avatar'); ?></h2>
+        <h2 class="entry-title"><?php _e('Avatar'); ?></h2>
         <fieldset class="bbp-form">
-          <legend><?php _e('WP User Avatar', 'wp-user-avatar'); ?></legend>
+          <legend><?php _e('Image'); ?></legend>
       <?php else : // Add to profile with admin style ?>
-        <h3><?php _e('WP User Avatar', 'wp-user-avatar') ?></h3>
+        <h3><?php _e('Avatar') ?></h3>
         <table class="form-table">
           <tr>
-            <th><label for="wp_user_avatar"><?php _e('WP User Avatar', 'wp-user-avatar'); ?></label></th>
+            <th><label for="wp_user_avatar"><?php _e('Image'); ?></label></th>
             <td>
       <?php endif; ?>
       <input type="hidden" name="wp-user-avatar" id="wp-user-avatar" value="<?php echo $wpua; ?>" />
@@ -333,7 +329,7 @@ if(!class_exists('wp_user_avatar')){
           <?php _e('Allowed Files'); ?>: <?php _e('<code>jpg jpeg png gif</code>'); ?>
         </p>
       <?php elseif(!current_user_can('upload_files') && has_wp_user_avatar($current_user->ID) && wpua_author($wpua, $current_user->ID)) : // Edit button ?>
-        <?php $edit_attachment_link = function_exists('wp_enqueue_media') ? add_query_arg(array('post' => $wpua, 'action' => 'edit'), admin_url('post.php')) : add_query_arg(array('attachment_id' => $wpua, 'action' => 'edit'), admin_url('media.php')) ?>
+        <?php $edit_attachment_link = add_query_arg(array('post' => $wpua, 'action' => 'edit'), admin_url('post.php')); ?>
         <p><button type="button" class="button" id="wpua-edit" name="wpua-edit" onclick="window.open('<?php echo $edit_attachment_link; ?>', '_self');"><?php _e('Edit Image'); ?></button></p>
       <?php endif; ?>
       <p id="wpua-preview">
@@ -481,14 +477,8 @@ if(!class_exists('wp_user_avatar')){
       global $pagenow;
       wp_enqueue_script('jquery');
       if(current_user_can('upload_files')){
-        if(function_exists('wp_enqueue_media')){
-          wp_enqueue_script('admin-bar');
-          wp_enqueue_media();
-        } else {
-          wp_enqueue_script('media-upload');
-          wp_enqueue_script('thickbox');
-          wp_enqueue_style('thickbox');
-        }
+        wp_enqueue_script('admin-bar');
+        wp_enqueue_media();
       }
       wp_enqueue_script('wp-user-avatar', WPUA_URLPATH.'js/wp-user-avatar.js', array('jquery'), WPUA_VERSION);
       wp_enqueue_style('wp-user-avatar', WPUA_URLPATH.'css/wp-user-avatar.css', "", WPUA_VERSION);
@@ -504,11 +494,7 @@ if(!class_exists('wp_user_avatar')){
     <script type="text/javascript">
       jQuery(function(){
         <?php if(current_user_can('upload_files')) : ?>
-          <?php if(function_exists('wp_enqueue_media')) : // Backbone uploader for WP 3.5+ ?>
-            openMediaUploader('<?php echo $section; ?>', "<?php _e('Edit Image'); ?>", "<?php _e('Select Image'); ?>");
-          <?php else : // Fall back to Thickbox uploader ?>
-            openThickboxUploader('<?php echo $section; ?>', '<?php echo get_admin_url(); ?>media-upload.php?post_id=0&type=image&tab=library&TB_iframe=1');
-          <?php endif; ?>
+          openMediaUploader('<?php echo $section; ?>', "<?php _e('Edit Image'); ?>", "<?php _e('Select Image'); ?>");
         <?php endif; ?>
         removeWPUserAvatar('<?php echo htmlspecialchars_decode($avatar_thumb); ?>');
       });

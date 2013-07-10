@@ -1,4 +1,4 @@
-// Backbone uploader for WP 3.5
+// Media uploader
 function openMediaUploader(section, edit_text, insert_text){
   wp.media.wpUserAvatar = {
     get: function(){
@@ -52,14 +52,6 @@ function openMediaUploader(section, edit_text, insert_text){
   jQuery(wp.media.wpUserAvatar.init);
 }
 
-// Thickbox uploader
-function openThickboxUploader(section, iframe){
-  jQuery('body').on('click', '#wpua-add', function(e){
-    e.preventDefault();
-    tb_show('WP User Avatar: ' + section, iframe);
-  });
-}
-
 // Set WP User Avatar
 function setWPUserAvatar(attachment, imageURL){
   jQuery('#wp-user-avatar', window.parent.document).val(attachment);
@@ -68,12 +60,7 @@ function setWPUserAvatar(attachment, imageURL){
   jQuery('#wpua-remove', window.parent.document).show();
   jQuery('#wpua-thumbnail', window.parent.document).hide();
   jQuery('#wp_user_avatar_radio', window.parent.document).trigger('click');
-  // Check if WP 3.5
-  if(typeof(wp) != 'undefined'){
-    wp.media.wpUserAvatar.frame().close()
-  } else {
-    window.parent.tb_remove();
-  }
+  wp.media.wpUserAvatar.frame().close()
 }
 
 // Remove WP User Avatar
