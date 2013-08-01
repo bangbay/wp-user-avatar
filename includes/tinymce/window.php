@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.5.3
+ * @version 1.5.4
  */
 
 if(!defined('ABSPATH')){
@@ -30,13 +30,13 @@ if(!defined('ABSPATH')){
       var target = document.getElementById('wp_user_avatar_target').value;
 
       // Add tag to shortcode only if not blank
-      var user_tag = (user != '') ? ' user="' + user + '"' : '';
-      var size_tag = (size != '' && size_number == '') ? ' size="' + size + '"' : '';
-      size_tag = (size_number != '') ? ' size="' + size_number + '"' : size_tag;
-      var align_tag = (align != '') ? ' align="' + align + '"' : '';
-      var link_tag = (link != '' && link != 'custom-url' && link_external == '') ? ' link="' + link + '"' : '';
-      link_tag = (link_external != '') ? ' link="' + link_external + '"' : link_tag;
-      var target_tag = document.getElementById('wp_user_avatar_target').checked && (link_tag != '') ? ' target="' + target + '"' : '';
+      var user_tag = (user != "") ? ' user="' + user + '"' : "";
+      var size_tag = (size != "" && size_number == "") ? ' size="' + size + '"' : "";
+      size_tag = (size_number != "") ? ' size="' + size_number + '"' : size_tag;
+      var align_tag = (align != "") ? ' align="' + align + '"' : "";
+      var link_tag = (link != "" && link != 'custom-url' && link_external == "") ? ' link="' + link + '"' : "";
+      link_tag = (link_external != "") ? ' link="' + link_external + '"' : link_tag;
+      var target_tag = document.getElementById('wp_user_avatar_target').checked && (link_tag != "") ? ' target="' + target + '"' : "";
  
       shortcode = "<p>[avatar" + user_tag + size_tag + align_tag + link_tag + target_tag + "]</p>";
 
@@ -66,7 +66,7 @@ if(!defined('ABSPATH')){
     #wp_user_avatar_size_number_section, #wp_user_avatar_link_external_section { display: none; }
   </style>
 </head>
-<body id="link" class="wp-core-ui" onload="document.body.style.display='';" style="display:none;">
+<body id="link" class="wp-core-ui" onload="document.body.style.display="";" style="display:none;">
   <form name="wpUserAvatar" action="#">
     <p><label for="<?php esc_attr_e('wp_user_avatar_user'); ?>"><strong><?php _e('User Name'); ?>:</strong></label>
     <select id="<?php esc_attr_e('wp_user_avatar_user'); ?>" name="<?php esc_attr_e('wp_user_avatar_user'); ?>">

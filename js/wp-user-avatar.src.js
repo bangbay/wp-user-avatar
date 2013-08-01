@@ -55,9 +55,9 @@ function wpuaMediaUploader(section, edit_text, insert_text){
 // Set WP User Avatar
 function wpuaSetAvatar(attachment, imageURL){
   jQuery('#wp-user-avatar', window.parent.document).val(attachment);
-  jQuery('#wpua-preview', window.parent.document).find('img').attr('src', imageURL).removeAttr('width', '').removeAttr('height', '');
+  jQuery('#wpua-preview', window.parent.document).find('img').attr('src', imageURL).removeAttr('width', "").removeAttr('height', "");
   jQuery('#wpua-message', window.parent.document).show();
-  jQuery('#wpua-remove', window.parent.document).show();
+  jQuery('#wpua-remove', window.parent.document).removeClass('wpua-hide').show();
   jQuery('#wpua-thumbnail', window.parent.document).hide();
   jQuery('#wp_user_avatar_radio', window.parent.document).trigger('click');
   wp.media.wpUserAvatar.frame().close()
@@ -69,9 +69,19 @@ function wpuaRemoveAvatar(avatar_thumb){
     e.preventDefault();
     jQuery(this).hide();
     jQuery('#wpua-edit, #wpua-thumbnail').hide();
-    jQuery('#wpua-preview').find('img').attr('src', avatar_thumb).removeAttr('width', '').removeAttr('height', '');
-    jQuery('#wp-user-avatar').val('');
+    jQuery('#wpua-preview').find('img').attr('src', avatar_thumb).removeAttr('width', "").removeAttr('height', "");
+    jQuery('#wp-user-avatar').val("");
     jQuery('#wpua-message').show();
     jQuery('#wp_user_avatar_radio').trigger('click');
   });
 }
+
+jQuery(function(){
+  // Add enctype to form with JavaScript as backup
+  jQuery('#your-profile').attr('enctype', 'multipart/form-data');
+  // Remove/edit settings
+  if(typeof(wp) != 'undefined'){
+    wpuaMediaUploader(wpua_custom.section, wpua_custom.edit_image, wpua_custom.select_image);
+  }
+  wpuaRemoveAvatar(wpua_custom.avatar_thumb);
+});
