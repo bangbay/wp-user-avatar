@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version:  1.5.5
+Version: 1.5.5
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -77,7 +77,7 @@ if((bool) $wpua_tinymce == 1){
 }
 
 // Load translations
-load_plugin_textdomain('wp-user-avatar', '', WPUA_FOLDER.'/lang');
+// load_plugin_textdomain('wp-user-avatar', "", WPUA_FOLDER.'/lang');
 
 // Initialize default settings
 register_activation_hook(WPUA_ABSPATH.'wp-user-avatar.php', 'wpua_options');
@@ -206,7 +206,7 @@ if((bool) $wpua_allow_upload == 1){
   // Restrict access to pages
   function wpua_subscriber_offlimits(){
     global $current_user, $pagenow, $wpua_edit_avatar;
-    if($wpua_edit_avatar == 1){
+    if((bool) $wpua_edit_avatar == 1){
       $offlimits = array('edit.php', 'edit-comments.php', 'post-new.php', 'tools.php');
     } else {
       $offlimits = array('edit.php', 'edit-comments.php', 'post.php', 'post-new.php', 'tools.php');
@@ -280,7 +280,7 @@ if(!class_exists('wp_user_avatar')){
         add_action('admin_menu', 'wpua_admin');
         add_filter('plugin_action_links', array($this, 'wpua_plugin_settings_links'), 10, 2);
         // Hide column in Users table if default avatars are enabled
-        if(is_admin() && (bool) $show_avatars == 0){
+        if((bool) $show_avatars == 0 && is_admin()){
           add_filter('manage_users_columns', array($this, 'wpua_add_column'), 10, 1);
           add_filter('manage_users_custom_column', array($this, 'wpua_show_column'), 10, 3);
         }
@@ -325,7 +325,7 @@ if(!class_exists('wp_user_avatar')){
           <br />
           <?php _e('Allowed Files'); ?>: <?php _e('<code>jpg jpeg png gif</code>'); ?>
         </p>
-      <?php elseif(!current_user_can('upload_files') && has_wp_user_avatar($current_user->ID) && wpua_author($wpua, $current_user->ID) && $wpua_edit_avatar == 1) : // Edit button ?>
+      <?php elseif((bool) $wpua_edit_avatar == 1 && !current_user_can('upload_files') && has_wp_user_avatar($current_user->ID) && wpua_author($wpua, $current_user->ID)) : // Edit button ?>
         <?php $edit_attachment_link = add_query_arg(array('post' => $wpua, 'action' => 'edit'), admin_url('post.php')); ?>
         <p><button type="button" class="button" id="wpua-edit" name="wpua-edit" onclick="window.open('<?php echo $edit_attachment_link; ?>', '_self');"><?php _e('Edit Image'); ?></button></p>
       <?php endif; ?>
@@ -351,7 +351,7 @@ if(!class_exists('wp_user_avatar')){
 
     // Set upload size limit for users without upload_files capability
     function wpua_handle_upload_prefilter($file){
-      global $wpua_upload_size_limit, $wpua_upload_size_limit_with_units;
+      global $wpua_upload_size_limit;
       $size = $file['size'];
       if($size > $wpua_upload_size_limit){
         $file['error'] = __('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.');
@@ -533,7 +533,7 @@ if(!class_exists('wp_user_avatar')){
   }
 
   // Replace get_avatar only in get_wp_user_avatar
-  function wpua_get_avatar_filter($avatar, $id_or_email, $size="", $default="", $alt=""){
+  function wpua_get_avatar_filter($avatar, $id_or_email="", $size="", $default="", $alt=""){
     global $avatar_default, $comment, $mustache_admin, $mustache_avatar, $mustache_medium, $mustache_original, $mustache_thumbnail, $post, $wpua_avatar_default, $wpua_disable_gravatar;
     // User has WPUA
     if(is_object($id_or_email)){
@@ -546,7 +546,7 @@ if(!class_exists('wp_user_avatar')){
       if(has_wp_user_avatar($id_or_email)){
         $avatar = get_wp_user_avatar($id_or_email, $size, $default, $alt);
       // User has Gravatar and Gravatar is not disabled
-      } elseif(wpua_has_gravatar($id_or_email) && $wpua_disable_gravatar != 1){
+      } elseif((bool) $wpua_disable_gravatar != 1 && wpua_has_gravatar($id_or_email)){
         $avatar = $avatar;
       // User doesn't have WPUA or Gravatar and Default Avatar is wp_user_avatar, show custom Default Avatar
       } elseif($avatar_default == 'wp_user_avatar'){
@@ -785,7 +785,7 @@ if(!class_exists('wp_user_avatar')){
       $hide_remove = ' class="wpua-hide"';
     }
     // Default Avatar is wp_user_avatar, check the radio button next to it
-    $selected_avatar = ($avatar_default == 'wp_user_avatar' || (bool) $wpua_disable_gravatar == 1) ? ' checked="checked" ' : "";
+    $selected_avatar = ((bool) $wpua_disable_gravatar == 1 || $avatar_default == 'wp_user_avatar') ? ' checked="checked" ' : "";
     // Wrap WPUA in div
     $avatar_thumb_img = '<div id="wpua-preview"><img src="'.$avatar_thumb.'" width="32" /></div>';
     // Add WPUA to list
@@ -796,7 +796,7 @@ if(!class_exists('wp_user_avatar')){
     $wpua_list .= '<a href="#" id="wpua-remove"'.$hide_remove.'>'.__('Remove').'</a></p>';
     $wpua_list .= '<input type="hidden" id="wp-user-avatar" name="avatar_default_wp_user_avatar" value="'.$wpua_avatar_default.'">';
     $wpua_list .= '<p id="wpua-message">'.sprintf(__('Click %s to save your changes', 'wp-user-avatar'), '&ldquo;'.__('Save Changes').'&rdquo;').'</p>';
-    if($wpua_disable_gravatar != 1){
+    if((bool) $wpua_disable_gravatar != 1){
       return $wpua_list.'<div id="wp-avatars">'.$avatar_list.'</div>';
     } else {
       return $wpua_list;
@@ -851,7 +851,7 @@ if(!class_exists('wp_user_avatar')){
     if(isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true' && (empty($wpua_allow_upload) || empty($wpua_edit_avatar))){
       wpua_subscriber_remove_cap();
     }
-    $hide_size = ($wpua_allow_upload != 1) ? ' class="wpua-hide"' : "";
+    $hide_size = (bool) $wpua_allow_upload != 1 ? ' class="wpua-hide"' : "";
   ?>
     <div class="wrap">
       <?php screen_icon(); ?>

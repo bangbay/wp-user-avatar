@@ -237,7 +237,6 @@ Outputs:
 = 1.5.4 =
 * Add: Option to enable avatar editing privilege for Subscribers
 * Add: Swedish translation
-* Update: Check if attachment exists in has_wp_user_avatar
 * Update: Move inline JavaScript to wp-user-avatar.js and wp-user-avatar-admin.js
 * Update: Load JavaScript in footer
 * Update: Translations
