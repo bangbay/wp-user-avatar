@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version  1.5.4
+ * @version  1.5.5
  */
 /*
 Plugin Name: WP User Avatar
@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version:  1.5.4
+Version:  1.5.5
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -20,7 +20,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', ' 1.5.4');
+define('WPUA_VERSION', ' 1.5.5');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -28,13 +28,11 @@ define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
 // Define global variables
 $avatar_default = get_option('avatar_default');
 $show_avatars = get_option('show_avatars');
-
 $wpua_allow_upload = get_option('wp_user_avatar_allow_upload');
 $wpua_avatar_default = get_option('avatar_default_wp_user_avatar');
 $wpua_disable_gravatar = get_option('wp_user_avatar_disable_gravatar');
 $wpua_edit_avatar = get_option('wp_user_avatar_edit_avatar');
 $wpua_tinymce = get_option('wp_user_avatar_tinymce');
-
 $mustache_original = WPUA_URLPATH.'images/wp-user-avatar.png';
 $mustache_medium = WPUA_URLPATH.'images/wp-user-avatar-300x300.png';
 $mustache_thumbnail = WPUA_URLPATH.'images/wp-user-avatar-150x150.png';
@@ -173,16 +171,6 @@ if((bool) $wpua_allow_upload == 1){
     return in_array($role, (array) $user->roles);
   }
 
-  // Give subscribers edit_posts capability
-  function wpua_subscriber_add_cap(){
-    global $blog_id, $wpdb;
-    $wp_user_roles = $wpdb->get_blog_prefix($blog_id).'user_roles';
-    $user_roles = get_option($wp_user_roles);
-    $user_roles['subscriber']['capabilities']['edit_posts'] = true;
-    update_option($wp_user_roles, $user_roles);
-  }
-  add_action('admin_init', 'wpua_subscriber_add_cap');
-
   // Remove menu items
   function wpua_subscriber_remove_menu_pages(){
     global $current_user;
@@ -231,6 +219,18 @@ if((bool) $wpua_allow_upload == 1){
     }
   }
   add_action('admin_init', 'wpua_subscriber_offlimits');
+}
+
+if((bool) $wpua_allow_upload == 1 && (bool) $wpua_edit_avatar == 1){
+  // Give subscribers edit_posts capability
+  function wpua_subscriber_add_cap(){
+    global $blog_id, $wpdb;
+    $wp_user_roles = $wpdb->get_blog_prefix($blog_id).'user_roles';
+    $user_roles = get_option($wp_user_roles);
+    $user_roles['subscriber']['capabilities']['edit_posts'] = true;
+    update_option($wp_user_roles, $user_roles);
+  }
+  add_action('admin_init', 'wpua_subscriber_add_cap');
 }
 
 // Remove subscribers edit_posts capability
@@ -289,7 +289,7 @@ if(!class_exists('wp_user_avatar')){
 
     // Add to edit user profile
     function wpua_action_show_user_profile($user){
-      global $blog_id, $current_user, $post, $show_avatars, $wpdb, $wpua_allow_upload, $wpua_upload_size_limit_with_units;
+      global $blog_id, $current_user, $post, $show_avatars, $wpdb, $wpua_allow_upload, $wpua_edit_avatar, $wpua_upload_size_limit_with_units;
       // Get WPUA attachment ID
       $wpua = get_user_meta($user->ID, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
       // Show remove button if WPUA is set
@@ -325,7 +325,7 @@ if(!class_exists('wp_user_avatar')){
           <br />
           <?php _e('Allowed Files'); ?>: <?php _e('<code>jpg jpeg png gif</code>'); ?>
         </p>
-      <?php elseif(!current_user_can('upload_files') && has_wp_user_avatar($current_user->ID) && wpua_author($wpua, $current_user->ID)) : // Edit button ?>
+      <?php elseif(!current_user_can('upload_files') && has_wp_user_avatar($current_user->ID) && wpua_author($wpua, $current_user->ID) && $wpua_edit_avatar == 1) : // Edit button ?>
         <?php $edit_attachment_link = add_query_arg(array('post' => $wpua, 'action' => 'edit'), admin_url('post.php')); ?>
         <p><button type="button" class="button" id="wpua-edit" name="wpua-edit" onclick="window.open('<?php echo $edit_attachment_link; ?>', '_self');"><?php _e('Edit Image'); ?></button></p>
       <?php endif; ?>
@@ -848,7 +848,7 @@ if(!class_exists('wp_user_avatar')){
   function wpua_options_page(){
     global $show_avatars, $upload_size_limit_with_units, $wpua_allow_upload, $wpua_disable_gravatar, $wpua_edit_avatar, $wpua_tinymce, $wpua_upload_size_limit, $wpua_upload_size_limit_with_units;
     // Give subscribers edit_posts capability
-    if(isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true' && empty($wpua_allow_upload)){
+    if(isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true' && (empty($wpua_allow_upload) || empty($wpua_edit_avatar))){
       wpua_subscriber_remove_cap();
     }
     $hide_size = ($wpua_allow_upload != 1) ? ' class="wpua-hide"' : "";

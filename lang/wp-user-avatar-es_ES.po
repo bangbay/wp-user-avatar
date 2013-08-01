@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.5.4\n"
+"Project-Id-Version: WP User Avatar 1.5.5\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
 "PO-Revision-Date: 2013-07-31 00:00-0000\n"
 "Language: es_ES\n"

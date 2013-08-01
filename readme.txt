@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.5
 Tested up to: 3.7-alpha-24927
-Stable tag: 1.5.4
+Stable tag: 1.5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -230,15 +230,19 @@ Outputs:
 
 == Changelog ==
 
+= 1.5.5 =
+* Bug Fix: Hide "Edit Image" button if Subscriber can't edit avatar
+* Bug Fix: Remove edit_posts capability if Subscriber can't edit avatar
+
 = 1.5.4 =
 * Add: Option to enable avatar editing privilege for Subscribers
+* Add: Swedish translation
 * Update: Check if attachment exists in has_wp_user_avatar
 * Update: Move inline JavaScript to wp-user-avatar.js and wp-user-avatar-admin.js
 * Update: Load JavaScript in footer
 * Update: Translations
 
 = 1.5.3 =
-* Add: Swedish translation
 * Remove: Option to disable scripts in front pages
 * Update: Load media upload scripts only on profile and avatar admin pages
 * Update: Translations
@@ -368,7 +372,7 @@ Outputs:
 
 == Upgrade Notice ==
 
-= 1.5.4 =
+= 1.5.5 =
 * Notice: WP User Avatar 1.5.3 only supports WordPress 3.5 and above. If you are using an older version of WordPress, please upgrade your version of WordPress first.
 
 = 1.5.3 =
