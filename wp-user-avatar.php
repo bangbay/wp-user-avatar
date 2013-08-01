@@ -77,7 +77,7 @@ if((bool) $wpua_tinymce == 1){
 }
 
 // Load translations
-// load_plugin_textdomain('wp-user-avatar', "", WPUA_FOLDER.'/lang');
+load_plugin_textdomain('wp-user-avatar', "", WPUA_FOLDER.'/lang');
 
 // Initialize default settings
 register_activation_hook(WPUA_ABSPATH.'wp-user-avatar.php', 'wpua_options');
