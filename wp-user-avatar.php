@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version  1.5.5
+ * @version  1.5.6
  */
 /*
 Plugin Name: WP User Avatar
@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.5.5
+Version: 1.5.6
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -20,7 +20,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', ' 1.5.5');
+define('WPUA_VERSION', ' 1.5.6');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -38,7 +38,6 @@ $mustache_medium = WPUA_URLPATH.'images/wp-user-avatar-300x300.png';
 $mustache_thumbnail = WPUA_URLPATH.'images/wp-user-avatar-150x150.png';
 $mustache_avatar = WPUA_URLPATH.'images/wp-user-avatar-96x96.png';
 $mustache_admin = WPUA_URLPATH.'images/wp-user-avatar-32x32.png';
-$ssl = is_ssl() ? 's' : "";
 
 // Check for updates
 $wpua_default_avatar_updated = get_option('wp_user_avatar_default_avatar_updated');
@@ -501,7 +500,6 @@ if(!class_exists('wp_user_avatar')){
 
   // Returns true if user has Gravatar-hosted image
   function wpua_has_gravatar($id_or_email, $has_gravatar=false, $user="", $email=""){
-    global $ssl;
     if(!is_object($id_or_email) && !empty($id_or_email)){
       // Find user by ID or e-mail address
       $user = is_numeric($id_or_email) ? get_user_by('id', $id_or_email) : get_user_by('email', $id_or_email);
@@ -509,12 +507,15 @@ if(!class_exists('wp_user_avatar')){
       $email = !empty($user) ? $user->user_email : "";
     }
     // Check if Gravatar image returns 200 (OK) or 404 (Not Found)
-    if(!empty($email)){
-      $hash = md5(strtolower(trim($email)));
-      $gravatar = 'http'.$ssl.'://www.gravatar.com/avatar/'.$hash.'?d=404';
-      $headers = @get_headers($gravatar);
-      $has_gravatar = !preg_match("|200|", $headers[0]) ? false : true;
+    $hash = md5(strtolower(trim($email)));
+    $gravatar = 'http://www.gravatar.com/avatar/'.$hash.'?d=404';
+    $data = wp_cache_get($hash);
+    if(false === $data){
+      $response = wp_remote_head($gravatar);
+      $data = is_wp_error($response) ? 'not200' : $response['response']['code'];
+      wp_cache_set($hash, $data, $group="", $expire=60*5);
     }
+    $has_gravatar = ($data == '200') ? true : false;
     return $has_gravatar;
   }
 

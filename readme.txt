@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.5
 Tested up to: 3.7-alpha-24927
-Stable tag: 1.5.5
+Stable tag: 1.5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -230,6 +230,9 @@ Outputs:
 
 == Changelog ==
 
+= 1.5.6 =
+* Update: Use cache for wpua_has_gravatar
+
 = 1.5.5 =
 * Bug Fix: Hide "Edit Image" button if Subscriber can't edit avatar
 * Bug Fix: Remove edit_posts capability if Subscriber can't edit avatar
@@ -371,7 +374,7 @@ Outputs:
 
 == Upgrade Notice ==
 
-= 1.5.5 =
+= 1.5.6 =
 * Notice: WP User Avatar 1.5.3 only supports WordPress 3.5 and above. If you are using an older version of WordPress, please upgrade your version of WordPress first.
 
 = 1.5.3 =

@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.5.5\n"
+"Project-Id-Version: WP User Avatar 1.5.6\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2013-07-31 00:00-0000\n"
+"PO-Revision-Date: 2013-08-08 00:00-0000\n"
 "Language: sv_SE\n"
 "Last-Translator: Mattias Tengblad <mst@eyesx.com>\n"
 "Language-Team: WordPress Sverige <info@wpsv.se>\n"
@@ -14,29 +14,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: wp-user-avatar.php:341
-#: wp-user-avatar.php:798
+#: wp-user-avatar.php:340
+#: wp-user-avatar.php:799
 msgid "Click %s to save your changes"
 msgstr "Klicka på %s för att spara dina ändringar"
 
-#: wp-user-avatar.php:870
+#: wp-user-avatar.php:871
 msgid "Add avatar button to Visual Editor"
 msgstr "Lägg till knapp för avatarer i den visuella redigeraren"
 
-#: wp-user-avatar.php:875
+#: wp-user-avatar.php:876
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Tillåt medarbetare & prenumeranter att ladda upp avatarer"
 
-#: wp-user-avatar.php:880
+#: wp-user-avatar.php:881
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Inaktivera Gravatar och använd endast lokala avatarer"
 
-#: wp-user-avatar.php:888
-#: wp-user-avatar.php:893
+#: wp-user-avatar.php:889
+#: wp-user-avatar.php:894
 msgid "Upload Size Limit (only for Contributors & Subscribers)"
 msgstr "Storleksgräns för uppladdningar (endast för medarbetare & prenumeranter)"
 
-#: wp-user-avatar.php:902
+#: wp-user-avatar.php:903
 msgid "Allow users to edit avatars"
 msgstr "Tillåt användare att redigera avatarer"
 
