@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version  1.5.6
+ * @version  1.5.7
  */
 /*
 Plugin Name: WP User Avatar
@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.5.6
+Version: 1.5.7
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -20,7 +20,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', ' 1.5.6');
+define('WPUA_VERSION', ' 1.5.7');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -387,12 +387,10 @@ if(!class_exists('wp_user_avatar')){
           }
           $name = $_FILES['wp-user-avatar-file']['name'];
           $file = wp_handle_upload($_FILES['wp-user-avatar-file'], array('test_form' => false));
-          $type = $file['type'];
-          // Allow only JPG, GIF, PNG
-          if($file['error'] || !preg_match('/(jpe?g|gif|png)$/i', $type)){
-            if($file['error']){
-              wp_die($file['error']);
-            } else {
+          if(isset($_FILES['wp-user-avatar-file']['type'])){
+            $type = $_FILES['wp-user-avatar-file']['type'];
+            // Allow only JPG, GIF, PNG
+            if(!preg_match('/(jpe?g|gif|png)$/i', $type)){
               wp_die(__('Sorry, this file type is not permitted for security reasons.'));
             }
           }
@@ -412,7 +410,8 @@ if(!class_exists('wp_user_avatar')){
           $attachment = array(
             'guid'           => $url,
             'post_mime_type' => $type,
-            'post_title'     => $title
+            'post_title'     => $title,
+            'post_content'     => ""
           );
           // This should never be set as it would then overwrite an existing attachment
           if(isset($attachment['ID'])){
@@ -474,8 +473,10 @@ if(!class_exists('wp_user_avatar')){
       if(current_user_can('upload_files')){
         wp_enqueue_script('admin-bar');
         wp_enqueue_media();
+        wp_enqueue_script('wp-user-avatar', WPUA_URLPATH.'js/wp-user-avatar.js', array('jquery'), WPUA_VERSION, true);
+      } else {
+        wp_enqueue_script('wp-user-avatar', WPUA_URLPATH.'js/wp-user-avatar-user.js', array('jquery'), WPUA_VERSION, true);
       }
-      wp_enqueue_script('wp-user-avatar', WPUA_URLPATH.'js/wp-user-avatar.js', array('jquery'), WPUA_VERSION, true);
       wp_enqueue_style('wp-user-avatar', WPUA_URLPATH.'css/wp-user-avatar.css', "", WPUA_VERSION);
       // Admin scripts
       if($pagenow == 'options-discussion.php' || ($pagenow == 'options-general.php' && isset($_GET['page']) && $_GET['page'] == 'wp-user-avatar')){
