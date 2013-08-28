@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version  1.5.7
+ * @version  1.5.8
  */
 /*
 Plugin Name: WP User Avatar
@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.5.7
+Version: 1.5.8
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -20,7 +20,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', ' 1.5.7');
+define('WPUA_VERSION', ' 1.5.8');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -382,8 +382,10 @@ if(!class_exists('wp_user_avatar')){
         // Create attachment from upload
         if(isset($_POST['upload-wp-user-avatar']) && $_POST['upload-wp-user-avatar']){
           if(!function_exists('wp_handle_upload')){
-            require_once(ABSPATH.'wp-admin/includes/admin.php');
             require_once(ABSPATH.'wp-admin/includes/file.php');
+          }
+          if(!function_exists('wp_generate_attachment_metadata')){
+            require_once(ABSPATH.'wp-admin/includes/image.php');
           }
           $name = $_FILES['wp-user-avatar-file']['name'];
           $file = wp_handle_upload($_FILES['wp-user-avatar-file'], array('test_form' => false));
@@ -420,7 +422,6 @@ if(!class_exists('wp_user_avatar')){
           // Save the attachment metadata
           $attachment_id = wp_insert_attachment($attachment, $file);
           if(!is_wp_error($attachment_id)){
-            require_once(ABSPATH.'wp-admin/includes/image.php');
             wp_update_attachment_metadata($attachment_id, wp_generate_attachment_metadata($attachment_id, $file));
             $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %d", '_wp_attachment_wp_user_avatar', $user_id));
             add_post_meta($attachment_id, '_wp_attachment_wp_user_avatar', $user_id);
