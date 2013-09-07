@@ -273,7 +273,7 @@ if(!class_exists('wp_user_avatar')){
         }
         // Prefilter upload size
         if(!current_user_can('upload_files')){
-          add_filter('wp_handle_upload_prefilter', array($this, 'wpua_handle_upload_prefilter'), 10, 1);
+          add_filter('wp_handle_upload_prefilter', array($this, 'wpua_handle_upload_prefilter'));
         }
         // Admin menu settings
         add_action('admin_menu', 'wpua_admin');
@@ -306,6 +306,13 @@ if(!class_exists('wp_user_avatar')){
         <h2 class="entry-title"><?php _e('Avatar'); ?></h2>
         <fieldset class="bbp-form">
           <legend><?php _e('Image'); ?></legend>
+      <?php elseif(class_exists('WPUF_Main') && is_page()) : // Add to WP User Frontend profile with same style ?>
+        <fieldset>
+          <legend><?php _e('Avatar') ?></legend>
+          <table class="wpuf-table">
+            <tr>
+              <th><label for="wp_user_avatar"><?php _e('Image'); ?></label></th>
+              <td>
       <?php else : // Add to profile with admin style ?>
         <h3><?php _e('Avatar') ?></h3>
         <table class="form-table">
@@ -317,8 +324,8 @@ if(!class_exists('wp_user_avatar')){
       <?php if(current_user_can('upload_files')) : // Button to launch Media uploader ?>
         <p><button type="button" class="button" id="wpua-add" name="wpua-add"><?php _e('Edit Image'); ?></button></p>
       <?php elseif(!current_user_can('upload_files') && !has_wp_user_avatar($current_user->ID)) : // Upload button ?>
-        <input name="wp-user-avatar-file" id="wpua-file" type="file" />
-        <button type="submit" class="button" id="upload-wp-user-avatar" name="upload-wp-user-avatar" value="<?php _e('Upload'); ?>"><?php _e('Upload'); ?></button>
+        <input name="wpua-file" id="wpua-file" type="file" />
+        <button type="submit" class="button" id="wpua-upload" name="submit" value="<?php _e('Upload'); ?>"><?php _e('Upload'); ?></button>
         <p>
           <?php printf(__('Maximum upload file size: %d%s.'), esc_html($wpua_upload_size_limit_with_units), esc_html('KB')); ?>
           <br />
@@ -340,6 +347,11 @@ if(!class_exists('wp_user_avatar')){
       <p id="wpua-message"><?php printf(__('Click %s to save your changes', 'wp-user-avatar'), $profile); ?></p>
       <?php if(class_exists('bbPress') && bbp_is_edit()) : // Add to bbPress profile with same style ?>
         </fieldset>
+      <?php elseif(class_exists('WPUF_Main') && is_page()) : // Add to WP User Frontend profile with same style ?>
+              </td>
+            </tr>
+          </table>
+        </fieldset>
       <?php else : // Add to profile with admin style ?>
             </td>
           </tr>
@@ -353,7 +365,7 @@ if(!class_exists('wp_user_avatar')){
       global $wpua_upload_size_limit;
       $size = $file['size'];
       if($size > $wpua_upload_size_limit){
-        $file['error'] = __('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.');
+        wp_die(__('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.'));
       }
       return $file;
     }
@@ -368,6 +380,7 @@ if(!class_exists('wp_user_avatar')){
         add_post_meta($wpua_id, '_wp_attachment_wp_user_avatar', $user_id);
         update_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', $wpua_id);
       } else {
+        // Remove attachment info if avatar is blank
         if(isset($_POST['wp-user-avatar']) && empty($_POST['wp-user-avatar'])){
           // Uploads by user
           $attachments = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->posts WHERE post_author = %d AND post_type = %s", $user_id, 'attachment'));
@@ -380,17 +393,17 @@ if(!class_exists('wp_user_avatar')){
           update_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', "");
         }
         // Create attachment from upload
-        if(isset($_POST['upload-wp-user-avatar']) && $_POST['upload-wp-user-avatar']){
+        if(isset($_POST['submit']) && $_POST['submit'] && isset($_FILES['wpua-file'])){
           if(!function_exists('wp_handle_upload')){
             require_once(ABSPATH.'wp-admin/includes/file.php');
           }
           if(!function_exists('wp_generate_attachment_metadata')){
             require_once(ABSPATH.'wp-admin/includes/image.php');
           }
-          $name = $_FILES['wp-user-avatar-file']['name'];
-          $file = wp_handle_upload($_FILES['wp-user-avatar-file'], array('test_form' => false));
-          if(isset($_FILES['wp-user-avatar-file']['type'])){
-            $type = $_FILES['wp-user-avatar-file']['type'];
+          $name = $_FILES['wpua-file']['name'];
+          $file = wp_handle_upload($_FILES['wpua-file'], array('test_form' => false));
+          if(isset($_FILES['wpua-file']['type'])){
+            $type = $_FILES['wpua-file']['type'];
             // Allow only JPG, GIF, PNG
             if(!preg_match('/(jpe?g|gif|png)$/i', $type)){
               wp_die(__('Sorry, this file type is not permitted for security reasons.'));
@@ -609,7 +622,7 @@ if(!class_exists('wp_user_avatar')){
         $wpua_image = get_avatar($id_or_email, $size);
         // Takes the img tag, extracts the src
         $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $wpua_image, $matches, PREG_SET_ORDER);
-        $default = $matches [0] [1];
+        $default = !empty($matches) ? $matches [0] [1] : "";
       }
     } else {
       if(!empty($wpua_avatar_default)){
@@ -703,7 +716,7 @@ if(!class_exists('wp_user_avatar')){
     // Takes the img tag, extracts the src
     if(!empty($wpua_image)){
       $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $wpua_image, $matches, PREG_SET_ORDER);
-      $wpua_image_src = $matches [0] [1];
+      $wpua_image_src = !empty($matches) ? $matches [0] [1] : "";
     }
     return $wpua_image_src;
   }

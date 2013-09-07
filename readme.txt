@@ -232,6 +232,8 @@ Outputs:
 
 = 1.5.8 =
 * Bug Fix: Add function exists checks to prevent redeclare errors
+* Bug Fix: Page die if file upload is too big
+* Bug Fix: Upload file with submit
 
 = 1.5.7 =
 * Bug Fix: Separate out JavaScript for Subscribers
