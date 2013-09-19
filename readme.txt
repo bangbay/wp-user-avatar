@@ -4,8 +4,8 @@ Contributors: bangbay
 Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.5
-Tested up to: 3.6
-Stable tag: 1.5.8
+Tested up to: 3.6.1
+Stable tag: 1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,9 +126,10 @@ First, choose a theme that has avatar support. In your theme, you have a choice 
 
 1. Allows you to use the values "original", "large", "medium", or "thumbnail" for your avatar size.
 2. Doesn't add a fixed width and height to the image if you use the aforementioned values. This will give you more flexibility to resize the image with CSS.
-3. Optionally adds CSS classes "alignleft", "alignright", or "aligncenter" to position your avatar.
-4. Shows nothing if the user has no WP User Avatar image.
-5. Shows the user's [Gravatar](http://gravatar.com/) avatar or Default Avatar only if "Show Avatars" is enabled in your WP User Avatar settings.
+3. Allows you to use custom image sizes registered with add_image_size (fixed widths and heights are added to the image).
+4. Optionally adds CSS classes "alignleft", "alignright", or "aligncenter" to position your avatar.
+5. Shows nothing if the user has no WP User Avatar image.
+6. Shows the user's [Gravatar](http://gravatar.com/) avatar or Default Avatar only if "Show Avatars" is enabled in your WP User Avatar settings.
 
 = get_avatar =
 
@@ -230,24 +231,29 @@ Outputs:
 
 == Changelog ==
 
+= 1.6 =
+* Add: Recognition of sizes registered with add_image_size
+* Add: Resize image options for Contributors & Subscribers
+* Bug Fix: Rerrange CSS class names
+
 = 1.5.8 =
 * Bug Fix: Add function exists checks to prevent redeclare errors
 * Bug Fix: Page die if file upload is too big
 * Bug Fix: Upload file with submit
 
 = 1.5.7 =
-* Bug Fix: Separate out JavaScript for Subscribers
+* Bug Fix: Separate out JavaScript for Contributors & Subscribers
 * Bug Fix: Subscriber uploader not finding error type
 
 = 1.5.6 =
 * Update: Use cache for wpua_has_gravatar
 
 = 1.5.5 =
-* Bug Fix: Hide "Edit Image" button if Subscriber can't edit avatar
-* Bug Fix: Remove edit_posts capability if Subscriber can't edit avatar
+* Bug Fix: Hide "Edit Image" button if Contributors & Subscribers can't edit avatar
+* Bug Fix: Remove edit_posts capability if Contributors & Subscribers can't edit avatar
 
 = 1.5.4 =
-* Add: Option to enable avatar editing privilege for Subscribers
+* Add: Option to enable avatar editing privilege for Contributors & Subscribers
 * Add: Swedish translation
 * Update: Move inline JavaScript to wp-user-avatar.js and wp-user-avatar-admin.js
 * Update: Load JavaScript in footer
@@ -279,7 +285,7 @@ Outputs:
 * Bug Fix: Use wp_die for errors
 
 = 1.4 =
-* Add: Uploader for Subscribers and Contributors
+* Add: Uploader for Contributors & Subscribers
 * Add: Media states for avatar images
 * Add: Plugin admin settings
 * Update: Change support only to WP 3.4+

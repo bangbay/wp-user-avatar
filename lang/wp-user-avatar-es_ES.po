@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.5.8\n"
+"Project-Id-Version: WP User Avatar 1.6\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2013-09-07 00:00-0000\n"
+"PO-Revision-Date: 2013-09-20 00:00-0000\n"
 "Language: es_ES\n"
 "Last-Translator: WP User Avatar\n"
 "Language-Team: WP User Avatar\n"
@@ -14,31 +14,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: wp-user-avatar.php:347
-#: wp-user-avatar.php:814
+#: wp-user-avatar.php:358
+#: wp-user-avatar.php:851
 msgid "Click %s to save your changes"
 msgstr "Haz clic %s para guardar los cambios"
 
-#: wp-user-avatar.php:886
+#: wp-user-avatar.php:924
 msgid "Add avatar button to Visual Editor"
 msgstr "Añadir botón avatar al editor visual"
 
-#: wp-user-avatar.php:891
+#: wp-user-avatar.php:930
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Permitir los colaboradores y los suscriptores subir avatares"
 
-#: wp-user-avatar.php:896
+#: wp-user-avatar.php:936
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Desactivar Gravatar y utilizar sólo los avatares locales"
 
-#: wp-user-avatar.php:904
-#: wp-user-avatar.php:909
-msgid "Upload Size Limit (only for Contributors & Subscribers)"
-msgstr "Sube límite de tamaño (para colaboradores y suscriptores)"
+#: wp-user-avatar.php:947
+#: wp-user-avatar.php:952
+msgid "Upload Size Limit"
+msgstr "Sube límite de tamaño"
 
-#: wp-user-avatar.php:918
+#: wp-user-avatar.php:947
+#: wp-user-avatar.php:952
+msgid "(only for Contributors & Subscribers)"
+msgstr "(para colaboradores y suscriptores)"
+
+#: wp-user-avatar.php:962
 msgid "Allow users to edit avatars"
 msgstr "Permitir a los usuarios editar avatar"
+
+#: wp-user-avatar.php:968
+msgid "Resize avatars on upload"
+msgstr "Cambiar el tamaño de avatares en carga"
+
+#: wp-user-avatar.php:980
+msgid "Crop avatars to exact dimensions"
+msgstr "Recortar los avatares a sus dimensiones exactas"
 
 #. Plugin Name of the plugin/theme
 msgid "WP User Avatar"

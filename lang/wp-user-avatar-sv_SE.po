@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.5.8\n"
+"Project-Id-Version: WP User Avatar 1.6\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2013-09-07 00:00-0000\n"
+"PO-Revision-Date: 2013-09-20 00:00-0000\n"
 "Language: sv_SE\n"
 "Last-Translator: Mattias Tengblad <mst@eyesx.com>\n"
 "Language-Team: WordPress Sverige <info@wpsv.se>\n"
@@ -14,31 +14,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: wp-user-avatar.php:347
-#: wp-user-avatar.php:814
+#: wp-user-avatar.php:358
+#: wp-user-avatar.php:851
 msgid "Click %s to save your changes"
 msgstr "Klicka på %s för att spara dina ändringar"
 
-#: wp-user-avatar.php:886
+#: wp-user-avatar.php:924
 msgid "Add avatar button to Visual Editor"
 msgstr "Lägg till knapp för avatarer i den visuella redigeraren"
 
-#: wp-user-avatar.php:891
+#: wp-user-avatar.php:930
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Tillåt medarbetare & prenumeranter att ladda upp avatarer"
 
-#: wp-user-avatar.php:896
+#: wp-user-avatar.php:936
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Inaktivera Gravatar och använd endast lokala avatarer"
 
-#: wp-user-avatar.php:904
-#: wp-user-avatar.php:909
-msgid "Upload Size Limit (only for Contributors & Subscribers)"
-msgstr "Storleksgräns för uppladdningar (endast för medarbetare & prenumeranter)"
+#: wp-user-avatar.php:947
+#: wp-user-avatar.php:952
+msgid "Upload Size Limit"
+msgstr "Storleksgräns för uppladdningar"
 
-#: wp-user-avatar.php:918
+#: wp-user-avatar.php:947
+#: wp-user-avatar.php:952
+msgid "(only for Contributors & Subscribers)"
+msgstr "(endast för medarbetare & prenumeranter)"
+
+#: wp-user-avatar.php:962
 msgid "Allow users to edit avatars"
 msgstr "Tillåt användare att redigera avatarer"
+
+#: wp-user-avatar.php:968
+msgid "Resize avatars on upload"
+msgstr "Ändra storlek på avatarer på uppladdning"
+
+#: wp-user-avatar.php:980
+msgid "Crop avatars to exact dimensions"
+msgstr "Beskär avatarer till exakta dimensioner"
 
 #. Plugin Name of the plugin/theme
 msgid "WP User Avatar"
