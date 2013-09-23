@@ -220,6 +220,10 @@ Outputs:
 * <code>has_wp_user_avatar</code>: checks if the user has a WP User Avatar image
 * [See example usage here](http://wordpress.org/extend/plugins/wp-user-avatar/installation/)
 
+== Advanced Settings ==
+
+
+
 == Screenshots ==
 
 1. WP User Avatar admin settings.
@@ -232,6 +236,7 @@ Outputs:
 == Changelog ==
 
 = 1.6 =
+* Add: Filters to change profile HTML structure
 * Add: Recognition of sizes registered with add_image_size
 * Add: Resize image options for Contributors & Subscribers
 * Bug Fix: Rerrange CSS class names

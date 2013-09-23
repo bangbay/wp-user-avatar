@@ -13,7 +13,6 @@ jQuery(function(){
       jQuery('#wp-avatars').slideToggle(!jQuery('#wp_user_avatar_disable_gravatar').is(':checked'));
       jQuery('#wp_user_avatar_radio').trigger('click');
     }
-    jQuery('#wpua-message').show();
   });
   // Add size slider
   jQuery('#wpua-slider').slider({

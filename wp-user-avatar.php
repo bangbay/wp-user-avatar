@@ -257,6 +257,56 @@ function wpua_deactivate(){
   update_option('avatar_default', 'mystery');
 }
 
+// Before wrapper for profile
+function wpua_before_avatar(){
+  do_action('wpua_before_avatar');
+}
+
+// After wrapper for profile
+function wpua_after_avatar(){
+  do_action('wpua_after_avatar');
+}
+
+// Before avatar container
+function wpua_do_before_avatar(){ ?>
+  <?php if(class_exists('bbPress') && bbp_is_edit()) : // Add to bbPress profile with same style ?>
+    <h2 class="entry-title"><?php _e('Avatar'); ?></h2>
+    <fieldset class="bbp-form">
+      <legend><?php _e('Image'); ?></legend>
+  <?php elseif(class_exists('WPUF_Main') && is_page()) : // Add to WP User Frontend profile with same style ?>
+    <fieldset>
+      <legend><?php _e('Avatar') ?></legend>
+      <table class="wpuf-table">
+        <tr>
+          <th><label for="wp_user_avatar"><?php _e('Image'); ?></label></th>
+          <td>
+  <?php else : // Add to profile with admin style ?>
+    <h3><?php _e('Avatar') ?></h3>
+    <table class="form-table">
+      <tr>
+        <th><label for="wp_user_avatar"><?php _e('Image'); ?></label></th>
+        <td>
+  <?php endif; ?>
+  <?php
+}
+
+// After avatar container
+function wpua_do_after_avatar(){ ?>
+  <?php if(class_exists('bbPress') && bbp_is_edit()) : // Add to bbPress profile with same style ?>
+    </fieldset>
+  <?php elseif(class_exists('WPUF_Main') && is_page()) : // Add to WP User Frontend profile with same style ?>
+          </td>
+        </tr>
+      </table>
+    </fieldset>
+  <?php else : // Add to profile with admin style ?>
+        </td>
+      </tr>
+    </table>
+  <?php endif; ?>
+  <?php
+}
+
 // WP User Avatar
 if(!class_exists('wp_user_avatar')){
   class wp_user_avatar{
@@ -294,6 +344,9 @@ if(!class_exists('wp_user_avatar')){
           add_filter('manage_users_columns', array($this, 'wpua_add_column'), 10, 1);
           add_filter('manage_users_custom_column', array($this, 'wpua_show_column'), 10, 3);
         }
+        // Profile wrappers
+        add_action('wpua_before_avatar', 'wpua_do_before_avatar');
+        add_action('wpua_after_avatar', 'wpua_do_after_avatar');
       }
     }
 
@@ -313,38 +366,22 @@ if(!class_exists('wp_user_avatar')){
       // Change text on message based on current user
       $profile = ($current_user->ID == $user->ID) ? '&ldquo;'.__('Update Profile').'&rdquo;' : '&ldquo;'.__('Update User').'&rdquo;';
     ?>
-      <?php if(class_exists('bbPress') && bbp_is_edit()) : // Add to bbPress profile with same style ?>
-        <h2 class="entry-title"><?php _e('Avatar'); ?></h2>
-        <fieldset class="bbp-form">
-          <legend><?php _e('Image'); ?></legend>
-      <?php elseif(class_exists('WPUF_Main') && is_page()) : // Add to WP User Frontend profile with same style ?>
-        <fieldset>
-          <legend><?php _e('Avatar') ?></legend>
-          <table class="wpuf-table">
-            <tr>
-              <th><label for="wp_user_avatar"><?php _e('Image'); ?></label></th>
-              <td>
-      <?php else : // Add to profile with admin style ?>
-        <h3><?php _e('Avatar') ?></h3>
-        <table class="form-table">
-          <tr>
-            <th><label for="wp_user_avatar"><?php _e('Image'); ?></label></th>
-            <td>
-      <?php endif; ?>
+      <?php do_action('wpua_before_avatar'); ?>
       <input type="hidden" name="wp-user-avatar" id="wp-user-avatar" value="<?php echo $wpua; ?>" />
       <?php if(current_user_can('upload_files')) : // Button to launch Media uploader ?>
-        <p><button type="button" class="button" id="wpua-add" name="wpua-add"><?php _e('Edit Image'); ?></button></p>
+        <p id="wpua-add-button"><button type="button" class="button" id="wpua-add" name="wpua-add"><?php _e('Edit Image'); ?></button></p>
       <?php elseif(!current_user_can('upload_files') && !has_wp_user_avatar($current_user->ID)) : // Upload button ?>
-        <input name="wpua-file" id="wpua-file" type="file" />
-        <button type="submit" class="button" id="wpua-upload" name="submit" value="<?php _e('Upload'); ?>"><?php _e('Upload'); ?></button>
-        <p>
-          <?php printf(__('Maximum upload file size: %d%s.'), esc_html($wpua_upload_size_limit_with_units), esc_html('KB')); ?>
-          <br />
-          <?php _e('Allowed Files'); ?>: <?php _e('<code>jpg jpeg png gif</code>'); ?>
+        <p id="wpua-upload-button">
+          <input name="wpua-file" id="wpua-file" type="file" />
+          <button type="submit" class="button" id="wpua-upload" name="submit" value="<?php _e('Upload'); ?>"><?php _e('Upload'); ?></button>
+        </p>
+        <p id="wpua-upload-messages">
+          <span id="wpua-max-upload"><?php printf(__('Maximum upload file size: %d%s.'), esc_html($wpua_upload_size_limit_with_units), esc_html('KB')); ?></span>
+          <span id="wpua-allowed-files"><?php _e('Allowed Files'); ?>: <?php _e('<code>jpg jpeg png gif</code>'); ?></span>
         </p>
       <?php elseif((bool) $wpua_edit_avatar == 1 && !current_user_can('upload_files') && has_wp_user_avatar($current_user->ID) && wpua_author($wpua, $current_user->ID)) : // Edit button ?>
         <?php $edit_attachment_link = add_query_arg(array('post' => $wpua, 'action' => 'edit'), admin_url('post.php')); ?>
-        <p><button type="button" class="button" id="wpua-edit" name="wpua-edit" onclick="window.open('<?php echo $edit_attachment_link; ?>', '_self');"><?php _e('Edit Image'); ?></button></p>
+        <p id="wpua-edit-button"><button type="button" class="button" id="wpua-edit" name="wpua-edit" onclick="window.open('<?php echo $edit_attachment_link; ?>', '_self');"><?php _e('Edit Image'); ?></button></p>
       <?php endif; ?>
       <p id="wpua-preview">
         <img src="<?php echo $avatar_medium; ?>" alt="" />
@@ -354,20 +391,9 @@ if(!class_exists('wp_user_avatar')){
         <img src="<?php echo $avatar_thumbnail; ?>" alt="" />
         <?php _e('Thumbnail'); ?>
       </p>
-      <p><button type="button" class="button<?php echo $hide_remove; ?>" id="wpua-remove" name="wpua-remove"><?php _e('Remove'); ?></button></p>
+      <p id="wpua-remove-button"><button type="button" class="button<?php echo $hide_remove; ?>" id="wpua-remove" name="wpua-remove"><?php _e('Remove'); ?></button></p>
       <p id="wpua-message"><?php printf(__('Click %s to save your changes', 'wp-user-avatar'), $profile); ?></p>
-      <?php if(class_exists('bbPress') && bbp_is_edit()) : // Add to bbPress profile with same style ?>
-        </fieldset>
-      <?php elseif(class_exists('WPUF_Main') && is_page()) : // Add to WP User Frontend profile with same style ?>
-              </td>
-            </tr>
-          </table>
-        </fieldset>
-      <?php else : // Add to profile with admin style ?>
-            </td>
-          </tr>
-        </table>
-      <?php endif; ?>
+      <?php do_action('wpua_after_avatar'); ?>
     <?php
     }
 
@@ -1065,4 +1091,5 @@ if(!class_exists('wp_user_avatar')){
   }
   add_action('plugins_loaded', 'wpua_load');
 }
+
 ?>
