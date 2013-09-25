@@ -861,7 +861,7 @@ if(!class_exists('wp_user_avatar')){
       $hide_remove = "";
     } else {
       $avatar_thumb = $mustache_admin;
-      $hide_remove = ' class="wpua-hide"';
+      $hide_remove = ' style="display:none;"';
     }
     // Default Avatar is wp_user_avatar, check the radio button next to it
     $selected_avatar = ((bool) $wpua_disable_gravatar == 1 || $avatar_default == 'wp_user_avatar') ? ' checked="checked" ' : "";
@@ -930,8 +930,8 @@ if(!class_exists('wp_user_avatar')){
     if(isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true' && (empty($wpua_allow_upload) || empty($wpua_edit_avatar))){
       wpua_subscriber_remove_cap();
     }
-    $hide_size = (bool) $wpua_allow_upload != 1 ? ' class="wpua-hide"' : "";
-    $hide_resize = (bool) $wpua_resize_upload != 1 ? ' class="wpua-hide"' : "";
+    $hide_size = (bool) $wpua_allow_upload != 1 ? ' style="display:none;"' : "";
+    $hide_resize = (bool) $wpua_resize_upload != 1 ? ' style="display:none;"' : "";
   ?>
     <div class="wrap">
       <?php screen_icon(); ?>
