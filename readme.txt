@@ -126,7 +126,7 @@ First, choose a theme that has avatar support. In your theme, you have a choice 
 
 1. Allows you to use the values "original", "large", "medium", or "thumbnail" for your avatar size.
 2. Doesn't add a fixed width and height to the image if you use the aforementioned values. This will give you more flexibility to resize the image with CSS.
-3. Allows you to use custom image sizes registered with <code>add_image_size</code> (fixed widths and heights are added to the image).
+3. Allows you to use custom image sizes registered with [<code>add_image_size</code>](http://codex.wordpress.org/Function_Reference/add_image_size) (fixed width and height are added to the image).
 4. Optionally adds CSS classes "alignleft", "alignright", or "aligncenter" to position your avatar.
 5. Shows nothing if the user has no WP User Avatar image.
 6. Shows the user's [Gravatar](http://gravatar.com/) avatar or Default Avatar only if "Show Avatars" is enabled in your WP User Avatar settings.
