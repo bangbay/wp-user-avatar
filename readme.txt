@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.5
 Tested up to: 3.6.1
-Stable tag: 1.6
+Stable tag: 1.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -310,7 +310,10 @@ This would output:
 
 == Changelog ==
 
-= 1.6 =
+= 1.6.1 =
+* Bug Fix: Profile not saving without an avatar for Contributors & Subscribers
+
+= 1.6.0 =
 * Add: Filters to change profile HTML structure
 * Add: Recognition of sizes registered with add_image_size
 * Add: Resize image options for Contributors & Subscribers
@@ -428,7 +431,7 @@ This would output:
 = 1.1.7 =
 * Bug Fix: Change update_usermeta to update_user_meta
 
-= 1.1.6 =
+= 1.1.6.1 =
 * Bug Fix: Image not showing in user profile edit
 
 = 1.1.5a =

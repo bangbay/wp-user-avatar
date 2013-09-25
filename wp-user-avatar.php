@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.6
+ * @version 1.6.1
  */
 /*
 Plugin Name: WP User Avatar
@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.6
+Version: 1.6.1
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -20,7 +20,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', ' 1.6');
+define('WPUA_VERSION', ' 1.6.1');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -448,7 +448,7 @@ if(!class_exists('wp_user_avatar')){
           update_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', "");
         }
         // Create attachment from upload
-        if(isset($_POST['submit']) && $_POST['submit'] && isset($_FILES['wpua-file'])){
+        if(isset($_POST['submit']) && $_POST['submit'] && !empty($_FILES['wpua-file'])){
           if(!function_exists('wp_handle_upload')){
             require_once(ABSPATH.'wp-admin/includes/file.php');
           }
@@ -457,43 +457,44 @@ if(!class_exists('wp_user_avatar')){
           }
           $name = $_FILES['wpua-file']['name'];
           $file = wp_handle_upload($_FILES['wpua-file'], array('test_form' => false));
-          if(isset($_FILES['wpua-file']['type'])){
+          if(!empty($_FILES['wpua-file']['type'])){
             $type = $_FILES['wpua-file']['type'];
             // Allow only JPG, GIF, PNG
             if(!preg_match('/(jpe?g|gif|png)$/i', $type)){
               wp_die(__('Sorry, this file type is not permitted for security reasons.'));
+            } else {
+              // Break out file info
+              $name_parts = pathinfo($name);
+              $name = trim(substr($name, 0, -(1 + strlen($name_parts['extension']))));
+              $url = $file['url'];
+              $file = $file['file'];
+              $title = $name;
+              // Use image exif/iptc data for title if possible
+              if($image_meta = @wp_read_image_metadata($file)){
+                if(trim($image_meta['title']) && !is_numeric(sanitize_title($image_meta['title']))){
+                  $title = $image_meta['title'];
+                }
+              }
+              // Construct the attachment array
+              $attachment = array(
+                'guid'           => $url,
+                'post_mime_type' => $type,
+                'post_title'     => $title,
+                'post_content'     => ""
+              );
+              // This should never be set as it would then overwrite an existing attachment
+              if(isset($attachment['ID'])){
+                unset($attachment['ID']);
+              }
+              // Save the attachment metadata
+              $attachment_id = wp_insert_attachment($attachment, $file);
+              if(!is_wp_error($attachment_id)){
+                wp_update_attachment_metadata($attachment_id, wp_generate_attachment_metadata($attachment_id, $file));
+                $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %d", '_wp_attachment_wp_user_avatar', $user_id));
+                add_post_meta($attachment_id, '_wp_attachment_wp_user_avatar', $user_id);
+                update_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', $attachment_id);
+              }
             }
-          }
-          // Break out file info
-          $name_parts = pathinfo($name);
-          $name = trim(substr($name, 0, -(1 + strlen($name_parts['extension']))));
-          $url = $file['url'];
-          $file = $file['file'];
-          $title = $name;
-          // Use image exif/iptc data for title if possible
-          if($image_meta = @wp_read_image_metadata($file)){
-            if(trim($image_meta['title']) && !is_numeric(sanitize_title($image_meta['title']))){
-              $title = $image_meta['title'];
-            }
-          }
-          // Construct the attachment array
-          $attachment = array(
-            'guid'           => $url,
-            'post_mime_type' => $type,
-            'post_title'     => $title,
-            'post_content'     => ""
-          );
-          // This should never be set as it would then overwrite an existing attachment
-          if(isset($attachment['ID'])){
-            unset($attachment['ID']);
-          }
-          // Save the attachment metadata
-          $attachment_id = wp_insert_attachment($attachment, $file);
-          if(!is_wp_error($attachment_id)){
-            wp_update_attachment_metadata($attachment_id, wp_generate_attachment_metadata($attachment_id, $file));
-            $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %d", '_wp_attachment_wp_user_avatar', $user_id));
-            add_post_meta($attachment_id, '_wp_attachment_wp_user_avatar', $user_id);
-            update_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', $attachment_id);
           }
         }
       }
