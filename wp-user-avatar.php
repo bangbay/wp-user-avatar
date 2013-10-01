@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.6.1
+ * @version 1.6.2
  */
 /*
 Plugin Name: WP User Avatar
@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.6.1
+Version: 1.6.2
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -20,7 +20,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', ' 1.6.1');
+define('WPUA_VERSION', ' 1.6.2');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -531,9 +531,8 @@ if(!class_exists('wp_user_avatar')){
       global $blog_id, $wpdb;
       $wpua = get_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
       $wpua_image = wp_get_attachment_image($wpua, array(32,32));
-      if($column_name == 'wp-user-avatar'){
-        return $wpua_image;
-      }
+      if($column_name == 'wp-user-avatar'){ $value = $wpua_image; }
+      return $value;
     }
 
     // Media uploader
@@ -600,7 +599,7 @@ if(!class_exists('wp_user_avatar')){
       $user_id = !empty($user) ? $user->ID : "";
     }
     $wpua = get_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
-    $has_wpua = !empty($wpua) ? true : false;
+    $has_wpua = !empty($wpua) && wp_attachment_is_image($wpua) ? true : false;
     return $has_wpua;
   }
 
@@ -623,7 +622,7 @@ if(!class_exists('wp_user_avatar')){
       // User doesn't have WPUA or Gravatar and Default Avatar is wp_user_avatar, show custom Default Avatar
       } elseif($avatar_default == 'wp_user_avatar'){
         // Show custom Default Avatar
-        if(!empty($wpua_avatar_default)){
+        if(!empty($wpua_avatar_default) && wp_attachment_is_image($wpua_avatar_default)){
           // Get image
           $wpua_avatar_default_image = wp_get_attachment_image_src($wpua_avatar_default, array($size,$size));
           // Image src
@@ -665,7 +664,7 @@ if(!class_exists('wp_user_avatar')){
       // User doesn't have Gravatar and Default Avatar is wp_user_avatar, show custom Default Avatar
       if(!wpua_has_gravatar($id_or_email) && $avatar_default == 'wp_user_avatar'){
         // Show custom Default Avatar
-        if(!empty($wpua_avatar_default)){
+        if(!empty($wpua_avatar_default) && wp_attachment_is_image($wpua_avatar_default)){
           $wpua_avatar_default_image = wp_get_attachment_image_src($wpua_avatar_default, array($size,$size));
           $default = $wpua_avatar_default_image[0];
         } else {
@@ -679,7 +678,7 @@ if(!class_exists('wp_user_avatar')){
         $default = !empty($matches) ? $matches [0] [1] : "";
       }
     } else {
-      if(!empty($wpua_avatar_default)){
+      if(!empty($wpua_avatar_default) && wp_attachment_is_image($wpua_avatar_default)){
         $wpua_avatar_default_image = wp_get_attachment_image_src($wpua_avatar_default, array($size,$size));
         $default = $wpua_avatar_default_image[0];
       } else {
@@ -730,7 +729,7 @@ if(!class_exists('wp_user_avatar')){
     // Checks if user has WPUA
     $wpua_meta = !empty($id_or_email) ? get_the_author_meta($wpdb->get_blog_prefix($blog_id).'user_avatar', $id_or_email) : "";
     // Add alignment class
-    $alignclass = !empty($align) ? ' align'.$align : "";
+    $alignclass = !empty($align) && ($align == 'left' || $align == 'right' || $align == 'center') ? ' align'.$align : ' alignnone';
     // User has WPUA, bypass get_avatar
     if(!empty($wpua_meta)){
       // Numeric size use size array
@@ -856,7 +855,7 @@ if(!class_exists('wp_user_avatar')){
       $avatar_list .= '<br />';
     }
     // Show remove link if custom Default Avatar is set
-    if(!empty($wpua_avatar_default)){
+    if(!empty($wpua_avatar_default) && wp_attachment_is_image($wpua_avatar_default)){
       $avatar_thumb_src = wp_get_attachment_image_src($wpua_avatar_default, array(32,32));
       $avatar_thumb = $avatar_thumb_src[0];
       $hide_remove = "";

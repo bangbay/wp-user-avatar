@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.5
 Tested up to: 3.6.1
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -159,6 +159,10 @@ Yes, for registered users. Non-registered comment authors will show their [Grava
 
 Yes!
 
+= Will WP User Avatar work with BuddyPress? =
+
+No, BuddyPress has its own custom avatar functions and WP User Avatar will override only some of them. It's best to use BuddyPress without WP User Avatar.
+
 = Will WP User Avatar work with WordPress Multisite? =
 
 Yes, however, each site has its own avatar settings. If you set a WP User Avatar image on one site, you have to set it again for different sites in your network.
@@ -222,7 +226,7 @@ Outputs:
 
 == Advanced Settings ==
 
-You can change the HTML structure of the WP User Avatar section on your profile edit page by using the functions <code>wpua_before_avatar</code> and <code>wpua_after_avatar</code>. By the default, the avatar code is structured like this:
+You can change the HTML structure of the WP User Avatar section on your profile edit page by using the functions <code>wpua_before_avatar</code> and <code>wpua_after_avatar</code>. By default, the avatar code is structured like this:
 
 `
 <h3>Avatar</h3>
@@ -309,6 +313,10 @@ This would output:
 6. Options for the [avatar] shortcode.
 
 == Changelog ==
+
+= 1.6.2 =
+* Bug Fix: Show Default Avatar if attachment doesn't exist
+* Bug Fix: manage_users_custom_column not returning values
 
 = 1.6.1 =
 * Bug Fix: Profile not saving without an avatar for Contributors & Subscribers
@@ -431,7 +439,7 @@ This would output:
 = 1.1.7 =
 * Bug Fix: Change update_usermeta to update_user_meta
 
-= 1.1.6.1 =
+= 1.1.6.2 =
 * Bug Fix: Image not showing in user profile edit
 
 = 1.1.5a =

@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.6.1\n"
+"Project-Id-Version: WP User Avatar 1.6.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2013-09-25 00:00-0000\n"
+"PO-Revision-Date: 2013-10-01 00:00-0000\n"
 "Language: fr_FR\n"
 "Last-Translator: WP User Avatar\n"
 "Language-Team: WP User Avatar\n"
@@ -15,41 +15,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: wp-user-avatar.php:395
-#: wp-user-avatar.php:878
+#: wp-user-avatar.php:877
 msgid "Click %s to save your changes"
 msgstr "Cliquez sur %s pour enregistrer vos modifications"
 
-#: wp-user-avatar.php:951
+#: wp-user-avatar.php:950
 msgid "Add avatar button to Visual Editor"
 msgstr "Ajouter le bouton avatar sur l'éditeur visuel"
 
-#: wp-user-avatar.php:957
+#: wp-user-avatar.php:956
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Permettre aux contributeurs et aux abonnés d'envoyer des avatars"
 
-#: wp-user-avatar.php:963
+#: wp-user-avatar.php:962
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Désactiver Gravatar et utiliser les avatars fournis"
 
-#: wp-user-avatar.php:974
-#: wp-user-avatar.php:979
+#: wp-user-avatar.php:973
+#: wp-user-avatar.php:978
 msgid "Upload Size Limit"
 msgstr "Taille limite d'envoi de fichiers"
 
-#: wp-user-avatar.php:974
-#: wp-user-avatar.php:979
+#: wp-user-avatar.php:973
+#: wp-user-avatar.php:978
 msgid "(only for Contributors & Subscribers)"
 msgstr "(pour contributeurs et abonnés)"
 
-#: wp-user-avatar.php:989
+#: wp-user-avatar.php:988
 msgid "Allow users to edit avatars"
 msgstr "Permettre aux utilisateurs de modifier avatar"
 
-#: wp-user-avatar.php:995
+#: wp-user-avatar.php:994
 msgid "Resize avatars on upload"
 msgstr "Redimensionner avatars lors du téléchargement"
 
-#: wp-user-avatar.php:1007
+#: wp-user-avatar.php:1006
 msgid "Crop avatars to exact dimensions"
 msgstr "Recadrer les avatars pour parvenir aux dimensions exactes"
 
