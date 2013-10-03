@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.6.2
+ * @version 1.6.3
  */
 /*
 Plugin Name: WP User Avatar
@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.6.2
+Version: 1.6.3
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -20,7 +20,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', ' 1.6.2');
+define('WPUA_VERSION', ' 1.6.3');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -1002,7 +1002,7 @@ if(!class_exists('wp_user_avatar')){
                   <label for="wp_user_avatar_resize_h"><?php _e('Height'); ?></label>
                   <input name="wp_user_avatar_resize_h" type="number" step="1" min="0" id="wp_user_avatar_resize_h" value="<?php form_option('wp_user_avatar_resize_h'); ?>" class="small-text" />
                   <br />
-                  <input name="wp_user_avatar_resize_crop" type="checkbox" id="wp_user_avatar_resize_crop" value="1" <?php checked('1', $wp_user_avatar_resize_crop); ?> />
+                  <input name="wp_user_avatar_resize_crop" type="checkbox" id="wp_user_avatar_resize_crop" value="1" <?php checked('1', $wpua_resize_crop); ?> />
                   <label for="wp_user_avatar_resize_crop"><?php _e('Crop avatars to exact dimensions', 'wp-user-avatar'); ?></label>
                 </fieldset>
               </td>

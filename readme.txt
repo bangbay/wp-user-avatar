@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.5
 Tested up to: 3.6.1
-Stable tag: 1.6.2
+Stable tag: 1.6.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -314,6 +314,9 @@ This would output:
 
 == Changelog ==
 
+= 1.6.3 =
+* Bug Fix: Checkbox value for "Crop avatars to exact dimensions"
+
 = 1.6.2 =
 * Bug Fix: Show Default Avatar if attachment doesn't exist
 * Bug Fix: manage_users_custom_column not returning values
@@ -439,7 +442,7 @@ This would output:
 = 1.1.7 =
 * Bug Fix: Change update_usermeta to update_user_meta
 
-= 1.1.6.2 =
+= 1.1.6.3 =
 * Bug Fix: Image not showing in user profile edit
 
 = 1.1.5a =
