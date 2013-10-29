@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.6.3
+ * @version 1.6.4
  */
 /*
 Plugin Name: WP User Avatar
@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.6.3
+Version: 1.6.4
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -20,7 +20,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', ' 1.6.3');
+define('WPUA_VERSION', ' 1.6.4');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -169,7 +169,7 @@ if((bool) $wpua_allow_upload == 1){
   add_action('user_edit_form_tag', 'wpua_add_edit_form_multipart_encoding');
 
   // Check user role
-  function check_user_role($role, $user_id=null){
+  function wpua_check_user_role($role, $user_id=null){
     global $current_user;
     $user = is_numeric($user_id) ? get_userdata($user_id) : $current_user->ID;
     if(empty($user)){
@@ -181,7 +181,7 @@ if((bool) $wpua_allow_upload == 1){
   // Remove menu items
   function wpua_subscriber_remove_menu_pages(){
     global $current_user;
-    if(check_user_role('subscriber', $current_user->ID)){
+    if(wpua_check_user_role('subscriber', $current_user->ID)){
       remove_menu_page('edit.php');
       remove_menu_page('edit-comments.php');
       remove_menu_page('tools.php');
@@ -192,7 +192,7 @@ if((bool) $wpua_allow_upload == 1){
   // Remove menu bar items
   function wpua_subscriber_remove_menu_bar_items(){
     global $current_user, $wp_admin_bar;
-    if(check_user_role('subscriber', $current_user->ID)){
+    if(wpua_check_user_role('subscriber', $current_user->ID)){
       $wp_admin_bar->remove_menu('comments');
       $wp_admin_bar->remove_menu('new-content');
     }
@@ -202,7 +202,7 @@ if((bool) $wpua_allow_upload == 1){
   // Remove dashboard items
   function wpua_subscriber_remove_dashboard_widgets(){
     global $current_user;
-    if(check_user_role('subscriber', $current_user->ID)){
+    if(wpua_check_user_role('subscriber', $current_user->ID)){
       remove_meta_box('dashboard_quick_press', 'dashboard', 'side');
       remove_meta_box('dashboard_recent_drafts', 'dashboard', 'side');
       remove_meta_box('dashboard_right_now', 'dashboard', 'normal');
@@ -218,7 +218,7 @@ if((bool) $wpua_allow_upload == 1){
     } else {
       $offlimits = array('edit.php', 'edit-comments.php', 'post.php', 'post-new.php', 'tools.php');
     }
-    if(check_user_role('subscriber', $current_user->ID)){
+    if(wpua_check_user_role('subscriber', $current_user->ID)){
       if(in_array($pagenow, $offlimits)){
         do_action('admin_page_access_denied');
         wp_die(__('You do not have sufficient permissions to access this page.'));
@@ -349,7 +349,6 @@ if(!class_exists('wp_user_avatar')){
         add_action('wpua_after_avatar', 'wpua_do_after_avatar');
       }
     }
-
     // Add to edit user profile
     function wpua_action_show_user_profile($user){
       global $blog_id, $current_user, $post, $show_avatars, $wpdb, $wpua_allow_upload, $wpua_edit_avatar, $wpua_upload_size_limit_with_units;
@@ -605,11 +604,11 @@ if(!class_exists('wp_user_avatar')){
 
   // Replace get_avatar only in get_wp_user_avatar
   function wpua_get_avatar_filter($avatar, $id_or_email="", $size="", $default="", $alt=""){
-    global $avatar_default, $comment, $mustache_admin, $mustache_avatar, $mustache_medium, $mustache_original, $mustache_thumbnail, $post, $wpua_avatar_default, $wpua_disable_gravatar;
+    global $avatar_default, $mustache_admin, $mustache_avatar, $mustache_medium, $mustache_original, $mustache_thumbnail, $post, $wpua_avatar_default, $wpua_disable_gravatar;
     // User has WPUA
     if(is_object($id_or_email)){
-      if(!empty($comment->comment_author_email)){
-        $avatar = get_wp_user_avatar($comment, $size, $default, $alt);
+      if(!empty($id_or_email->comment_author_email)){
+        $avatar = get_wp_user_avatar($id_or_email->comment_author_email, $size, $default, $alt);
       } else {
         $avatar = get_wp_user_avatar('unknown@gravatar.com', $size, $default, $alt);
       }
@@ -690,20 +689,20 @@ if(!class_exists('wp_user_avatar')){
 
   // Find WPUA, show get_avatar if empty
   function get_wp_user_avatar($id_or_email="", $size='96', $align="", $alt=""){
-    global $avatar_default, $blog_id, $comment, $post, $wpdb, $_wp_additional_image_sizes;
+    global $avatar_default, $blog_id, $post, $wpdb, $_wp_additional_image_sizes;
     // Checks if comment
     if(is_object($id_or_email)){
       // Checks if comment author is registered user by user ID
-      if($comment->user_id != 0){
-        $id_or_email = $comment->user_id;
+      if($id_or_email->user_id != 0){
+        $id_or_email = $id_or_email->user_id;
       // Checks that comment author isn't anonymous
-      } elseif(!empty($comment->comment_author_email)){
+      } elseif(!empty($id_or_email->comment_author_email)){
         // Checks if comment author is registered user by e-mail address
-        $user = get_user_by('email', $comment->comment_author_email);
+        $user = get_user_by('email', $id_or_email->comment_author_email);
         // Get registered user info from profile, otherwise e-mail address should be value
-        $id_or_email = !empty($user) ? $user->ID : $comment->comment_author_email;
+        $id_or_email = !empty($user) ? $user->ID : $id_or_email->comment_author_email;
       }
-      $alt = $comment->comment_author;
+      $alt = $id_or_email->comment_author;
     } else {
       if(!empty($id_or_email)){
         // Find user by ID or e-mail address

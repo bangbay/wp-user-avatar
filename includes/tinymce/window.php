@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.6.3
+ * @version 1.6.4
  */
 
 if(!defined('ABSPATH')){
@@ -18,7 +18,7 @@ if(!defined('ABSPATH')){
   <script type="text/javascript" src="<?php echo site_url(); ?>/wp-includes/js/tinymce/tiny_mce_popup.js"></script>
   <script type="text/javascript" src="<?php echo site_url(); ?>/wp-includes/js/tinymce/utils/form_utils.js"></script>
   <script type="text/javascript">
-    function insert_wp_user_avatar(){
+    function wpuaInsertAvatar(){
       // Custom shortcode values
       var shortcode;
       var user = document.getElementById('wp_user_avatar_user').value;
@@ -122,7 +122,7 @@ if(!defined('ABSPATH')){
     </p>
 
     <div class="mceActionPanel">
-      <input type="submit" id="insert" class="button-primary" name="insert" value="<?php _e('Insert into Post'); ?>" onclick="insert_wp_user_avatar();" />
+      <input type="submit" id="insert" class="button-primary" name="insert" value="<?php _e('Insert into Post'); ?>" onclick="wpuaInsertAvatar();" />
     </div>
   </form>
 </body>
