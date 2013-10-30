@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.6.4
+ * @version 1.6.5
  */
 /*
 Plugin Name: WP User Avatar
@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.6.4
+Version: 1.6.5
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -20,7 +20,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', ' 1.6.4');
+define('WPUA_VERSION', ' 1.6.5');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -608,7 +608,7 @@ if(!class_exists('wp_user_avatar')){
     // User has WPUA
     if(is_object($id_or_email)){
       if(!empty($id_or_email->comment_author_email)){
-        $avatar = get_wp_user_avatar($id_or_email->comment_author_email, $size, $default, $alt);
+        $avatar = get_wp_user_avatar($id_or_email, $size, $default, $alt);
       } else {
         $avatar = get_wp_user_avatar('unknown@gravatar.com', $size, $default, $alt);
       }
@@ -688,19 +688,19 @@ if(!class_exists('wp_user_avatar')){
   }
 
   // Find WPUA, show get_avatar if empty
-  function get_wp_user_avatar($id_or_email="", $size='96', $align="", $alt=""){
+  function get_wp_user_avatar($id_or_email="", $size='96', $align="", $alt="", $email='unknown@gravatar.com'){
     global $avatar_default, $blog_id, $post, $wpdb, $_wp_additional_image_sizes;
     // Checks if comment
     if(is_object($id_or_email)){
       // Checks if comment author is registered user by user ID
       if($id_or_email->user_id != 0){
-        $id_or_email = $id_or_email->user_id;
+        $email = $id_or_email->user_id;
       // Checks that comment author isn't anonymous
       } elseif(!empty($id_or_email->comment_author_email)){
         // Checks if comment author is registered user by e-mail address
         $user = get_user_by('email', $id_or_email->comment_author_email);
         // Get registered user info from profile, otherwise e-mail address should be value
-        $id_or_email = !empty($user) ? $user->ID : $id_or_email->comment_author_email;
+        $email = !empty($user) ? $user->ID : $id_or_email->comment_author_email;
       }
       $alt = $id_or_email->comment_author;
     } else {
@@ -721,12 +721,12 @@ if(!class_exists('wp_user_avatar')){
       }
       // Set user's ID and name
       if(!empty($user)){
-        $id_or_email = $user->ID;
+        $email = $user->ID;
         $alt = $user->display_name;
       }
     }
     // Checks if user has WPUA
-    $wpua_meta = !empty($id_or_email) ? get_the_author_meta($wpdb->get_blog_prefix($blog_id).'user_avatar', $id_or_email) : "";
+    $wpua_meta = get_the_author_meta($wpdb->get_blog_prefix($blog_id).'user_avatar', $email);
     // Add alignment class
     $alignclass = !empty($align) && ($align == 'left' || $align == 'right' || $align == 'center') ? ' align'.$align : ' alignnone';
     // User has WPUA, bypass get_avatar
@@ -757,7 +757,7 @@ if(!class_exists('wp_user_avatar')){
         $get_size = $size;
       }
       // User with no WPUA uses get_avatar
-      $avatar = get_avatar($id_or_email, $get_size, $default="", $alt="");
+      $avatar = get_avatar($email, $get_size, $default="", $alt="");
       // Remove width and height for non-numeric sizes
       if(in_array($size, array('original', 'large', 'medium', 'thumbnail'))){
         $avatar = preg_replace('/(width|height)=\"\d*\"\s/', "", $avatar);
@@ -795,7 +795,7 @@ if(!class_exists('wp_user_avatar')){
       $user = empty($user) ? get_user_by('email', $user) : $user;
     }
     // Get user ID
-    $id_or_email = !empty($user) ? $user->ID : "";
+    $id_or_email = !empty($user) ? $user->ID : 'unknown@gravatar.com';
     // Check if link is set
     if(!empty($link)){
       // CSS class is same as link type, except for URL
