@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.6.5\n"
+"Project-Id-Version: WP User Avatar 1.6.6\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2013-10-03 00:00-0000\n"
+"PO-Revision-Date: 2013-12-01 00:00-0000\n"
 "Language: fr_FR\n"
 "Last-Translator: WP User Avatar\n"
 "Language-Team: WP User Avatar\n"
@@ -14,42 +14,54 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: wp-user-avatar.php:395
-#: wp-user-avatar.php:877
+#: wp-user-avatar.php:313
+msgid "Do you like WP User Avatar?"
+msgstr "Etes-vous satisfait avec WP-Utilisateur-Avatar?"
+
+#: wp-user-avatar.php:313
+msgid "Make a donation"
+msgstr "Faites un don"
+
+#: wp-user-avatar.php:407
+#: wp-user-avatar.php:881
 msgid "Click %s to save your changes"
 msgstr "Cliquez sur %s pour enregistrer vos modifications"
 
-#: wp-user-avatar.php:950
+#: wp-user-avatar.php:522
+msgid "Donate"
+msgstr "Faites un don"
+
+#: wp-user-avatar.php:955
 msgid "Add avatar button to Visual Editor"
 msgstr "Ajouter le bouton avatar sur l'éditeur visuel"
 
-#: wp-user-avatar.php:956
+#: wp-user-avatar.php:961
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Permettre aux contributeurs et aux abonnés d'envoyer des avatars"
 
-#: wp-user-avatar.php:962
+#: wp-user-avatar.php:967
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Désactiver Gravatar et utiliser les avatars fournis"
 
-#: wp-user-avatar.php:973
 #: wp-user-avatar.php:978
+#: wp-user-avatar.php:983
 msgid "Upload Size Limit"
 msgstr "Taille limite d'envoi de fichiers"
 
-#: wp-user-avatar.php:973
 #: wp-user-avatar.php:978
+#: wp-user-avatar.php:983
 msgid "(only for Contributors & Subscribers)"
 msgstr "(pour contributeurs et abonnés)"
 
-#: wp-user-avatar.php:988
+#: wp-user-avatar.php:993
 msgid "Allow users to edit avatars"
 msgstr "Permettre aux utilisateurs de modifier avatar"
 
-#: wp-user-avatar.php:994
+#: wp-user-avatar.php:999
 msgid "Resize avatars on upload"
 msgstr "Redimensionner avatars lors du téléchargement"
 
-#: wp-user-avatar.php:1006
+#: wp-user-avatar.php:1011
 msgid "Crop avatars to exact dimensions"
 msgstr "Recadrer les avatars pour parvenir aux dimensions exactes"
 

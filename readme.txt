@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.5
 Tested up to: 3.7.1
-Stable tag: 1.6.5
+Stable tag: 1.6.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -224,6 +224,11 @@ Outputs:
 * <code>has_wp_user_avatar</code>: checks if the user has a WP User Avatar image
 * [See example usage here](http://wordpress.org/extend/plugins/wp-user-avatar/installation/)
 
+= There's a call for donations in the WP User Avatar settings. How can I remove it? =
+I've spent countless hours developing this plugin for free. If you're able to give a donation I'd appreciate it, but it's by no means a requirement. You can remove the message by adding this to the <code>functions.php</code> file of your theme:
+
+`remove_action('wpua_donation_message', 'wpua_do_donation_message');`
+
 == Advanced Settings ==
 
 You can change the HTML structure of the WP User Avatar section on your profile edit page by using the functions <code>wpua_before_avatar</code> and <code>wpua_after_avatar</code>. By default, the avatar code is structured like this:
@@ -313,6 +318,13 @@ This would output:
 6. Options for the [avatar] shortcode.
 
 == Changelog ==
+
+= 1.6.6. =
+* Add: Donation message
+* Bug Fix: Die page when image is too large
+* Bug Fix: Resize images uploaded through plugin only
+* Remove: Unused function
+* Update: Refactor JavaScript
 
 = 1.6.5 =
 * Bug Fix: Use entire comment object instead of just e-mail address
