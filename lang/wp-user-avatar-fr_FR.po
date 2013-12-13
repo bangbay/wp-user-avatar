@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.6.6\n"
+"Project-Id-Version: WP User Avatar 1.6.7\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2013-12-01 00:00-0000\n"
+"PO-Revision-Date: 2013-12-13 00:00-0000\n"
 "Language: fr_FR\n"
 "Last-Translator: WP User Avatar\n"
 "Language-Team: WP User Avatar\n"
@@ -22,46 +22,46 @@ msgstr "Etes-vous satisfait avec WP-Utilisateur-Avatar?"
 msgid "Make a donation"
 msgstr "Faites un don"
 
-#: wp-user-avatar.php:407
-#: wp-user-avatar.php:881
+#: wp-user-avatar.php:408
+#: wp-user-avatar.php:882
 msgid "Click %s to save your changes"
 msgstr "Cliquez sur %s pour enregistrer vos modifications"
 
-#: wp-user-avatar.php:522
+#: wp-user-avatar.php:523
 msgid "Donate"
 msgstr "Faites un don"
 
-#: wp-user-avatar.php:955
+#: wp-user-avatar.php:956
 msgid "Add avatar button to Visual Editor"
 msgstr "Ajouter le bouton avatar sur l'éditeur visuel"
 
-#: wp-user-avatar.php:961
+#: wp-user-avatar.php:962
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Permettre aux contributeurs et aux abonnés d'envoyer des avatars"
 
-#: wp-user-avatar.php:967
+#: wp-user-avatar.php:968
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Désactiver Gravatar et utiliser les avatars fournis"
 
-#: wp-user-avatar.php:978
-#: wp-user-avatar.php:983
+#: wp-user-avatar.php:979
+#: wp-user-avatar.php:984
 msgid "Upload Size Limit"
 msgstr "Taille limite d'envoi de fichiers"
 
-#: wp-user-avatar.php:978
-#: wp-user-avatar.php:983
+#: wp-user-avatar.php:979
+#: wp-user-avatar.php:984
 msgid "(only for Contributors & Subscribers)"
 msgstr "(pour contributeurs et abonnés)"
 
-#: wp-user-avatar.php:993
+#: wp-user-avatar.php:994
 msgid "Allow users to edit avatars"
 msgstr "Permettre aux utilisateurs de modifier avatar"
 
-#: wp-user-avatar.php:999
+#: wp-user-avatar.php:1000
 msgid "Resize avatars on upload"
 msgstr "Redimensionner avatars lors du téléchargement"
 
-#: wp-user-avatar.php:1011
+#: wp-user-avatar.php:1012
 msgid "Crop avatars to exact dimensions"
 msgstr "Recadrer les avatars pour parvenir aux dimensions exactes"
 

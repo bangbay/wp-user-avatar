@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.6.6\n"
+"Project-Id-Version: WP User Avatar 1.6.7\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2013-12-01 00:00-0000\n"
+"PO-Revision-Date: 2013-12-13 00:00-0000\n"
 "Language: de_DE\n"
 "Last-Translator: WP User Avatar\n"
 "Language-Team: WP User Avatar\n"
@@ -22,46 +22,46 @@ msgstr "Bist Du mit WP-Benutzer-Avatar zufrieden?"
 msgid "Make a donation"
 msgstr "Spenden"
 
-#: wp-user-avatar.php:407
-#: wp-user-avatar.php:881
+#: wp-user-avatar.php:408
+#: wp-user-avatar.php:882
 msgid "Click %s to save your changes"
 msgstr "Klicken Sie %s, um Ihre Änderungen zu speichern"
 
-#: wp-user-avatar.php:522
+#: wp-user-avatar.php:523
 msgid "Donate"
 msgstr "Spenden"
 
-#: wp-user-avatar.php:955
+#: wp-user-avatar.php:956
 msgid "Add avatar button to Visual Editor"
 msgstr "Einen Avatar-Knopf zum WYSIWYG-Editor hinzufügen"
 
-#: wp-user-avatar.php:961
+#: wp-user-avatar.php:962
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Mitarbeiter und Abonnenten erlauben, Avatare hochzuladen"
 
-#: wp-user-avatar.php:967
+#: wp-user-avatar.php:968
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Gravatar deaktivieren und nur lokale Avatare verwenden"
 
-#: wp-user-avatar.php:978
-#: wp-user-avatar.php:983
+#: wp-user-avatar.php:979
+#: wp-user-avatar.php:984
 msgid "Upload Size Limit"
 msgstr "Dateigrößenbeschränkung"
 
-#: wp-user-avatar.php:978
-#: wp-user-avatar.php:983
+#: wp-user-avatar.php:979
+#: wp-user-avatar.php:984
 msgid "(only for Contributors & Subscribers)"
 msgstr "(nur für Mitarbeiter und Abonnenten)"
 
-#: wp-user-avatar.php:993
+#: wp-user-avatar.php:994
 msgid "Allow users to edit avatars"
 msgstr "Benutzer erlauben, Avatare bearbeiten"
 
-#: wp-user-avatar.php:999
+#: wp-user-avatar.php:1000
 msgid "Resize avatars on upload"
 msgstr "Resize Avatare beim Upload"
 
-#: wp-user-avatar.php:1011
+#: wp-user-avatar.php:1012
 msgid "Crop avatars to exact dimensions"
 msgstr "Avatare auf exakte Größe beschneiden"
 

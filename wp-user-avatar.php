@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.6.6
+ * @version 1.6.7
  */
 /*
 Plugin Name: WP User Avatar
@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.6.6
+Version: 1.6.7
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -20,7 +20,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', ' 1.6.6');
+define('WPUA_VERSION', ' 1.6.7');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -403,7 +403,8 @@ if(!class_exists('wp_user_avatar')){
         <img src="<?php echo $avatar_thumbnail; ?>" alt="" />
         <?php _e('Thumbnail'); ?>
       </p>
-      <p id="wpua-remove-button"><button type="button" class="button<?php echo $hide_remove; ?>" id="wpua-remove" name="wpua-remove"><?php _e('Remove'); ?></button></p>
+      <p id="wpua-remove-button" class="<?php echo $hide_remove; ?>"><button type="button" class="button" id="wpua-remove" name="wpua-remove"><?php _e('Default Avatar'); ?></button></p>
+      <p id="wpua-undo-button"><button type="button" class="button" id="wpua-undo" name="wpua-undo"><?php _e('Undo'); ?></button></p>
       <p id="wpua-message"><?php printf(__('Click %s to save your changes', 'wp-user-avatar'), $profile); ?></p>
       <?php do_action('wpua_after_avatar'); ?>
     <?php
@@ -660,10 +661,8 @@ if(!class_exists('wp_user_avatar')){
   // Get original avatar, for when user removes wp_user_avatar
   function wpua_get_avatar_original($id_or_email, $size="", $default="", $alt=""){
     global $avatar_default, $mustache_avatar, $wpua_avatar_default, $wpua_disable_gravatar;
-    // Remove get_avatar filter only in admin
-    if(is_admin()){
-      remove_filter('get_avatar', 'wpua_get_avatar_filter');
-    }
+    // Remove get_avatar filter
+    remove_filter('get_avatar', 'wpua_get_avatar_filter');
     if((bool) $wpua_disable_gravatar != 1){
       // User doesn't have Gravatar and Default Avatar is wp_user_avatar, show custom Default Avatar
       if(!wpua_has_gravatar($id_or_email) && $avatar_default == 'wp_user_avatar'){
@@ -689,6 +688,8 @@ if(!class_exists('wp_user_avatar')){
         $default = $mustache_avatar;
       }
     }
+    // Enable get_avatar filter
+    add_filter('get_avatar', 'wpua_get_avatar_filter', 10, 6);
     return $default;
   }
 
@@ -865,7 +866,7 @@ if(!class_exists('wp_user_avatar')){
       $hide_remove = "";
     } else {
       $avatar_thumb = $mustache_admin;
-      $hide_remove = ' style="display:none;"';
+      $hide_remove = ' class="wpua-hide"';
     }
     // Default Avatar is wp_user_avatar, check the radio button next to it
     $selected_avatar = ((bool) $wpua_disable_gravatar == 1 || $avatar_default == 'wp_user_avatar') ? ' checked="checked" ' : "";
@@ -876,7 +877,7 @@ if(!class_exists('wp_user_avatar')){
     $wpua_list .= preg_replace("/src='(.+?)'/", "src='\$1'", $avatar_thumb_img);
     $wpua_list .= ' '.__('WP User Avatar', 'wp-user-avatar').'</label>';
     $wpua_list .= '<p id="wpua-edit"><button type="button" class="button" id="wpua-add" name="wpua-add">'.__('Edit Image').'</button>';
-    $wpua_list .= '<a href="#" id="wpua-remove"'.$hide_remove.'>'.__('Remove').'</a></p>';
+    $wpua_list .= '<span id="wpua-remove-button"'.$hide_remove.'><a href="#" id="wpua-remove">'.__('Remove').'</a></span><span id="wpua-undo-button"><a href="#" id="wpua-undo">'.__('Undo').'</a></span></p>';
     $wpua_list .= '<input type="hidden" id="wp-user-avatar" name="avatar_default_wp_user_avatar" value="'.$wpua_avatar_default.'">';
     $wpua_list .= '<p id="wpua-message">'.sprintf(__('Click %s to save your changes', 'wp-user-avatar'), '&ldquo;'.__('Save Changes').'&rdquo;').'</p>';
     if((bool) $wpua_disable_gravatar != 1){

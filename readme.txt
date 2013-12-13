@@ -4,8 +4,8 @@ Contributors: bangbay
 Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.5
-Tested up to: 3.7.1
-Stable tag: 1.6.6
+Tested up to: 3.8
+Stable tag: 1.6.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -319,7 +319,11 @@ This would output:
 
 == Changelog ==
 
-= 1.6.6. =
+= 1.6.7 =
+* Add: Undo button
+* Bug Fix: Get original avatar
+
+= 1.6.6 =
 * Add: Donation message
 * Bug Fix: Die page when image is too large
 * Bug Fix: Resize images uploaded through plugin only
@@ -461,7 +465,7 @@ This would output:
 = 1.1.7 =
 * Bug Fix: Change update_usermeta to update_user_meta
 
-= 1.1.6.3 =
+= 1.1.6 =
 * Bug Fix: Image not showing in user profile edit
 
 = 1.1.5a =
