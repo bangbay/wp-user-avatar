@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.5
 Tested up to: 3.8
-Stable tag: 1.6.7
+Stable tag: 1.6.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -318,6 +318,9 @@ This would output:
 6. Options for the [avatar] shortcode.
 
 == Changelog ==
+
+= 1.6.8 =
+* Bug Fix: Shortcode without user
 
 = 1.6.7 =
 * Add: Undo button

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.6.7
+ * @version 1.6.8
  */
 /*
 Plugin Name: WP User Avatar
@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.6.7
+Version: 1.6.8
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -20,7 +20,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', ' 1.6.7');
+define('WPUA_VERSION', ' 1.6.8');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -791,7 +791,7 @@ if(!class_exists('wp_user_avatar')){
 
   // Shortcode
   function wpua_shortcode($atts, $content){
-    global $blog_id, $wpdb;
+    global $blog_id, $post, $wpdb;
     // Set shortcode attributes
     extract(shortcode_atts(array('user' => "", 'size' => '96', 'align' => "", 'link' => "", 'target' => ""), $atts));
     // Find user by ID, login, slug, or e-mail address
@@ -799,6 +799,17 @@ if(!class_exists('wp_user_avatar')){
       $user = is_numeric($user) ? get_user_by('id', $user) : get_user_by('login', $user);
       $user = empty($user) ? get_user_by('slug', $user) : $user;
       $user = empty($user) ? get_user_by('email', $user) : $user;
+    } else {
+      // Find author's name if id_or_email is empty
+      $author_name = get_query_var('author_name');
+      if(is_author()){
+        // On author page, get user by page slug
+        $user = get_user_by('slug', $author_name);
+      } else {
+        // On post, get user by author meta
+        $user_id = get_the_author_meta('ID');
+        $user = get_user_by('id', $user_id);
+      }
     }
     // Get user ID
     $id_or_email = !empty($user) ? $user->ID : 'unknown@gravatar.com';
