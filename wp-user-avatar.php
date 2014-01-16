@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.7
+ * @version 1.7.1
  */
 /*
 Plugin Name: WP User Avatar
@@ -9,7 +9,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.7
+Version: 1.7.1
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -20,7 +20,7 @@ if(!defined('ABSPATH')){
 }
 
 // Define paths and variables
-define('WPUA_VERSION', ' 1.7');
+define('WPUA_VERSION', ' 1.7.1');
 define('WPUA_FOLDER', basename(dirname(__FILE__)));
 define('WPUA_ABSPATH', trailingslashit(str_replace('\\', '/', WP_PLUGIN_DIR.'/'.WPUA_FOLDER)));
 define('WPUA_URLPATH', trailingslashit(plugins_url(WPUA_FOLDER)));
@@ -343,8 +343,10 @@ if(!class_exists('wp_user_avatar')){
         if($pagenow == 'options-discussion.php' || ($pagenow == 'options-general.php' && isset($_GET['page']) && $_GET['page'] == 'wp-user-avatar')){
           add_action('admin_enqueue_scripts', array($this, 'wpua_media_upload_scripts'));
         }
-        // Prefilter upload size
         if(!current_user_can('upload_files')){
+          // Upload errors
+          add_action('user_profile_update_errors', array($this, 'wpua_upload_errors'), 10, 3);
+          // Prefilter upload size
           add_filter('wp_handle_upload_prefilter', array($this, 'wpua_handle_upload_prefilter'));
         }
         // Admin menu settings
@@ -411,20 +413,35 @@ if(!class_exists('wp_user_avatar')){
     <?php
     }
 
+    // Add upload error messages
+    function wpua_upload_errors($errors, $update, $user){
+      global $wpua_upload_size_limit;
+      if($update && !empty($_FILES['wpua-file'])){
+        $size = $_FILES['wpua-file']['size'];
+        $type = $_FILES['wpua-file']['type'];
+        // Allow only JPG, GIF, PNG
+        if(!empty($type) && !preg_match('/(jpe?g|gif|png)$/i', $type)){
+          $errors->add('wpua_file_type', __('This file is not an image. Please try another.'));
+        }
+        // Upload size limit
+        if(!empty($size) && $size > $wpua_upload_size_limit){
+          $errors->add('wpua_file_size', __('Memory exceeded. Please try another smaller file.'));
+        }
+      }
+    }
+
     // Set upload size limit for users without upload_files capability
     function wpua_handle_upload_prefilter($file){
       global $wpua_upload_size_limit;
       $size = $file['size'];
       if(!empty($size) && $size > $wpua_upload_size_limit){
         function wpua_file_size_error($errors, $update, $user){
-          $errors->add('edit_user', __('Memory exceeded. Please try another smaller file.'));
+          $errors->add('wpua_file_size', __('Memory exceeded. Please try another smaller file.'));
         }
         add_action('user_profile_update_errors', 'wpua_file_size_error', 10, 3);
-        // Stop upload
         return null;
-      } else {
-        return $file;
       }
+      return $file;
     }
 
     // Update user meta
@@ -453,58 +470,50 @@ if(!class_exists('wp_user_avatar')){
         if(isset($_POST['submit']) && $_POST['submit'] && !empty($_FILES['wpua-file'])){
           $name = $_FILES['wpua-file']['name'];
           $file = wp_handle_upload($_FILES['wpua-file'], array('test_form' => false));
-          if(!empty($_FILES['wpua-file']['type'])){
-            $type = $_FILES['wpua-file']['type'];
-            // Allow only JPG, GIF, PNG
-            if(!preg_match('/(jpe?g|gif|png)$/i', $type)){
-              function wpua_file_type_error($errors, $update, $user){
-                $errors->add('edit_user', __('This file is not an image. Please try another.'));
+          $type = $_FILES['wpua-file']['type'];
+          if(!empty($type) && preg_match('/(jpe?g|gif|png)$/i', $type)){
+            // Resize uploaded image
+            if((bool) $wpua_resize_upload == 1){
+              // Original image
+              $uploaded_image = wp_get_image_editor($file['file']);
+              // Check for errors
+              if(!is_wp_error($uploaded_image)){
+                // Resize image
+                $uploaded_image->resize($wpua_resize_w, $wpua_resize_h, $wpua_resize_crop);
+                // Save image
+                $resized_image = $uploaded_image->save($file['file']);
               }
-              add_action('user_profile_update_errors', 'wpua_file_type_error', 10, 3);
-            } else {
-              // Resize uploaded image
-              if((bool) $wpua_resize_upload == 1){
-                // Original image
-                $uploaded_image = wp_get_image_editor($file['file']);
-                // Check for errors
-                if(!is_wp_error($uploaded_image)){
-                  // Resize image
-                  $uploaded_image->resize($wpua_resize_w, $wpua_resize_h, $wpua_resize_crop);
-                  // Save image
-                  $resized_image = $uploaded_image->save($file['file']);
-                }
+            }
+            // Break out file info
+            $name_parts = pathinfo($name);
+            $name = trim(substr($name, 0, -(1 + strlen($name_parts['extension']))));
+            $url = $file['url'];
+            $file = $file['file'];
+            $title = $name;
+            // Use image exif/iptc data for title if possible
+            if($image_meta = @wp_read_image_metadata($file)){
+              if(trim($image_meta['title']) && !is_numeric(sanitize_title($image_meta['title']))){
+                $title = $image_meta['title'];
               }
-              // Break out file info
-              $name_parts = pathinfo($name);
-              $name = trim(substr($name, 0, -(1 + strlen($name_parts['extension']))));
-              $url = $file['url'];
-              $file = $file['file'];
-              $title = $name;
-              // Use image exif/iptc data for title if possible
-              if($image_meta = @wp_read_image_metadata($file)){
-                if(trim($image_meta['title']) && !is_numeric(sanitize_title($image_meta['title']))){
-                  $title = $image_meta['title'];
-                }
-              }
-              // Construct the attachment array
-              $attachment = array(
-                'guid'           => $url,
-                'post_mime_type' => $type,
-                'post_title'     => $title,
-                'post_content'   => ""
-              );
-              // This should never be set as it would then overwrite an existing attachment
-              if(isset($attachment['ID'])){
-                unset($attachment['ID']);
-              }
-              // Save the attachment metadata
-              $attachment_id = wp_insert_attachment($attachment, $file);
-              if(!is_wp_error($attachment_id)){
-                wp_update_attachment_metadata($attachment_id, wp_generate_attachment_metadata($attachment_id, $file));
-                $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %d", '_wp_attachment_wp_user_avatar', $user_id));
-                add_post_meta($attachment_id, '_wp_attachment_wp_user_avatar', $user_id);
-                update_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', $attachment_id);
-              }
+            }
+            // Construct the attachment array
+            $attachment = array(
+              'guid'           => $url,
+              'post_mime_type' => $type,
+              'post_title'     => $title,
+              'post_content'   => ""
+            );
+            // This should never be set as it would then overwrite an existing attachment
+            if(isset($attachment['ID'])){
+              unset($attachment['ID']);
+            }
+            // Save the attachment metadata
+            $attachment_id = wp_insert_attachment($attachment, $file);
+            if(!is_wp_error($attachment_id)){
+              wp_update_attachment_metadata($attachment_id, wp_generate_attachment_metadata($attachment_id, $file));
+              $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %d", '_wp_attachment_wp_user_avatar', $user_id));
+              add_post_meta($attachment_id, '_wp_attachment_wp_user_avatar', $user_id);
+              update_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', $attachment_id);
             }
           }
         }
