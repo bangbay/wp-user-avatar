@@ -19,7 +19,7 @@ msgid "Do you like WP User Avatar?"
 msgstr "Är du nöjd med Visningsbild (avatar)?"
 
 #: wp-user-avatar.php:318
-msgid "Make a donation"
+msgid "Make a donation."
 msgstr "Donera"
 
 #: wp-user-avatar.php:409
