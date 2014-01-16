@@ -1,42 +1,42 @@
-jQuery(function(){
+jQuery(function($){
   // Show size info only if allow uploads is checked
-  jQuery('#wp_user_avatar_allow_upload').change(function(){
-    jQuery('#wpua-contributors-subscribers').slideToggle(jQuery('#wp_user_avatar_allow_upload').is(':checked'));
+  $('#wp_user_avatar_allow_upload').change(function(){
+    $('#wpua-contributors-subscribers').slideToggle($('#wp_user_avatar_allow_upload').is(':checked'));
   });
   // Show resize info only if resize uploads is checked
-  jQuery('#wp_user_avatar_resize_upload').change(function(){
-     jQuery('#wpua-resize-sizes').slideToggle(jQuery('#wp_user_avatar_resize_upload').is(':checked'));
+  $('#wp_user_avatar_resize_upload').change(function(){
+     $('#wpua-resize-sizes').slideToggle($('#wp_user_avatar_resize_upload').is(':checked'));
   });
   // Hide Gravatars if disable Gravatars is checked
-  jQuery('#wp_user_avatar_disable_gravatar').change(function(){
-    if(jQuery('#wp-avatars').length){
-      jQuery('#wp-avatars').slideToggle(!jQuery('#wp_user_avatar_disable_gravatar').is(':checked'));
-      jQuery('#wp_user_avatar_radio').trigger('click');
+  $('#wp_user_avatar_disable_gravatar').change(function(){
+    if($('#wp-avatars').length){
+      $('#wp-avatars').slideToggle(!$('#wp_user_avatar_disable_gravatar').is(':checked'));
+      $('#wp_user_avatar_radio').trigger('click');
     } else {
-      jQuery('#wpua-message').show();
+      $('#wpua-message').show();
     }
   });
   // Add size slider
-  jQuery('#wpua-slider').slider({
+  $('#wpua-slider').slider({
     value: parseInt(wpua_admin.upload_size_limit),
     min: 0,
     max: parseInt(wpua_admin.max_upload_size),
     step: 1,
     slide: function(event, ui){
-      jQuery('#wp_user_avatar_upload_size_limit').val(ui.value);
-      jQuery('#wpua-readable-size').html(Math.floor(ui.value / 1024) + 'KB');
-      jQuery('#wpua-readable-size-error').hide();
-      jQuery('#wpua-readable-size').removeClass('wpua-error');
+      $('#wp_user_avatar_upload_size_limit').val(ui.value);
+      $('#wpua-readable-size').html(Math.floor(ui.value / 1024) + 'KB');
+      $('#wpua-readable-size-error').hide();
+      $('#wpua-readable-size').removeClass('wpua-error');
     }
   });
   // Update readable size on keyup
-  jQuery('#wp_user_avatar_upload_size_limit').keyup(function(){
-    var wpua_upload_size_limit = jQuery(this).val();
-    wpua_upload_size_limit = wpua_upload_size_limit.replace(/\D/g, '');
-    jQuery(this).val(wpua_upload_size_limit);
-    jQuery('#wpua-readable-size').html(Math.floor(wpua_upload_size_limit / 1024) + 'KB');
-    jQuery('#wpua-readable-size-error').toggle(wpua_upload_size_limit > parseInt(wpua_admin.max_upload_size));
-    jQuery('#wpua-readable-size').toggleClass('wpua-error', wpua_upload_size_limit > parseInt(wpua_admin.max_upload_size));
+  $('#wp_user_avatar_upload_size_limit').keyup(function(){
+    var wpuaUploadSizeLimit = $(this).val();
+    wpuaUploadSizeLimit = wpuaUploadSizeLimit.replace(/\D/g, '');
+    $(this).val(wpuaUploadSizeLimit);
+    $('#wpua-readable-size').html(Math.floor(wpuaUploadSizeLimit / 1024) + 'KB');
+    $('#wpua-readable-size-error').toggle(wpuaUploadSizeLimit > parseInt(wpua_admin.max_upload_size));
+    $('#wpua-readable-size').toggleClass('wpua-error', wpuaUploadSizeLimit > parseInt(wpua_admin.max_upload_size));
   });
-  jQuery('#wp_user_avatar_upload_size_limit').val(jQuery('#wpua-slider').slider('value'));
+  $('#wp_user_avatar_upload_size_limit').val($('#wpua-slider').slider('value'));
 });

@@ -1,5 +1,5 @@
 // Media uploader
-function wpuaMediaUploader(section, edit_text, insert_text){
+function wpuaMediaUploader(section, edit_image, select_image){
   wp.media.wpUserAvatar = {
     get: function(){
       return wp.media.view.settings.post.wpUserAvatarId;
@@ -8,7 +8,7 @@ function wpuaMediaUploader(section, edit_text, insert_text){
       var settings = wp.media.view.settings;
       settings.post.wpUserAvatarId = id;
       settings.post.wpUserAvatarSrc = jQuery('div.attachment-info').find('img').attr('src');
-      if(settings.post.wpUserAvatarId){
+      if(settings.post.wpUserAvatarId && settings.post.wpUserAvatarSrc){
         // Set WP User Avatar
         jQuery('#wp-user-avatar', window.parent.document).val(settings.post.wpUserAvatarId);
         jQuery('#wpua-preview', window.parent.document).find('img').attr('src', settings.post.wpUserAvatarSrc).removeAttr('height', "");
@@ -17,9 +17,8 @@ function wpuaMediaUploader(section, edit_text, insert_text){
         jQuery('#wpua-remove-button', window.parent.document).hide();
         jQuery('#wpua-thumbnail', window.parent.document).hide();
         jQuery('#wp_user_avatar_radio', window.parent.document).trigger('click');
-        wp.media.wpUserAvatar.frame().close();
-        jQuery('#wp_user_avatar_radio').trigger('click');
       }
+      wp.media.wpUserAvatar.frame().close();
     },
     frame: function(){
       if(this._frame){
@@ -27,7 +26,7 @@ function wpuaMediaUploader(section, edit_text, insert_text){
       }
       this._frame = wp.media({
         state: 'library',
-        states: [ new wp.media.controller.Library({ title: edit_text + ": " + section }) ]
+        states: [ new wp.media.controller.Library({ title: edit_image + ": " + section }) ]
       });
       this._frame.on('open', function(){
         var selection = this.state().get('selection');
@@ -38,7 +37,7 @@ function wpuaMediaUploader(section, edit_text, insert_text){
       }, this._frame);
       this._frame.on('toolbar:create:select', function(toolbar){
         this.createSelectToolbar(toolbar, {
-          text: insert_text
+          text: select_image
         });
       }, this._frame);
       this._frame.state('library').on('select', this.select);
@@ -60,37 +59,37 @@ function wpuaMediaUploader(section, edit_text, insert_text){
   jQuery(wp.media.wpUserAvatar.init);
 }
 
-jQuery(function(){
+jQuery(function($){
   // Add enctype to form with JavaScript as backup
-  jQuery('#your-profile').attr('enctype', 'multipart/form-data');
+  $('#your-profile').attr('enctype', 'multipart/form-data');
   // Remove/edit settings
   if(typeof(wp) != 'undefined'){
     wpuaMediaUploader(wpua_custom.section, wpua_custom.edit_image, wpua_custom.select_image);
   }
   // Store WP User Avatar ID
-  var wpuaID = jQuery('#wp-user-avatar').val();
+  var wpuaID = $('#wp-user-avatar').val();
   // Store WP User Avatar src
-  var wpuaSrc = jQuery('#wpua-preview').find('img').attr('src');
+  var wpuaSrc = $('#wpua-preview').find('img').attr('src');
   // Remove WP User Avatar
-  jQuery('body').on('click', '#wpua-remove', function(e){
+  $('body').on('click', '#wpua-remove', function(e){
     e.preventDefault();
-    jQuery('#wpua-original').remove();
-    jQuery('#wpua-remove-button, #wpua-thumbnail').hide();
-    jQuery('#wpua-preview').find('img:first').hide();
-    jQuery('#wpua-preview').prepend('<img id="wpua-original" height="98" />');
-    jQuery('#wpua-original').attr('src', wpua_custom.avatar_thumb);
-    jQuery('#wp-user-avatar').val("");
-    jQuery('#wpua-message, #wpua-original, #wpua-undo-button').show();
-    jQuery('#wp_user_avatar_radio').trigger('click');
+    $('#wpua-original').remove();
+    $('#wpua-remove-button, #wpua-thumbnail').hide();
+    $('#wpua-preview').find('img:first').hide();
+    $('#wpua-preview').prepend('<img id="wpua-original" height="98" />');
+    $('#wpua-original').attr('src', wpua_custom.avatar_thumb);
+    $('#wp-user-avatar').val("");
+    $('#wpua-message, #wpua-original, #wpua-undo-button').show();
+    $('#wp_user_avatar_radio').trigger('click');
   });
   // Undo WP User Avatar
-  jQuery('body').on('click', '#wpua-undo', function(e){
+  $('body').on('click', '#wpua-undo', function(e){
     e.preventDefault();
-    jQuery('#wpua-original').remove();
-    jQuery('#wpua-message, #wpua-undo-button').hide();
-    jQuery('#wpua-remove-button, #wpua-thumbnail').show();
-    jQuery('#wpua-preview').find('img:first').attr('src', wpuaSrc).show();
-    jQuery('#wp-user-avatar').val(wpuaID);
-    jQuery('#wp_user_avatar_radio').trigger('click');
+    $('#wpua-original').remove();
+    $('#wpua-message, #wpua-undo-button').hide();
+    $('#wpua-remove-button, #wpua-thumbnail').show();
+    $('#wpua-preview').find('img:first').attr('src', wpuaSrc).show();
+    $('#wp-user-avatar').val(wpuaID);
+    $('#wp_user_avatar_radio').trigger('click');
   });
 });

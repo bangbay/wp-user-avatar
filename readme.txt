@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.5
 Tested up to: 3.8
-Stable tag: 1.6.8
+Stable tag: 1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,9 +13,9 @@ Use any image from your WordPress Media Library as a custom user avatar. Add you
 
 == Description ==
 
-WordPress currently only allows you to use custom avatars that are uploaded through [Gravatar](http://gravatar.com/). WP User Avatar enables you to use any photo uploaded into your Media Library as an avatar. This means you use the same uploader and library as your posts. No extra folders or image editing functions are necessary.
+WordPress currently only allows you to use custom avatars that are uploaded through [Gravatar](http://gravatar.com/). **WP User Avatar** enables you to use any photo uploaded into your Media Library as an avatar. This means you use the same uploader and library as your posts. No extra folders or image editing functions are necessary.
 
-WP User Avatar also lets you:
+**WP User Avatar** also lets you:
 
 * Upload your own Default Avatar in your WP User Avatar settings.
 * Show the user's [Gravatar](http://gravatar.com/) avatar or Default Avatar if the user doesn't have a WP User Avatar image.
@@ -94,7 +94,13 @@ For comments, you must specify the $comment variable.
 
 You can use the <code>[avatar]</code> shortcode in your posts. It will detect the author of the post or you can specify an author by username. You can specify a size, alignment, and link, but they are optional. For links, you can link to the original image file, attachment page, or a custom URL.
 
-`[avatar user="admin" size="medium" align="left" link="file"]`
+`[avatar user="admin" size="medium" align="left" link="file" /]`
+
+You can also add a caption to the shortcode:
+
+`[avatar user="admin" size="medium" align="left" link="file"]Photo Credit: Your Name[/avatar]`
+
+**Note:** If you are using one shortcode without a caption and another shortcode with a caption on the same page, you must close the caption-less shortcode with a forward slash before the closing bracket: <code>[avatar /]</code> instead of <code>[avatar]</code>
 
 = get_wp_user_avatar_src =
 
@@ -175,13 +181,28 @@ For Administrators, WP User Avatar adds a column with avatar thumbnails to your 
 
 You can use the <code>[avatar]</code> shortcode in your posts. It will detect the author of the post or you can specify an author by username. You can specify a size, alignment, and link, but they are optional. For links, you can link to the original image file, attachment page, or a custom URL.
 
-`[avatar user="admin" size="96" align="left" link="file"]`
+`[avatar user="admin" size="96" align="left" link="file" /]`
 
 Outputs:
 
 `<a href="{fileURL}" class="wp-user-avatar-link wp-user-avatar-file">
   <img src="{imageURL}" width="96" height="96" class="wp-user-avatar wp-user-avatar-96 alignleft" />
 </a>`
+
+If you have a caption, the output will be similar to how WordPress adds captions to other images.
+
+`[avatar user="admin" size="96" align="left" link="file"]Photo Credit: Your Name[/avatar]`
+
+Outputs:
+
+`<div style="width: 106px" class="wp-caption alignleft">
+  <a href="{fileURL}" class="wp-user-avatar-link wp-user-avatar-file">
+    <img src="{imageURL}" width="96" height="96" class="wp-user-avatar wp-user-avatar-96" />
+  </a>
+  <p class="wp-caption-text">Photo Credit: Your Name</p>
+</div>`
+
+**Note:** If you are using one shortcode without a caption and another shortcode with a caption on the same page, you must close the caption-less shortcode with a forward slash before the closing bracket: <code>[avatar /]</code> instead of <code>[avatar]</code>
 
 = What CSS can I use with WP User Avatar? =
 
@@ -211,7 +232,7 @@ If you use the <code>[avatar]</code> shortcode, WP User Avatar will add the CSS 
 * Attachment: wp-user-avatar-attachment
 * Custom URL: wp-user-avatar-custom
 
-`[avatar user="admin" size="96" align="left" link="attachment"]`
+`[avatar user="admin" size="96" align="left" link="attachment" /]`
 
 Outputs:
 
@@ -231,10 +252,11 @@ I've spent countless hours developing this plugin for free. If you're able to gi
 
 == Advanced Settings ==
 
-You can change the HTML structure of the WP User Avatar section on your profile edit page by using the functions <code>wpua_before_avatar</code> and <code>wpua_after_avatar</code>. By default, the avatar code is structured like this:
+= HTML Wrapper =
 
-`
-<h3>Avatar</h3>
+You can change the HTML wrapper of the WP User Avatar section on your profile edit page by using the functions <code>wpua_before_avatar</code> and <code>wpua_after_avatar</code>. By default, the avatar code is structured like this:
+
+`<h3>Avatar</h3>
 <table class="form-table">
   <tr>
     <th><label for="wp_user_avatar">Image</label></th>
@@ -252,27 +274,26 @@ You can change the HTML structure of the WP User Avatar section on your profile 
         Thumbnail
       </p>
       <p id="wpua-remove-button">
-        <button type="button" class="button" id="wpua-remove" name="wpua-remove">Remove</button>
+        <button type="button" class="button" id="wpua-remove" name="wpua-remove">Default Avatar</button>
+      </p>
+      <p id="wpua-undo-button">
+        <button type="button" class="button" id="wpua-undo" name="wpua-undo">Undo</button>
       </p>
       <p id="wpua-message">
         Click &ldquo;Update Profile&rdquo; to save your changes
       </p>
     </td>
   </tr>
-</table>
-`
+</table>`
 
 To strip out the table, you would add the following filters to the <code>functions.php</code> file in your theme:
 
-`
-remove_action('wpua_before_avatar', 'wpua_do_before_avatar');
-remove_action('wpua_after_avatar', 'wpua_do_after_avatar');
-`
+`remove_action('wpua_before_avatar', 'wpua_do_before_avatar');
+remove_action('wpua_after_avatar', 'wpua_do_after_avatar');`
 
 To add your own wrapper, you could create something like this:
 
-`
-function my_before_avatar(){
+`function my_before_avatar(){
   echo '<div id="my-avatar">';
 }
 add_action('wpua_before_avatar', 'my_before_avatar');
@@ -280,13 +301,11 @@ add_action('wpua_before_avatar', 'my_before_avatar');
 function my_after_avatar(){
   echo '</div>';
 }
-add_action('wpua_after_avatar', 'my_after_avatar');
-`
+add_action('wpua_after_avatar', 'my_after_avatar');`
 
 This would output:
 
-`
-<div id="my-avatar">
+`<div id="my-avatar">
   <input type="hidden" name="wp-user-avatar" id="wp-user-avatar" value="{attachmentID}" />
   <p id="wpua-add-button">
     <button type="button" class="button" id="wpua-add" name="wpua-add">Edit Image</button>
@@ -300,13 +319,37 @@ This would output:
     Thumbnail
   </p>
   <p id="wpua-remove-button">
-    <button type="button" class="button" id="wpua-remove" name="wpua-remove">Remove</button>
+    <button type="button" class="button" id="wpua-remove" name="wpua-remove">Default Avatar</button>
+  </p>
+  <p id="wpua-undo-button">
+    <button type="button" class="button" id="wpua-undo" name="wpua-undo">Undo</button>
   </p>
   <p id="wpua-message">
     Click &ldquo;Update Profile&rdquo; to save your changes
   </p>
-</div>
-`
+</div>`
+
+= Add WP User Avatar to your own profile edit page =
+
+If you're building your own profile edit page, WP User Avatar is automatically added to the [show_user_profile](http://codex.wordpress.org/Plugin_API/Action_Reference/show_user_profile) and [edit_user_profile](http://codex.wordpress.org/Plugin_API/Action_Reference/show_user_profile) hooks. If you'd rather have WP User Avatar in its own section, you could add another hook:
+
+`do_action('edit_user_avatar', $current_user);`
+
+Then, to add WP User Avatar to that hook and remove it from the other hooks outside of the administration panel, you would add this code to the <code>functions.php</code> file of your theme:
+
+`if(!is_admin()){
+  // Remove from show_user_profile hook
+  remove_action('show_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
+  remove_action('show_user_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
+
+  // Remove from edit_user_profile hook
+  remove_action('edit_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
+  remove_action('edit_user_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
+
+  // Add to edit_user_avatar hook
+  add_action('edit_user_avatar', array('wp_user_avatar', 'wpua_action_show_user_profile'));
+  add_action('edit_user_avatar', array('wp_user_avatar', 'wpua_media_upload_scripts'));
+}`
 
 == Screenshots ==
 
@@ -318,6 +361,11 @@ This would output:
 6. Options for the [avatar] shortcode.
 
 == Changelog ==
+
+= 1.7 =
+* Add: Caption for avatar
+* Add: Polish translation
+* Update: Error message handling
 
 = 1.6.8 =
 * Bug Fix: Shortcode without user

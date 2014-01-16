@@ -1,12 +1,12 @@
 # Spanish (es_ES) translation for WP User Avatar.
-# Copyright (C) 2013 Bangbay Siboliban.
+# Copyright (C) 2014 Bangbay Siboliban.
 # This file is distributed under the same license as the WP User Avatar package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.6.8\n"
+"Project-Id-Version: WP User Avatar 1.7\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2013-12-31 00:00-0000\n"
+"PO-Revision-Date: 2014-01-15 00:00-0000\n"
 "Language: es_ES\n"
 "Last-Translator: WP User Avatar\n"
 "Language-Team: WP User Avatar\n"
@@ -14,50 +14,50 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: wp-user-avatar.php:313
+#: wp-user-avatar.php:318
 msgid "Do you like WP User Avatar?"
 msgstr "¿Está satisfecho con WP-Usuario-Avatar?"
 
-#: wp-user-avatar.php:313
+#: wp-user-avatar.php:318
 msgid "Make a donation"
 msgstr "Donar"
 
-#: wp-user-avatar.php:408
-#: wp-user-avatar.php:893
+#: wp-user-avatar.php:409
+#: wp-user-avatar.php:916
 msgid "Click %s to save your changes"
 msgstr "Haz clic %s para guardar los cambios"
 
-#: wp-user-avatar.php:523
+#: wp-user-avatar.php:527
 msgid "Donate"
 msgstr "Donar"
 
-#: wp-user-avatar.php:967
+#: wp-user-avatar.php:990
 msgid "Add avatar button to Visual Editor"
 msgstr "Añadir botón avatar al editor visual"
 
-#: wp-user-avatar.php:973
+#: wp-user-avatar.php:996
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Permitir los colaboradores y los suscriptores subir avatares"
 
-#: wp-user-avatar.php:979
+#: wp-user-avatar.php:1002
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Desactivar Gravatar y utilizar sólo los avatares locales"
 
-#: wp-user-avatar.php:990
-#: wp-user-avatar.php:995
+#: wp-user-avatar.php:1013
+#: wp-user-avatar.php:1018
 msgid "Upload Size Limit"
 msgstr "Sube límite de tamaño"
 
-#: wp-user-avatar.php:990
-#: wp-user-avatar.php:995
+#: wp-user-avatar.php:1013
+#: wp-user-avatar.php:1018
 msgid "(only for Contributors & Subscribers)"
 msgstr "(para colaboradores y suscriptores)"
 
-#: wp-user-avatar.php:1005
+#: wp-user-avatar.php:1046
 msgid "Allow users to edit avatars"
 msgstr "Permitir a los usuarios editar avatar"
 
-#: wp-user-avatar.php:1011
+#: wp-user-avatar.php:1034
 msgid "Resize avatars on upload"
 msgstr "Cambiar el tamaño de avatares en carga"
 
