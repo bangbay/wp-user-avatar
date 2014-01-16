@@ -417,7 +417,7 @@ if(!class_exists('wp_user_avatar')){
       $size = $file['size'];
       if(!empty($size) && $size > $wpua_upload_size_limit){
         function wpua_file_size_error($errors, $update, $user){
-          $errors->add('edit_user', 'Memory exceeded. Please try another smaller file.');
+          $errors->add('edit_user', __('Memory exceeded. Please try another smaller file.'));
         }
         add_action('user_profile_update_errors', 'wpua_file_size_error', 10, 3);
         // Stop upload
@@ -458,7 +458,7 @@ if(!class_exists('wp_user_avatar')){
             // Allow only JPG, GIF, PNG
             if(!preg_match('/(jpe?g|gif|png)$/i', $type)){
               function wpua_file_type_error($errors, $update, $user){
-                $errors->add('edit_user', 'This file is not an image. Please try another.');
+                $errors->add('edit_user', __('This file is not an image. Please try another.'));
               }
               add_action('user_profile_update_errors', 'wpua_file_type_error', 10, 3);
             } else {
