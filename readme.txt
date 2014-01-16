@@ -252,6 +252,28 @@ I've spent countless hours developing this plugin for free. If you're able to gi
 
 == Advanced Settings ==
 
+= Add WP User Avatar to your own profile edit page =
+
+If you're building your own profile edit page, WP User Avatar is automatically added to the [show_user_profile](http://codex.wordpress.org/Plugin_API/Action_Reference/show_user_profile) and [edit_user_profile](http://codex.wordpress.org/Plugin_API/Action_Reference/show_user_profile) hooks. If you'd rather have WP User Avatar in its own section, you could add another hook:
+
+`do_action('edit_user_avatar', $current_user);`
+
+Then, to add WP User Avatar to that hook and remove it from the other hooks outside of the administration panel, you would add this code to the <code>functions.php</code> file of your theme:
+
+`if(!is_admin()){
+  // Remove from show_user_profile hook
+  remove_action('show_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
+  remove_action('show_user_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
+
+  // Remove from edit_user_profile hook
+  remove_action('edit_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
+  remove_action('edit_user_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
+
+  // Add to edit_user_avatar hook
+  add_action('edit_user_avatar', array('wp_user_avatar', 'wpua_action_show_user_profile'));
+  add_action('edit_user_avatar', array('wp_user_avatar', 'wpua_media_upload_scripts'));
+}`
+
 = HTML Wrapper =
 
 You can change the HTML wrapper of the WP User Avatar section on your profile edit page by using the functions <code>wpua_before_avatar</code> and <code>wpua_after_avatar</code>. By default, the avatar code is structured like this:
@@ -328,28 +350,6 @@ This would output:
     Click &ldquo;Update Profile&rdquo; to save your changes
   </p>
 </div>`
-
-= Add WP User Avatar to your own profile edit page =
-
-If you're building your own profile edit page, WP User Avatar is automatically added to the [show_user_profile](http://codex.wordpress.org/Plugin_API/Action_Reference/show_user_profile) and [edit_user_profile](http://codex.wordpress.org/Plugin_API/Action_Reference/show_user_profile) hooks. If you'd rather have WP User Avatar in its own section, you could add another hook:
-
-`do_action('edit_user_avatar', $current_user);`
-
-Then, to add WP User Avatar to that hook and remove it from the other hooks outside of the administration panel, you would add this code to the <code>functions.php</code> file of your theme:
-
-`if(!is_admin()){
-  // Remove from show_user_profile hook
-  remove_action('show_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
-  remove_action('show_user_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
-
-  // Remove from edit_user_profile hook
-  remove_action('edit_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
-  remove_action('edit_user_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
-
-  // Add to edit_user_avatar hook
-  add_action('edit_user_avatar', array('wp_user_avatar', 'wpua_action_show_user_profile'));
-  add_action('edit_user_avatar', array('wp_user_avatar', 'wpua_media_upload_scripts'));
-}`
 
 == Screenshots ==
 
