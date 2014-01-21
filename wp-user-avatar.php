@@ -366,7 +366,7 @@ if(!class_exists('wp_user_avatar')){
       }
     }
     // Add to edit user profile
-    function wpua_action_show_user_profile($user){
+    public static function wpua_action_show_user_profile($user){
       global $blog_id, $current_user, $post, $show_avatars, $wpdb, $wpua_allow_upload, $wpua_edit_avatar, $wpua_upload_size_limit_with_units;
       // Get WPUA attachment ID
       $wpua = get_user_meta($user->ID, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
