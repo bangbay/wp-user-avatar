@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.7.1
+ * @version 1.7.2
  */
 
 if(!defined('ABSPATH')){
