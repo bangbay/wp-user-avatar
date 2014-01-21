@@ -554,7 +554,7 @@ if(!class_exists('wp_user_avatar')){
     }
 
     // Media uploader
-    function wpua_media_upload_scripts($user=""){
+    public static function wpua_media_upload_scripts($user=""){
       global $mustache_admin, $pagenow, $show_avatars, $wpua_upload_size_limit;
       wp_enqueue_script('jquery');
       if(current_user_can('upload_files')){
