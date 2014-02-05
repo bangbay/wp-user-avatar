@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.5
 Tested up to: 3.8
-Stable tag: 1.7.2
+Stable tag: 1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -260,7 +260,7 @@ If you're building your own profile edit page, WP User Avatar is automatically a
 
 Then, to add WP User Avatar to that hook and remove it from the other hooks outside of the administration panel, you would add this code to the <code>functions.php</code> file of your theme:
 
-`if(!is_admin()){
+`function my_avatar_filter(){
   // Remove from show_user_profile hook
   remove_action('show_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
   remove_action('show_user_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
@@ -272,6 +272,10 @@ Then, to add WP User Avatar to that hook and remove it from the other hooks outs
   // Add to edit_user_avatar hook
   add_action('edit_user_avatar', array('wp_user_avatar', 'wpua_action_show_user_profile'));
   add_action('edit_user_avatar', array('wp_user_avatar', 'wpua_media_upload_scripts'));
+}
+// Loads only outside of administration panel
+if(!is_admin()){
+  add_action('plugins_loaded','my_avatar_filter');`
 }`
 
 = HTML Wrapper =
@@ -361,6 +365,12 @@ This would output:
 6. Options for the [avatar] shortcode.
 
 == Changelog ==
+
+= 1.8 =
+* Add: Media Library table view
+* Bug Fix: Identify public static functions
+* Update: Refactor code into separate classes
+* Update: Translations
 
 = 1.7.2 =
 * Bug Fix: Files not committed properly in previous release
@@ -472,7 +482,7 @@ This would output:
 * Bug Fix: Swap TinyMCE file locations
 
 = 1.3.4 =
-* Update: Change support only to WP 3.3+ because of jQuery 1.7.2.1 support
+* Update: Change support only to WP 3.3+ because of jQuery 1.8.1 support
 
 = 1.3.3 =
 * Update: Shortcode checks for user ID, login, slug, or e-mail address
@@ -519,7 +529,7 @@ This would output:
 = 1.2 =
 * Add: Default Avatar setting
 
-= 1.1.7.2 =
+= 1.1.8 =
 * Bug Fix: Change update_usermeta to update_user_meta
 
 = 1.1.6 =

@@ -66,8 +66,8 @@
         longname  : 'WP User Avatar',
         author    : 'Bangbay Siboliban',
         authorurl : 'http://siboliban.org/',
-        infourl   : 'http://wordpress.org/extend/plugins/wp-user-avatar/',
-        version   : "1.7.2"
+        infourl   : 'http://wordpress.org/plugins/wp-user-avatar/',
+        version   : "1.8"
       };
     }
   });

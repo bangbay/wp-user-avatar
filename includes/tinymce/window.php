@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.7.2
+ * @version 1.8
  */
 
 if(!defined('ABSPATH')){
@@ -9,7 +9,8 @@ if(!defined('ABSPATH')){
   @header('Content-Type:'.get_option('html_type').';charset='.get_option('blog_charset'));
 }
 ?>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
   <title><?php _e('WP User Avatar', 'wp-user-avatar'); ?></title>
   <meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo get_option('blog_charset'); ?>" />

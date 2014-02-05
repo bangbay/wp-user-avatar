@@ -1,13 +1,8 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.7.2
+ * @version 1.8
  */
-
-if(!defined('ABSPATH')){
-  die(__('You are not allowed to call this page directly.'));
-  @header('Content-Type:'.get_option('html_type').';charset='.get_option('blog_charset'));
-}
 
 function wpua_myplugin_addbuttons(){
   // Don't bother doing this stuff if the current user lacks permissions
@@ -23,7 +18,6 @@ function wpua_myplugin_addbuttons(){
 // init process for button control
 add_action('init', 'wpua_myplugin_addbuttons');
 
-
 function wpua_register_myplugin_button($buttons){
   array_push($buttons, 'separator', 'wpUserAvatar');
   return $buttons;
@@ -31,7 +25,7 @@ function wpua_register_myplugin_button($buttons){
 
 // Load the TinyMCE plugin : editor_plugin.js (wp2.5)
 function wpua_add_myplugin_tinymce_plugin($plugin_array){
-  $plugin_array['wpUserAvatar'] = WPUA_URLPATH.'includes/tinymce/editor_plugin.js';
+  $plugin_array['wpUserAvatar'] = WPUA_INC_URL.'tinymce/editor_plugin.js';
   return $plugin_array;
 }
 
@@ -40,8 +34,7 @@ function wpua_ajax_tinymce(){
   if(!current_user_can('edit_posts') && !current_user_can('edit_pages')){
     die('You are not allowed to call this page directly.');
   }
-  include_once(WPUA_ABSPATH.'includes/tinymce/window.php');
+  include_once(WPUA_INC.'tinymce/window.php');
   die();
 }
 add_action('wp_ajax_wp_user_avatar_tinymce', 'wpua_ajax_tinymce');
-?>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.7.2
+ * @version 1.8
  */
 
 // Remove user metadata and options on plugin delete
@@ -11,6 +11,7 @@ if(!defined('WP_UNINSTALL_PLUGIN')){
 
 global $wpdb, $blog_id, $switched;
 $users = get_users();
+
 // Remove settings for all sites in multisite
 if(is_multisite()){
   $blogs = $wpdb->get_results("SELECT * FROM $wpdb->blogs");
@@ -55,8 +56,9 @@ if(is_multisite()){
   delete_option('wp_user_avatar_media_updated');
   delete_option('wp_user_avatar_users_updated');
 }
+
 // Delete post meta
 delete_post_meta_by_key('_wp_attachment_wp_user_avatar');
+
 // Reset all default avatars to Mystery Man
 update_option('avatar_default', 'mystery');
-?>
