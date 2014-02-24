@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: includes/class-wp-user-avatar-admin.php:174
+#: includes/class-wp-user-avatar-admin.php:175
 msgid "Donate"
 msgstr "Spenden"
 

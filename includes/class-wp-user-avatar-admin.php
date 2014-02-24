@@ -54,8 +54,9 @@ class WP_User_Avatar_Admin {
 
   // On deactivation
   public function wpua_deactivate() {
+    global $wpua_subscriber;
     // Remove subscribers edit_posts capability
-    $this->wpua_subscriber_remove_cap();
+    $wpua_subscriber->wpua_subscriber_remove_cap();
     // Reset all default avatar to Mystery Man
     update_option('avatar_default', 'mystery');
   }

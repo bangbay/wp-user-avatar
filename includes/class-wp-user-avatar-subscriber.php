@@ -18,6 +18,8 @@ class WP_User_Avatar_Subscriber {
     }
     if((bool) $wpua_allow_upload == 1 && (bool) $wpua_edit_avatar == 1) {
       add_action('admin_init', array($this, 'wpua_subscriber_add_cap'));
+    } else {
+      add_action('admin_init', array($this, 'wpua_subscriber_remove_cap'));
     }
   }
 
