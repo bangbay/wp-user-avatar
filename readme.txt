@@ -3,8 +3,8 @@
 Contributors: bangbay
 Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
-Requires at least: 3.5
-Tested up to: 3.8
+Requires at least: 3.6
+Tested up to: 3.8.1
 Stable tag: 1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
