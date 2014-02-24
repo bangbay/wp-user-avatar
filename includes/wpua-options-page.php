@@ -131,6 +131,8 @@ $hide_resize = (bool) $wpua_resize_upload != 1 ? ' style="display:none;"' : "";
             </fieldset>
           </td>
         </tr>
+      <?php else : ?>
+        <input type="hidden" id="avatar_rating" name="avatar_rating" value="<?php echo get_option('avatar_rating'); ?>" />
       <?php endif; ?>
       <tr valign="top">
         <th scope="row"><?php _e('Default Avatar') ?></th>
