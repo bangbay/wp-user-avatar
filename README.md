@@ -11,6 +11,7 @@ WP User Avatar also lets you:
 * Upload your own Default Avatar in your Discussion settings.
 * Show the user's [Gravatar](http://gravatar.com/) avatar or Default Avatar if the user doesn't have a WP User Avatar image.
 * Disable [Gravatar](http://gravatar.com/) avatars and use only local avatars.
-* Use the <code>[avatar]</code> shortcode in your posts. The shortcode will work with any theme, whether it has avatar support or not.
+* Use the <code>[avatar_upload]</code> shortcode to add a standalone uploader to a front page. This uploader is only visible to logged-in users.
+* Use the <code>[avatar]</code> shortcode in your posts. These shortcodes will work with any theme, whether it has avatar support or not.
 * Allow Contributors and Subscribers to upload their own avatars.
 * Limit upload file size for Contributors and Subscribers.
