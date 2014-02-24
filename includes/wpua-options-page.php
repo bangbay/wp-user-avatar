@@ -110,26 +110,28 @@ $hide_resize = (bool) $wpua_resize_upload != 1 ? ' style="display:none;"' : "";
         </fieldset>
         </td>
       </tr>
-      <tr valign="top">
-        <th scope="row"><?php _e('Maximum Rating'); ?></th>
-        <td>
-          <fieldset>
-            <legend class="screen-reader-text"><span><?php _e('Maximum Rating'); ?></span></legend>
-            <?php
-              $ratings = array(
-                'G' => __('G &#8212; Suitable for all audiences'),
-                'PG' => __('PG &#8212; Possibly offensive, usually for audiences 13 and above'),
-                'R' => __('R &#8212; Intended for adult audiences above 17'),
-                'X' => __('X &#8212; Even more mature than above')
-              );
-              foreach ($ratings as $key => $rating) :
-                $selected = (get_option('avatar_rating') == $key) ? 'checked="checked"' : "";
-                echo "\n\t<label><input type='radio' name='avatar_rating' value='" . esc_attr($key) . "' $selected/> $rating</label><br />";
-              endforeach;
-            ?>
-          </fieldset>
-        </td>
-      </tr>
+      <?php if((bool) $wpua_disable_gravatar != 1) : ?>
+        <tr valign="top" id="avatar-rating">
+          <th scope="row"><?php _e('Maximum Rating'); ?></th>
+          <td>
+            <fieldset>
+              <legend class="screen-reader-text"><span><?php _e('Maximum Rating'); ?></span></legend>
+              <?php
+                $ratings = array(
+                  'G' => __('G &#8212; Suitable for all audiences'),
+                  'PG' => __('PG &#8212; Possibly offensive, usually for audiences 13 and above'),
+                  'R' => __('R &#8212; Intended for adult audiences above 17'),
+                  'X' => __('X &#8212; Even more mature than above')
+                );
+                foreach ($ratings as $key => $rating) :
+                  $selected = (get_option('avatar_rating') == $key) ? 'checked="checked"' : "";
+                  echo "\n\t<label><input type='radio' name='avatar_rating' value='" . esc_attr($key) . "' $selected/> $rating</label><br />";
+                endforeach;
+              ?>
+            </fieldset>
+          </td>
+        </tr>
+      <?php endif; ?>
       <tr valign="top">
         <th scope="row"><?php _e('Default Avatar') ?></th>
         <td class="defaultavatarpicker">

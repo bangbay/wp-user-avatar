@@ -10,7 +10,7 @@ jQuery(function($) {
   // Hide Gravatars if disable Gravatars is checked
   $('#wp_user_avatar_disable_gravatar').change(function() {
     if($('#wp-avatars').length) {
-      $('#wp-avatars').slideToggle(!$('#wp_user_avatar_disable_gravatar').is(':checked'));
+      $('#wp-avatars, #avatar-rating').slideToggle(!$('#wp_user_avatar_disable_gravatar').is(':checked'));
       $('#wp_user_avatar_radio').trigger('click');
     }
   });
