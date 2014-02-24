@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Avatar 1.8\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2014-01-16 00:00-0000\n"
+"PO-Revision-Date: 2014-02-23 00:00-0000\n"
 "Language: de_DE\n"
 "Last-Translator: WP User Avatar\n"
 "Language-Team: WP User Avatar\n"
@@ -14,54 +14,49 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: wp-user-avatar.php:318
-msgid "Do you like WP User Avatar?"
-msgstr "Bist Du mit WP-Benutzer-Avatar zufrieden?"
-
-#: wp-user-avatar.php:318
-msgid "Make a donation."
-msgstr "Spenden"
-
-#: wp-user-avatar.php:411
-#: wp-user-avatar.php:925
-msgid "Click %s to save your changes"
-msgstr "Klicken Sie %s, um Ihre Änderungen zu speichern"
-
-#: wp-user-avatar.php:536
+#: includes/class-wp-user-avatar-admin.php:174
 msgid "Donate"
 msgstr "Spenden"
 
-#: wp-user-avatar.php:999
+#: includes/wpua-functions.php:279
+msgid "Do you like WP User Avatar?"
+msgstr "Bist Du mit WP-Benutzer-Avatar zufrieden?"
+
+#: includes/wpua-functions.php:279
+msgid "Make a donation."
+msgstr "Spenden"
+
+#: includes/wpua-options-page.php:40
 msgid "Add avatar button to Visual Editor"
 msgstr "Einen Avatar-Knopf zum WYSIWYG-Editor hinzufügen"
 
-#: wp-user-avatar.php:1005
+#: includes/wpua-options-page.php:46
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Mitarbeiter und Abonnenten erlauben, Avatare hochzuladen"
 
-#: wp-user-avatar.php:1011
+#: includes/wpua-options-page.php:52
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Gravatar deaktivieren und nur lokale Avatare verwenden"
 
-#: wp-user-avatar.php:1022
-#: wp-user-avatar.php:1027
+#: includes/wpua-options-page.php:63
+#: includes/wpua-options-page.php:68
 msgid "Upload Size Limit"
 msgstr "Dateigrößenbeschränkung"
 
-#: wp-user-avatar.php:1022
-#: wp-user-avatar.php:1027
+#: includes/wpua-options-page.php:63
+#: includes/wpua-options-page.php:68
 msgid "(only for Contributors & Subscribers)"
 msgstr "(nur für Mitarbeiter und Abonnenten)"
 
-#: wp-user-avatar.php:1037
+#: includes/wpua-options-page.php:78
 msgid "Allow users to edit avatars"
 msgstr "Benutzer erlauben, Avatare bearbeiten"
 
-#: wp-user-avatar.php:1043
+#: includes/wpua-options-page.php:84
 msgid "Resize avatars on upload"
 msgstr "Resize Avatare beim Upload"
 
-#: wp-user-avatar.php:1055
+#: includes/wpua-options-page.php:96
 msgid "Crop avatars to exact dimensions"
 msgstr "Avatare auf exakte Größe beschneiden"
 

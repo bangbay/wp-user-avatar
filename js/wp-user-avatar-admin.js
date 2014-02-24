@@ -1,19 +1,17 @@
-jQuery(function($){
+jQuery(function($) {
   // Show size info only if allow uploads is checked
-  $('#wp_user_avatar_allow_upload').change(function(){
+  $('#wp_user_avatar_allow_upload').change(function() {
     $('#wpua-contributors-subscribers').slideToggle($('#wp_user_avatar_allow_upload').is(':checked'));
   });
   // Show resize info only if resize uploads is checked
-  $('#wp_user_avatar_resize_upload').change(function(){
+  $('#wp_user_avatar_resize_upload').change(function() {
      $('#wpua-resize-sizes').slideToggle($('#wp_user_avatar_resize_upload').is(':checked'));
   });
   // Hide Gravatars if disable Gravatars is checked
-  $('#wp_user_avatar_disable_gravatar').change(function(){
-    if($('#wp-avatars').length){
+  $('#wp_user_avatar_disable_gravatar').change(function() {
+    if($('#wp-avatars').length) {
       $('#wp-avatars').slideToggle(!$('#wp_user_avatar_disable_gravatar').is(':checked'));
       $('#wp_user_avatar_radio').trigger('click');
-    } else {
-      $('#wpua-message').show();
     }
   });
   // Add size slider
@@ -22,7 +20,7 @@ jQuery(function($){
     min: 0,
     max: parseInt(wpua_admin.max_upload_size),
     step: 1,
-    slide: function(event, ui){
+    slide: function(event, ui) {
       $('#wp_user_avatar_upload_size_limit').val(ui.value);
       $('#wpua-readable-size').html(Math.floor(ui.value / 1024) + 'KB');
       $('#wpua-readable-size-error').hide();
@@ -30,7 +28,7 @@ jQuery(function($){
     }
   });
   // Update readable size on keyup
-  $('#wp_user_avatar_upload_size_limit').keyup(function(){
+  $('#wp_user_avatar_upload_size_limit').keyup(function() {
     var wpuaUploadSizeLimit = $(this).val();
     wpuaUploadSizeLimit = wpuaUploadSizeLimit.replace(/\D/g, '');
     $(this).val(wpuaUploadSizeLimit);

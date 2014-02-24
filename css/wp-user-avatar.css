@@ -1,5 +1,5 @@
-#wpua-errors, #wpua-message, #wpua-readable-size-error, .wpua-error { color: #c00 !important; font-weight: 700 !important; }
-#wpua-message, #wpua-readable-size-error, #wpua-undo-button { display: none; }
+#wpua-errors, #wpua-readable-size-error, .wpua-error { color: #c00 !important; font-weight: 700 !important; }
+#wpua-readable-size-error, #wpua-undo-button { display: none; }
 #wpua-preview { margin-right: 10px; }
 #wpua-preview, #wpua-thumbnail { display: inline-block; text-align: center; vertical-align: top; }
 #wpua-preview img, #wpua-thumbnail img { max-height: 96px; border: 1px solid #dfdfdf; display: block; }

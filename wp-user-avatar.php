@@ -37,10 +37,9 @@ require_once(ABSPATH.'wp-admin/includes/template.php');
 
 // WP User Avatar
 require_once(WPUA_INC.'wpua-globals.php');
-require_once(WPUA_INC.'class-wp-user-avatar.php');
-require_once(WPUA_INC.'class-wp-user-avatar-shortcode.php');
-require_once(WPUA_INC.'class-wp-user-avatar-admin.php');
 require_once(WPUA_INC.'wpua-functions.php');
-if((bool) $wpua_tinymce == 1){
-  include_once(WPUA_INC.'wpua-tinymce.php');
-}
+require_once(WPUA_INC.'class-wp-user-avatar.php');
+require_once(WPUA_INC.'class-wp-user-avatar-admin.php');
+require_once(WPUA_INC.'class-wp-user-avatar-shortcode.php');
+require_once(WPUA_INC.'class-wp-user-avatar-subscriber.php');
+require_once(WPUA_INC.'class-wp-user-avatar-update.php');

@@ -1,5 +1,7 @@
 <?php
 /**
+ * Media Library view of all avatars in use.
+ *
  * @package WP User Avatar
  * @version 1.8
  */
@@ -9,11 +11,9 @@
   wp_enqueue_script('wp-ajax-response');
   wp_enqueue_script('jquery-ui-draggable');
   wp_enqueue_script('media');
-  add_screen_option('per_page', array('label' => _x( 'Media items', 'items per page (screen options)')));
 ?>
   <div class="wrap">
     <h2><?php _e('Avatars'); ?></h2>
-
 <?php
 $message = '';
 if ( ! empty( $_GET['posted'] ) ) {
@@ -58,7 +58,6 @@ if ( !empty($message) ) { ?>
 <?php } ?>
   <?php $wp_list_table->views(); ?>
   <form id="posts-filter" action="" method="get">
-    <?php $wp_list_table->search_box( __( 'Search Media' ), 'media' ); ?>
     <?php $wp_list_table->display(); ?>
     <div id="ajax-response"></div>
     <?php find_posts_div(); ?>

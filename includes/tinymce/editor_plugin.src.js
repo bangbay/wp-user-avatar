@@ -1,6 +1,6 @@
 // Docu : http://wiki.moxiecode.com/index.php/TinyMCE:Create_plugin/3.x#Creating_your_own_plugins
 
-(function(){
+(function() {
   // Load plugin specific language pack
   tinymce.PluginManager.requireLangPack('wpUserAvatar');
   
@@ -13,15 +13,15 @@
      * @param {tinymce.Editor} ed Editor instance that the plugin is initialized in.
      * @param {string} url Absolute URL to where the plugin is located.
      */
-    init : function(ed, url){
+    init : function(ed, url) {
       // Register the command so that it can be invoked by using tinyMCE.activeEditor.execCommand('mceExample');
 
-      ed.addCommand('mceWpUserAvatar', function(){
+      ed.addCommand('mceWpUserAvatar', function() {
         ed.windowManager.open({
             // call content via admin-ajax, no need to know the full plugin path
           file : ajaxurl + '?action=wp_user_avatar_tinymce',
           width : 500,
-          height : 330,
+          height : 360,
           inline : 1
         }, {
           plugin_url : url // Plugin absolute URL
@@ -36,7 +36,7 @@
       });
 
       // Add a node change handler, selects the button in the UI when a image is selected
-      ed.onNodeChange.add(function(ed, cm, n){
+      ed.onNodeChange.add(function(ed, cm, n) {
         cm.setActive('wpUserAvatar', n.nodeName == 'IMG');
       });
     },
@@ -51,7 +51,7 @@
      * @param {tinymce.ControlManager} cm Control manager to use inorder to create new control.
      * @return {tinymce.ui.Control} New control instance or null if no control was created.
      */
-    createControl : function(n, cm){
+    createControl : function(n, cm) {
       return null;
     },
 
@@ -61,7 +61,7 @@
      *
      * @return {Object} Name/value array containing information about the plugin.
      */
-    getInfo : function(){
+    getInfo : function() {
       return {
         longname  : 'WP User Avatar',
         author    : 'Bangbay Siboliban',
