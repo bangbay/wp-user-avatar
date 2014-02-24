@@ -69,11 +69,6 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
   function extra_tablenav($which) { ?>
     <div class="alignleft actions">
       <?php
-        if('top' == $which && !is_singular() && !$this->is_trash) {
-          $this->months_dropdown('attachment');
-          do_action('restrict_manage_posts');
-          submit_button(__('Filter'), 'button', false, false, array('id' => 'post-query-submit'));
-        }
         if($this->is_trash && current_user_can( 'edit_others_posts')) {
           submit_button(__('Empty Trash'), 'apply', 'delete_all', false );
         }
