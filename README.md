@@ -1,6 +1,6 @@
 **WP User Avatar**
 
-Download the plugin at: http://wordpress.org/extend/plugins/wp-user-avatar/
+Download the plugin at: http://wordpress.org/plugins/wp-user-avatar/
 
 **Description**
 
