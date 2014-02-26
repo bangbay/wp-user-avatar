@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.6
 Tested up to: 3.8.1
-Stable tag: 1.8
+Stable tag: 1.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -272,12 +272,15 @@ Then, to add WP User Avatar to that hook and remove it from the other hooks outs
 `function my_avatar_filter() {
   // Remove from show_user_profile hook
   remove_action('show_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
+  remove_action('show_user_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
 
   // Remove from edit_user_profile hook
   remove_action('edit_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
+  remove_action('edit_user_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
 
   // Add to edit_user_avatar hook
   add_action('edit_user_avatar', array('wp_user_avatar', 'wpua_action_show_user_profile'));
+  add_action('edit_user_avatar', array('wp_user_avatar', 'wpua_media_upload_scripts'));
 }
 
 // Loads only outside of administration panel
@@ -364,6 +367,9 @@ This would output:
 4. After you've chosen a WP User Avatar image, you will see the option to remove it.
 
 == Changelog ==
+
+= 1.8.1 =
+* Bug Fix: Reattach scripts to profile action
 
 = 1.8 =
 * Add: Front page uploader

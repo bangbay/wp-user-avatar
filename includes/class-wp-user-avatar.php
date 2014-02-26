@@ -3,7 +3,7 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.8
+ * @version 1.8.1
  */
 
 class WP_User_Avatar {
@@ -16,6 +16,10 @@ class WP_User_Avatar {
       add_action('edit_user_profile', array($this, 'wpua_action_show_user_profile'));
       add_action('personal_options_update', array($this, 'wpua_action_process_option_update'));
       add_action('edit_user_profile_update', array($this, 'wpua_action_process_option_update'));
+      if(!is_admin()) {
+        add_action('show_user_profile', array($this, 'wpua_media_upload_scripts'));
+        add_action('edit_user_profile', array($this, 'wpua_media_upload_scripts'));
+      }
       // Admin scripts
       if($pagenow == 'profile.php' || $pagenow == 'user-edit.php' || $pagenow == 'options-discussion.php' || ($pagenow == 'admin.php' && isset($_GET['page']) && $_GET['page'] == 'wp-user-avatar')) {
         add_action('admin_enqueue_scripts', array($this, 'wpua_media_upload_scripts'));
@@ -75,10 +79,6 @@ class WP_User_Avatar {
     $avatar_medium = has_wp_user_avatar($user->ID) ? get_wp_user_avatar_src($user->ID, 'medium') : $avatar_medium_src;
     // Check if user has wp_user_avatar, if not show image from above
     $avatar_thumbnail = has_wp_user_avatar($user->ID) ? get_wp_user_avatar_src($user->ID, 96) : $avatar_medium_src;
-    // Enqueue front page scripts here
-    if(!is_admin()){
-      add_action('wp_enqueue_scripts', array($wp_user_avatar, $wp_user_avatar->wpua_media_upload_scripts($user)));
-    }
     $edit_attachment_link = add_query_arg(array('post' => $wpua, 'action' => 'edit'), admin_url('post.php'));
   ?>
     <?php do_action('wpua_before_avatar'); ?>
