@@ -3,7 +3,7 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.8.1
+ * @version 1.8.2
  */
 
 class WP_User_Avatar {
@@ -18,7 +18,7 @@ class WP_User_Avatar {
       add_action('edit_user_profile_update', array($this, 'wpua_action_process_option_update'));
       if(!is_admin()) {
         add_action('show_user_profile', array($this, 'wpua_media_upload_scripts'));
-        add_action('edit_user_profile', array($this, 'wpua_media_upload_scripts'));
+        add_action('show_user_profile', array($this, 'wpua_media_upload_scripts'));
       }
       // Admin scripts
       if($pagenow == 'profile.php' || $pagenow == 'user-edit.php' || $pagenow == 'options-discussion.php' || ($pagenow == 'admin.php' && isset($_GET['page']) && $_GET['page'] == 'wp-user-avatar')) {
