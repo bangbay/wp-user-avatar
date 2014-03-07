@@ -3,7 +3,7 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.8.5
+ * @version 1.8.6
  */
 
 class WP_User_Avatar {
@@ -37,18 +37,20 @@ class WP_User_Avatar {
 
   // Avatars have no parent posts
   public function wpua_media_view_settings($settings) {
-    $settings['post']['id'] = 0;
+    global $post, $is_wpua_page;
+    $settings['post']['id'] = !is_admin() && (bool) $is_wpua_page == 1 ? 0 : $post->ID;
     return $settings;
   }
 
   // Media Uploader
   public static function wpua_media_upload_scripts($user="") {
-    global $current_user, $mustache_admin, $pagenow, $show_avatars, $wp_user_avatar, $wpua_admin, $wpua_upload_size_limit;
+    global $current_user, $is_wpua_page, $mustache_admin, $pagenow, $post, $show_avatars, $wp_user_avatar, $wpua_admin, $wpua_upload_size_limit;
     $user = ($pagenow == 'user-edit.php' && isset($_GET['user_id'])) ? get_user_by('id', $_GET['user_id']) : $current_user;
+    $is_wpua_page = true;
     wp_enqueue_script('jquery');
     if($wp_user_avatar->wpua_is_author_or_above()) {
       wp_enqueue_script('admin-bar');
-      wp_enqueue_media(array('post' => 0));
+      wp_enqueue_media(array('post' => $post));
       wp_enqueue_script('wp-user-avatar', WPUA_URL.'js/wp-user-avatar.js', array('jquery', 'media-editor'), WPUA_VERSION, true);
     } else {
       wp_enqueue_script('wp-user-avatar', WPUA_URL.'js/wp-user-avatar-user.js', array('jquery'), WPUA_VERSION, true);
@@ -159,7 +161,7 @@ class WP_User_Avatar {
   public static function wpua_action_process_option_update($user_id) {
     global $blog_id, $post, $wpdb, $wp_user_avatar, $wpua_resize_crop, $wpua_resize_h, $wpua_resize_upload, $wpua_resize_w;
     // Check if user has publish_posts capability
-    if(wpua_is_author_or_above()) {
+    if($wp_user_avatar->wpua_is_author_or_above()) {
       $wpua_id = isset($_POST['wp-user-avatar']) ? intval($_POST['wp-user-avatar']) : "";
       // Remove old attachment postmeta
       delete_metadata('post', null, '_wp_attachment_wp_user_avatar', $user_id, true);
