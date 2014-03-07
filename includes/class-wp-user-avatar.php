@@ -3,7 +3,7 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.8.7
+ * @version 1.8.8
  */
 
 class WP_User_Avatar {
@@ -16,14 +16,15 @@ class WP_User_Avatar {
       add_action('edit_user_profile', array($this, 'wpua_action_show_user_profile'));
       add_action('personal_options_update', array($this, 'wpua_action_process_option_update'));
       add_action('edit_user_profile_update', array($this, 'wpua_action_process_option_update'));
-      if(!is_admin()) {
-        add_action('show_user_profile', array($this, 'wpua_media_upload_scripts'));
-        add_action('edit_user_profile', array($this, 'wpua_media_upload_scripts'));
-      }
       // Admin scripts
       $pages = array('profile.php', 'options-discussion.php', 'user-edit.php');
       if(in_array($pagenow, $pages) || $wpua_admin->wpua_is_menu_page()) {
         add_action('admin_enqueue_scripts', array($this, 'wpua_media_upload_scripts'));
+      }
+      // Front pages
+      if(!is_admin()){
+        add_action('show_user_profile', array($this, 'wpua_media_upload_scripts'));
+        add_action('edit_user_profile', array($this, 'wpua_media_upload_scripts'));
       }
       if(!$this->wpua_is_author_or_above()) {
         // Upload errors
@@ -37,16 +38,17 @@ class WP_User_Avatar {
 
   // Avatars have no parent posts
   public function wpua_media_view_settings($settings) {
-    global $post, $is_wpua_page;
-    $settings['post']['id'] = !is_admin() && (bool) $is_wpua_page == 1 ? 0 : $post->ID;
+    global $post, $wpua_is_profile;
+    $settings['post']['id'] = !is_admin() && $wpua_is_profile == 1 ? 0 : $post->ID;
     return $settings;
   }
 
   // Media Uploader
   public static function wpua_media_upload_scripts($user="") {
-    global $current_user, $is_wpua_page, $mustache_admin, $pagenow, $post, $show_avatars, $wp_user_avatar, $wpua_admin, $wpua_upload_size_limit;
+    global $current_user, $mustache_admin, $pagenow, $post, $show_avatars, $wp_user_avatar, $wpua_admin, $wpua_is_profile, $wpua_upload_size_limit;
+    // This is a profile page
+    $wpua_is_profile = true;
     $user = ($pagenow == 'user-edit.php' && isset($_GET['user_id'])) ? get_user_by('id', $_GET['user_id']) : $current_user;
-    $is_wpua_page = true;
     wp_enqueue_script('jquery');
     if($wp_user_avatar->wpua_is_author_or_above()) {
       wp_enqueue_script('admin-bar');
@@ -270,7 +272,6 @@ class WP_User_Avatar {
     $is_author_or_above = (current_user_can('edit_published_posts') && current_user_can('upload_files') && current_user_can('publish_posts') && current_user_can('delete_published_posts')) ? true : false;
     return $is_author_or_above;
   }
-
 }
 
 // Initialize WP_User_Avatar

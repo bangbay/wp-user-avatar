@@ -3,7 +3,7 @@
  * Defines shortcodes.
  *
  * @package WP User Avatar
- * @version 1.8.7
+ * @version 1.8.8
  */
 
 class WP_User_Avatar_Shortcode {
@@ -12,6 +12,7 @@ class WP_User_Avatar_Shortcode {
     add_shortcode('avatar_upload', array($this, 'wpua_edit_shortcode'));
     // Add avatar and scripts to avatar_upload
     add_action('wpua_show_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
+    add_action('wpua_show_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
     add_action('wpua_update', array('wp_user_avatar', 'wpua_action_process_option_update'));
     // Add error messages to avatar_upload
     add_action('wpua_update_errors', array('wp_user_avatar', 'wpua_upload_errors'), 10, 3);
