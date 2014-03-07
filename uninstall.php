@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.8.3
+ * @version 1.8.4
  */
 
 // Remove user metadata and options on plugin delete

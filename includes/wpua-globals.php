@@ -3,7 +3,7 @@
  * Global variables used in plugin.
  *
  * @package WP User Avatar
- * @version 1.8.3
+ * @version 1.8.4
  */
 
 // Define global variables

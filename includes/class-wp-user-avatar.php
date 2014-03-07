@@ -3,7 +3,7 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.8.3
+ * @version 1.8.4
  */
 
 class WP_User_Avatar {
@@ -32,16 +32,23 @@ class WP_User_Avatar {
         add_filter('wp_handle_upload_prefilter', array($this, 'wpua_handle_upload_prefilter'));
       }
     }
+    add_filter('media_view_settings', array($this, 'wpua_media_view_settings'), 10, 1);
+  }
+
+  // Avatars have no parent posts
+  public function wpua_media_view_settings($settings) {
+    $settings['post']['id'] = 0;
+    return $settings;
   }
 
   // Media Uploader
   public static function wpua_media_upload_scripts($user="") {
-    global $current_user, $mustache_admin, $pagenow, $post, $show_avatars, $wpua_admin, $wpua_upload_size_limit;
+    global $current_user, $mustache_admin, $pagenow, $show_avatars, $wpua_admin, $wpua_upload_size_limit;
     $user = ($pagenow == 'user-edit.php' && isset($_GET['user_id'])) ? get_user_by('id', $_GET['user_id']) : $current_user;
     wp_enqueue_script('jquery');
     if((current_user_can('publish_posts') && current_user_can('upload_files'))) {
       wp_enqueue_script('admin-bar');
-      wp_enqueue_media(array('post' => $post));
+      wp_enqueue_media(array('post' => 0));
       wp_enqueue_script('wp-user-avatar', WPUA_URL.'js/wp-user-avatar.js', array('jquery', 'media-editor'), WPUA_VERSION, true);
     } else {
       wp_enqueue_script('wp-user-avatar', WPUA_URL.'js/wp-user-avatar-user.js', array('jquery'), WPUA_VERSION, true);

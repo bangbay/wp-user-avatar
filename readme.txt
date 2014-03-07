@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.6
 Tested up to: 3.8.1
-Stable tag: 1.8.3
+Stable tag: 1.8.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -368,6 +368,9 @@ This would output:
 
 == Changelog ==
 
+= 1.8.4 =
+* Bug Fix: Set avatar post parent to 0
+
 = 1.8.3 =
 * Bug Fix: Prevent attachment insert without image
 * Update: Check for delete_posts capability instead of user role for Subscribers
@@ -496,7 +499,7 @@ This would output:
 * Bug Fix: Swap TinyMCE file locations
 
 = 1.3.4 =
-* Update: Change support only to WP 3.3+ because of jQuery 1.8.3 support
+* Update: Change support only to WP 3.3+ because of jQuery 1.8.4 support
 
 = 1.3.3 =
 * Update: Shortcode checks for user ID, login, slug, or e-mail address

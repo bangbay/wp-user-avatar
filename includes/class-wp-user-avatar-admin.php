@@ -3,7 +3,7 @@
  * Defines all of administrative, activation, and deactivation settings.
  *
  * @package WP User Avatar
- * @version 1.8.3
+ * @version 1.8.4
  */
 
 class WP_User_Avatar_Admin {
