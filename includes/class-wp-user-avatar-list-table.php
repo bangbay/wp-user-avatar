@@ -3,7 +3,7 @@
  * Based on WP_Media_List_Table class.
  *
  * @package WP User Avatar
- * @version 1.8.2
+ * @version 1.8.3
  */
 
 class WP_User_Avatar_List_Table extends WP_List_Table {
@@ -26,6 +26,7 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
     while($avatars_wp_query->have_posts()) : $avatars_wp_query->the_post();
       $avatars_array[] = $post->ID;
     endwhile;
+    wp_reset_query();
     // Include default avatar
     $avatars_array[] = $wpua_avatar_default;
     parent::__construct(array(
@@ -69,7 +70,7 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
   function extra_tablenav($which) { ?>
     <div class="alignleft actions">
       <?php
-        if($this->is_trash && current_user_can( 'edit_others_posts')) {
+        if($this->is_trash && current_user_can('edit_others_posts')) {
           submit_button(__('Empty Trash'), 'apply', 'delete_all', false );
         }
       ?>

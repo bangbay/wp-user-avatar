@@ -3,7 +3,7 @@
  * Defines all of administrative, activation, and deactivation settings.
  *
  * @package WP User Avatar
- * @version 1.8.2
+ * @version 1.8.3
  */
 
 class WP_User_Avatar_Admin {
@@ -67,6 +67,13 @@ class WP_User_Avatar_Admin {
     add_submenu_page('wp-user-avatar', __('Settings'), __('Settings'), 'manage_options', 'wp-user-avatar', array($this, 'wpua_options_page'));
     add_submenu_page('wp-user-avatar', __('Library'), __('Library'), 'manage_options', 'wp-user-avatar-library', array($this, 'wpua_media_page'));
     add_action('admin_init', array($this, 'wpua_admin_settings'));
+  }
+
+  // Checks if current page is settings page
+  public function wpua_is_menu_page() {
+    global $pagenow;
+    $is_menu_page = ($pagenow == 'admin.php' && isset($_GET['page']) && $_GET['page'] == 'wp-user-avatar') ? true : false;
+    return $is_menu_page;
   }
 
   // Media page

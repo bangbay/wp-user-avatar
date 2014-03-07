@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.8.2
+ * @version 1.8.3
  */
 
 // Remove user metadata and options on plugin delete
@@ -14,7 +14,7 @@ $users = get_users();
 
 // Remove settings for all sites in multisite
 if(is_multisite()) {
-  $blogs = $wpdb->get_results("SELECT * FROM $wpdb->blogs");
+  $blogs = wp_get_sites();
   foreach($users as $user) {
     foreach($blogs as $blog) {
       delete_user_meta($user->ID, $wpdb->get_blog_prefix($blog->blog_id).'user_avatar');
