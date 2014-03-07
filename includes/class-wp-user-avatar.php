@@ -3,14 +3,14 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.8.4
+ * @version 1.8.5
  */
 
 class WP_User_Avatar {
   public function __construct() {
     global $pagenow, $show_avatars, $wpua_admin, $wpua_allow_upload;
     // Add WPUA to profile
-    if((current_user_can('publish_posts') && current_user_can('upload_files')) || ((bool) $wpua_allow_upload == 1 && is_user_logged_in())) {
+    if($this->wpua_is_author_or_above() || ((bool) $wpua_allow_upload == 1 && is_user_logged_in())) {
       // Profile functions and scripts
       add_action('show_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
       add_action('edit_user_profile', array($this, 'wpua_action_show_user_profile'));
@@ -25,7 +25,7 @@ class WP_User_Avatar {
       if(in_array($pagenow, $pages) || $wpua_admin->wpua_is_menu_page()) {
         add_action('admin_enqueue_scripts', array($this, 'wpua_media_upload_scripts'));
       }
-      if((!current_user_can('publish_posts') && !current_user_can('upload_files'))) {
+      if(!$this->wpua_is_author_or_above()) {
         // Upload errors
         add_action('user_profile_update_errors', array($this, 'wpua_upload_errors'), 10, 3);
         // Prefilter upload size
@@ -43,10 +43,10 @@ class WP_User_Avatar {
 
   // Media Uploader
   public static function wpua_media_upload_scripts($user="") {
-    global $current_user, $mustache_admin, $pagenow, $show_avatars, $wpua_admin, $wpua_upload_size_limit;
+    global $current_user, $mustache_admin, $pagenow, $show_avatars, $wp_user_avatar, $wpua_admin, $wpua_upload_size_limit;
     $user = ($pagenow == 'user-edit.php' && isset($_GET['user_id'])) ? get_user_by('id', $_GET['user_id']) : $current_user;
     wp_enqueue_script('jquery');
-    if((current_user_can('publish_posts') && current_user_can('upload_files'))) {
+    if($wp_user_avatar->wpua_is_author_or_above()) {
       wp_enqueue_script('admin-bar');
       wp_enqueue_media(array('post' => 0));
       wp_enqueue_script('wp-user-avatar', WPUA_URL.'js/wp-user-avatar.js', array('jquery', 'media-editor'), WPUA_VERSION, true);
@@ -91,9 +91,9 @@ class WP_User_Avatar {
   ?>
     <?php do_action('wpua_before_avatar'); ?>
     <input type="hidden" name="wp-user-avatar" id="wp-user-avatar" value="<?php echo $wpua; ?>" />
-    <?php if((current_user_can('publish_posts') && current_user_can('upload_files'))) : // Button to launch Media Uploader ?>
+    <?php if($wp_user_avatar->wpua_is_author_or_above()) : // Button to launch Media Uploader ?>
       <p id="wpua-add-button"><button type="button" class="button" id="wpua-add" name="wpua-add"><?php _e('Choose Image'); ?></button></p>
-    <?php elseif((!current_user_can('publish_posts') && !current_user_can('upload_files')) && !has_wp_user_avatar($current_user->ID)) : // Upload button ?>
+    <?php elseif(!$wp_user_avatar->wpua_is_author_or_above() && !has_wp_user_avatar($current_user->ID)) : // Upload button ?>
       <p id="wpua-upload-button">
         <input name="wpua-file" id="wpua-file" type="file" />
         <button type="submit" class="button" id="wpua-upload" name="submit" value="<?php _e('Upload'); ?>"><?php _e('Upload'); ?></button>
@@ -102,7 +102,7 @@ class WP_User_Avatar {
         <span id="wpua-max-upload"><?php printf(__('Maximum upload file size: %d%s.'), esc_html($wpua_upload_size_limit_with_units), esc_html('KB')); ?></span>
         <span id="wpua-allowed-files"><?php _e('Allowed Files'); ?>: <?php _e('<code>jpg jpeg png gif</code>'); ?></span>
       </p>
-    <?php elseif((bool) $wpua_edit_avatar == 1 && (!current_user_can('publish_posts') && !current_user_can('upload_files')) && has_wp_user_avatar($current_user->ID) && $wp_user_avatar->wpua_author($wpua, $current_user->ID)) : // Edit button ?>
+    <?php elseif((bool) $wpua_edit_avatar == 1 && !wpua_is_author_or_above() && has_wp_user_avatar($current_user->ID) && $wp_user_avatar->wpua_author($wpua, $current_user->ID)) : // Edit button ?>
       <p id="wpua-edit-button"><button type="button" class="button" id="wpua-edit" name="wpua-edit" onclick="window.open('<?php echo $edit_attachment_link; ?>', '_self');"><?php _e('Edit Image'); ?></button></p>
     <?php endif; ?>
     <p id="wpua-preview">
@@ -159,7 +159,7 @@ class WP_User_Avatar {
   public static function wpua_action_process_option_update($user_id) {
     global $blog_id, $post, $wpdb, $wp_user_avatar, $wpua_resize_crop, $wpua_resize_h, $wpua_resize_upload, $wpua_resize_w;
     // Check if user has publish_posts capability
-    if((current_user_can('publish_posts') && current_user_can('upload_files'))) {
+    if(wpua_is_author_or_above()) {
       $wpua_id = isset($_POST['wp-user-avatar']) ? intval($_POST['wp-user-avatar']) : "";
       // Remove old attachment postmeta
       delete_metadata('post', null, '_wp_attachment_wp_user_avatar', $user_id, true);
@@ -262,6 +262,13 @@ class WP_User_Avatar {
     }
     return $wpua_author;
   }
+
+  // Check if current user has at least Author privileges
+  private function wpua_is_author_or_above() {
+    $is_author_or_above = (current_user_can('edit_published_posts') && current_user_can('upload_files') && current_user_can('publish_posts') && current_user_can('delete_published_posts')) ? true : false;
+    return $is_author_or_above;
+  }
+
 }
 
 // Initialize WP_User_Avatar

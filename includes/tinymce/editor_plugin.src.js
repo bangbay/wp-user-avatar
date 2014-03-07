@@ -67,7 +67,7 @@
         author    : 'Bangbay Siboliban',
         authorurl : 'http://siboliban.org/',
         infourl   : 'http://wordpress.org/plugins/wp-user-avatar/',
-        version   : "1.8.4"
+        version   : "1.8.5"
       };
     }
   });
