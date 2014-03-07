@@ -3,7 +3,7 @@
  * Updates for legacy settings.
  *
  * @package WP User Avatar
- * @version 1.8.6
+ * @version 1.8.7
  */
 
 class WP_User_Avatar_Update {

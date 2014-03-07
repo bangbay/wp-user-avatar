@@ -3,7 +3,7 @@
  * TinyMCE modal window.
  *
  * @package WP User Avatar
- * @version 1.8.6
+ * @version 1.8.7
  */
 
 if(!defined('ABSPATH')) {
