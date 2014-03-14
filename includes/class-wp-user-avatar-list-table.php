@@ -3,7 +3,7 @@
  * Based on WP_Media_List_Table class.
  *
  * @package WP User Avatar
- * @version 1.8.8
+ * @version 1.8.9
  */
 
 class WP_User_Avatar_List_Table extends WP_List_Table {

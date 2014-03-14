@@ -3,7 +3,7 @@
  * Media Library view of all avatars in use.
  *
  * @package WP User Avatar
- * @version 1.8.8
+ * @version 1.8.9
  */
 
   $wp_list_table = $this->_wpua_get_list_table('WP_User_Avatar_List_Table');

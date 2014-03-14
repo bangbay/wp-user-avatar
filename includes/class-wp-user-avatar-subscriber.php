@@ -3,16 +3,16 @@
  * Settings only for subscribers and contributors.
  *
  * @package WP User Avatar
- * @version 1.8.8
+ * @version 1.8.9
  */
 
 class WP_User_Avatar_Subscriber {
   public function __construct() {
-    global $wpua_allow_upload;
+    global $wp_user_avatar, $wpua_allow_upload;
     if((bool) $wpua_allow_upload == 1) {
       add_action('user_edit_form_tag', array($this, 'wpua_add_edit_form_multipart_encoding'));
       // Only Subscribers lack delete_posts capability
-      if(!current_user_can('delete_posts')) {
+      if(!current_user_can('delete_posts') && !$wp_user_avatar->wpua_is_author_or_above()) {
         add_action('admin_menu', array($this, 'wpua_subscriber_remove_menu_pages'));
         add_action('wp_before_admin_bar_render', array($this, 'wpua_subscriber_remove_menu_bar_items'));
         add_action('wp_dashboard_setup', array($this, 'wpua_subscriber_remove_dashboard_widgets'));

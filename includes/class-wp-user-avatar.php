@@ -3,7 +3,7 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.8.8
+ * @version 1.8.9
  */
 
 class WP_User_Avatar {
@@ -39,7 +39,10 @@ class WP_User_Avatar {
   // Avatars have no parent posts
   public function wpua_media_view_settings($settings) {
     global $post, $wpua_is_profile;
-    $settings['post']['id'] = !is_admin() && $wpua_is_profile == 1 ? 0 : $post->ID;
+    // Get post ID so not to interfere with media uploads
+    $post_id = is_object($post) ? $post->ID : 0;
+    // Don't use post ID on front pages if there's a WPUA uploader
+    $settings['post']['id'] = (!is_admin() && $wpua_is_profile == 1) ? 0 : $post_id;
     return $settings;
   }
 
@@ -80,7 +83,7 @@ class WP_User_Avatar {
 
   // Add to edit user profile
   public static function wpua_action_show_user_profile($user) {
-    global $blog_id, $current_user, $post, $show_avatars, $wpdb, $wp_user_avatar, $wpua_allow_upload, $wpua_edit_avatar, $wpua_upload_size_limit_with_units;
+    global $blog_id, $current_user, $show_avatars, $wpdb, $wp_user_avatar, $wpua_allow_upload, $wpua_edit_avatar, $wpua_upload_size_limit_with_units;
     // Get WPUA attachment ID
     $wpua = get_user_meta($user->ID, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
     // Show remove button if WPUA is set
@@ -268,7 +271,7 @@ class WP_User_Avatar {
   }
 
   // Check if current user has at least Author privileges
-  private function wpua_is_author_or_above() {
+  public function wpua_is_author_or_above() {
     $is_author_or_above = (current_user_can('edit_published_posts') && current_user_can('upload_files') && current_user_can('publish_posts') && current_user_can('delete_published_posts')) ? true : false;
     return $is_author_or_above;
   }
