@@ -3,7 +3,7 @@
  * Updates for legacy settings.
  *
  * @package WP User Avatar
- * @version 1.8.9
+ * @version 1.8.10
  */
 
 class WP_User_Avatar_Update {
@@ -63,7 +63,7 @@ class WP_User_Avatar_Update {
     $wpua_metakey = $wpdb->get_blog_prefix($blog_id).'user_avatar';
     $wpuas = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->usermeta WHERE meta_key = %s AND meta_value != %d AND meta_value != %d", $wpua_metakey, 0, ""));
     foreach($wpuas as $usermeta) {
-      update_post_meta($usermeta->meta_value, '_wp_attachment_wp_user_avatar', $usermeta->user_id);
+      add_post_meta($usermeta->meta_value, '_wp_attachment_wp_user_avatar', $usermeta->user_id);
     }
     update_option('wp_user_avatar_media_updated', '1');
   }

@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.8.9\n"
+"Project-Id-Version: WP User Avatar 1.8.10\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2014-03-07 00:00-0000\n"
+"PO-Revision-Date: 2014-03-18 00:00-0000\n"
 "Language: es_ES\n"
 "Last-Translator: WP User Avatar\n"
 "Language-Team: WP User Avatar\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: includes/class-wp-user-avatar-admin.php:182
+#: includes/class-wp-user-avatar-admin.php:203
 msgid "Donate"
 msgstr "Donar"
 

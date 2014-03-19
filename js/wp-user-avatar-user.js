@@ -21,6 +21,7 @@ jQuery(function($) {
   $('body').on('click', '#wpua-undo', function(e) {
     e.preventDefault();
     $('#wpua-original').remove();
+    $('#wpua-images').removeAttr('style');
     $('#wpua-undo-button').hide();
     $('#wpua-remove-button, #wpua-thumbnail').show();
     $('#wpua-preview').find('img:first').attr('src', wpuaSrc).show();

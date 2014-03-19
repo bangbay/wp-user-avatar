@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.6
 Tested up to: 3.8.1
-Stable tag: 1.8.9
+Stable tag: 1.8.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -345,11 +345,11 @@ This would output:
   </p>
   <p id="wpua-preview">
     <img src="{imageURL}" alt="" />
-    Original Size
+    <span class="description">Original Size</span>
   </p>
   <p id="wpua-thumbnail">
     <img src="{imageURL}" alt="" />
-    Thumbnail
+    <span class="description">Thumbnail</span>
   </p>
   <p id="wpua-remove-button">
     <button type="button" class="button" id="wpua-remove" name="wpua-remove">Default Avatar</button>
@@ -367,6 +367,15 @@ This would output:
 4. After you've chosen a WP User Avatar image, you will see the option to remove it.
 
 == Changelog ==
+
+= 1.8.10 =
+* Add: Search and screen option in Media Library view
+* Bug Fix: Bulk delete in Media Library view
+* Bug Fix: Hide captions if "Show Avatars" is off
+* Bug Fix: Update avatar metadata on removal
+* Update: Choose Image text
+* Update: Show only images in Media Library modal
+* Update: Show upload tab if no WP User Avatar image has been selected yet
 
 = 1.8.9 =
 * Bug Fix: Check for post object
@@ -514,7 +523,7 @@ This would output:
 * Bug Fix: Swap TinyMCE file locations
 
 = 1.3.4 =
-* Update: Change support only to WP 3.3+ because of jQuery 1.8.9 support
+* Update: Change support only to WP 3.3+ because of jQuery 1.7.1 support
 
 = 1.3.3 =
 * Update: Shortcode checks for user ID, login, slug, or e-mail address

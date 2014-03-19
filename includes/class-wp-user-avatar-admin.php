@@ -3,7 +3,7 @@
  * Defines all of administrative, activation, and deactivation settings.
  *
  * @package WP User Avatar
- * @version 1.8.9
+ * @version 1.8.10
  */
 
 class WP_User_Avatar_Admin {
@@ -65,7 +65,9 @@ class WP_User_Avatar_Admin {
   public function wpua_admin() {
     add_menu_page(__('WP User Avatar', 'wp-user-avatar'), __('WP User Avatar', 'wp-user-avatar'), 'manage_options', 'wp-user-avatar', array($this, 'wpua_options_page'), WPUA_URL.'images/wpua-icon.png');
     add_submenu_page('wp-user-avatar', __('Settings'), __('Settings'), 'manage_options', 'wp-user-avatar', array($this, 'wpua_options_page'));
-    add_submenu_page('wp-user-avatar', __('Library'), __('Library'), 'manage_options', 'wp-user-avatar-library', array($this, 'wpua_media_page'));
+    $hook = add_submenu_page('wp-user-avatar', __('Library'), __('Library'), 'manage_options', 'wp-user-avatar-library', array($this, 'wpua_media_page'));
+    add_action("load-$hook", array($this, 'wpua_media_screen_option'));
+    add_filter('set-screen-option', array($this, 'wpua_set_media_screen_option'), 10, 3);
     add_action('admin_init', array($this, 'wpua_admin_settings'));
   }
 
@@ -79,6 +81,25 @@ class WP_User_Avatar_Admin {
   // Media page
   public function wpua_media_page() {
     require_once(WPUA_INC.'wpua-media-page.php');
+  }
+
+  // Avatars per page
+  public function wpua_media_screen_option() {
+    $option = 'per_page';
+    $args = array(
+      'label' => __('Avatars'),
+      'default' => 10,
+      'option' => 'upload_per_page'
+    );
+    add_screen_option($option, $args);
+  }
+
+  // Save per page setting
+  function wpua_set_media_screen_option($status, $option, $value) {
+    if($option == 'upload_per_page') {
+      return $value;
+    }
+    return $status;
   }
 
   // Options page

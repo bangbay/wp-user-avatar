@@ -3,13 +3,15 @@
  * Based on WP_Media_List_Table class.
  *
  * @package WP User Avatar
- * @version 1.8.9
+ * @version 1.8.10
  */
 
 class WP_User_Avatar_List_Table extends WP_List_Table {
   function __construct($args = array()) {
     global $avatars_array, $post, $wpua_avatar_default;
+    $paged = (get_query_var('page')) ? get_query_var('page') : 1;
     $q = array(
+      'paged' => $paged,
       'post_type' => 'attachment',
       'post_status' => 'inherit',
       'posts_per_page' => '-1',
@@ -39,6 +41,28 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
     return current_user_can('upload_files');
   }
 
+  function search_box($text, $input_id) {
+    if(empty($_REQUEST['s']) && !$this->has_items())
+      return;
+    $input_id = $input_id.'-search-input';
+    if(!empty($_REQUEST['orderby']))
+      echo '<input type="hidden" name="orderby" value="'.esc_attr($_REQUEST['orderby']).'" />';
+    if(!empty($_REQUEST['order']))
+      echo '<input type="hidden" name="order" value="'.esc_attr($_REQUEST['order']).'" />';
+    if(!empty($_REQUEST['post_mime_type']))
+      echo '<input type="hidden" name="post_mime_type" value="'.esc_attr($_REQUEST['post_mime_type']).'" />';
+    if(!empty( $_REQUEST['detached']))
+      echo '<input type="hidden" name="detached" value="'.esc_attr($_REQUEST['detached']).'" />';
+  ?>
+    <p class="search-box">
+      <label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
+      <input type="hidden" id="page" name="page" value="wp-user-avatar-library" />
+      <input type="search" id="<?php echo $input_id ?>" name="s" value="<?php _admin_search_query(); ?>" />
+      <?php submit_button($text, 'button', false, false, array('id' => 'search-submit')); ?>
+    </p>
+  <?php
+  }
+
   function prepare_items() {
     global $avatars_array, $lost, $wpdb, $wp_query, $post_mime_types, $avail_post_mime_types, $post;
     $q = $_REQUEST;
@@ -55,7 +79,7 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
   function get_views() {
     global $avatars_array;
     $type_links = array();
-    $_total_posts = count($avatars_array);
+    $_total_posts = count(array_filter($avatars_array));
     $class = (empty($_GET['post_mime_type']) && !isset($_GET['status'])) ? ' class="current"' : '';
     $type_links['all'] = sprintf('<a href="%s">',esc_url(add_query_arg(array('page' => 'wp-user-avatar-library'), 'admin.php'))).sprintf(_nx('All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $_total_posts, 'uploaded files'), number_format_i18n($_total_posts)).'</a>';
     return $type_links;
@@ -67,21 +91,7 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
     return $actions;
   }
 
-  function extra_tablenav($which) { ?>
-    <div class="alignleft actions">
-      <?php
-        if($this->is_trash && current_user_can('edit_others_posts')) {
-          submit_button(__('Empty Trash'), 'apply', 'delete_all', false );
-        }
-      ?>
-    </div>
-    <?php
-  }
-
   function current_action() {
-    if(isset($_REQUEST['delete_all']) || isset($_REQUEST['delete_all2'])) {
-      return 'delete_all';
-    }
     return parent::current_action();
   }
 
@@ -141,7 +151,7 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
             ?>
               <th scope="row" class="check-column">
                 <?php if ( $user_can_edit ) { ?>
-                  <label class="screen-reader-text" for="cb-select-<?php the_ID(); ?>"><?php echo sprintf( __( 'Select %s' ), $att_title );?></label>
+                  <label class="screen-reader-text" for="cb-select-<?php the_ID(); ?>"><?php echo sprintf(__('Select %s'), $att_title);?></label>
                   <input type="checkbox" name="media[]" id="cb-select-<?php the_ID(); ?>" value="<?php the_ID(); ?>" />
                 <?php } ?>
               </th>

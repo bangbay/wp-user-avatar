@@ -3,7 +3,7 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.8.9
+ * @version 1.8.10
  */
 
 class WP_User_Avatar {
@@ -67,7 +67,7 @@ class WP_User_Avatar {
       wp_enqueue_script('jquery-ui-slider');
       wp_enqueue_style('wp-user-avatar-jqueryui', WPUA_URL.'css/jquery.ui.slider.css', "", null);
       // Remove/edit settings
-      $wpua_custom_scripts = array('section' => __('Default Avatar'), 'edit_image' => __('Edit Image'), 'select_image' => __('Select Image'), 'avatar_thumb' => $mustache_admin);
+      $wpua_custom_scripts = array('section' => __('Default Avatar'), 'edit_image' => __('Choose Image'), 'select_image' => __('Select Image'), 'avatar_thumb' => $mustache_admin);
       wp_localize_script('wp-user-avatar', 'wpua_custom', $wpua_custom_scripts);
       // Settings control
       wp_enqueue_script('wp-user-avatar-admin', WPUA_URL.'js/wp-user-avatar-admin.js', array('wp-user-avatar'), WPUA_VERSION, true);
@@ -76,7 +76,7 @@ class WP_User_Avatar {
     } else {
       // User remove/edit settings
       $avatar_medium_src = (bool) $show_avatars == 1 ? wpua_get_avatar_original($user->user_email, 96) : includes_url().'images/blank.gif';
-      $wpua_custom_scripts = array('section' => $user->display_name, 'edit_image' => __('Edit Image'), 'select_image' => __('Select Image'), 'avatar_thumb' => $avatar_medium_src);
+      $wpua_custom_scripts = array('section' => $user->display_name, 'edit_image' => __('Choose Image'), 'select_image' => __('Select Image'), 'avatar_thumb' => $avatar_medium_src);
       wp_localize_script('wp-user-avatar', 'wpua_custom', $wpua_custom_scripts);
     }
   }
@@ -88,6 +88,8 @@ class WP_User_Avatar {
     $wpua = get_user_meta($user->ID, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
     // Show remove button if WPUA is set
     $hide_remove = !has_wp_user_avatar($user->ID) ? 'wpua-hide' : "";
+    // Hide image tags if show avatars is off
+    $hide_images = !has_wp_user_avatar($user->ID) && (bool) $show_avatars == 0 ? 'wpua-no-avatars' : "";
     // If avatars are enabled, get original avatar image or show blank
     $avatar_medium_src = (bool) $show_avatars == 1 ? wpua_get_avatar_original($user->user_email, 96) : includes_url().'images/blank.gif';
     // Check if user has wp_user_avatar, if not show image from above
@@ -112,16 +114,18 @@ class WP_User_Avatar {
     <?php elseif((bool) $wpua_edit_avatar == 1 && !$wp_user_avatar->wpua_is_author_or_above() && has_wp_user_avatar($current_user->ID) && $wp_user_avatar->wpua_author($wpua, $current_user->ID)) : // Edit button ?>
       <p id="wpua-edit-button"><button type="button" class="button" id="wpua-edit" name="wpua-edit" onclick="window.open('<?php echo $edit_attachment_link; ?>', '_self');"><?php _e('Edit Image'); ?></button></p>
     <?php endif; ?>
-    <p id="wpua-preview">
-      <img src="<?php echo $avatar_medium; ?>" alt="" />
-      <?php _e('Original Size'); ?>
-    </p>
-    <p id="wpua-thumbnail">
-      <img src="<?php echo $avatar_thumbnail; ?>" alt="" />
-      <?php _e('Thumbnail'); ?>
-    </p>
-    <p id="wpua-remove-button" class="<?php echo $hide_remove; ?>"><button type="button" class="button" id="wpua-remove" name="wpua-remove"><?php _e('Remove Image'); ?></button></p>
-    <p id="wpua-undo-button"><button type="button" class="button" id="wpua-undo" name="wpua-undo"><?php _e('Undo'); ?></button></p>
+    <div id="wpua-images" class="<?php echo $hide_images; ?>">
+      <p id="wpua-preview">
+        <img src="<?php echo $avatar_medium; ?>" alt="" />
+        <span class="description"><?php _e('Original Size'); ?></span>
+      </p>
+      <p id="wpua-thumbnail">
+        <img src="<?php echo $avatar_thumbnail; ?>" alt="" />
+        <span class="description"><?php _e('Thumbnail'); ?></span>
+      </p>
+      <p id="wpua-remove-button" class="<?php echo $hide_remove; ?>"><button type="button" class="button" id="wpua-remove" name="wpua-remove"><?php _e('Remove Image'); ?></button></p>
+      <p id="wpua-undo-button"><button type="button" class="button" id="wpua-undo" name="wpua-undo"><?php _e('Undo'); ?></button></p>
+    </div>
     <?php do_action('wpua_after_avatar'); ?>
   <?php
   }
@@ -171,7 +175,7 @@ class WP_User_Avatar {
       // Remove old attachment postmeta
       delete_metadata('post', null, '_wp_attachment_wp_user_avatar', $user_id, true);
       // Create new attachment postmeta
-      update_post_meta($wpua_id, '_wp_attachment_wp_user_avatar', $user_id);
+      add_post_meta($wpua_id, '_wp_attachment_wp_user_avatar', $user_id);
       // Update usermeta
       update_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', $wpua_id);
     } else {

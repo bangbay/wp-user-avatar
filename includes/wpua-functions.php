@@ -3,7 +3,7 @@
  * Core user functions.
  * 
  * @package WP User Avatar
- * @version 1.8.9
+ * @version 1.8.10
  */
 
 // Returns true if user has Gravatar-hosted image

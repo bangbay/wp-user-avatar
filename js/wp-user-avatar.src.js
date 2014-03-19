@@ -11,6 +11,7 @@ function wpuaMediaUploader(section, edit_image, select_image) {
       if(settings.post.wpUserAvatarId && settings.post.wpUserAvatarSrc) {
         // Set WP User Avatar
         jQuery('#wp-user-avatar', window.parent.document).val(settings.post.wpUserAvatarId);
+        jQuery('#wpua-images', window.parent.document).show();
         jQuery('#wpua-preview', window.parent.document).find('img').attr('src', settings.post.wpUserAvatarSrc).removeAttr('height', "");
         jQuery('#wpua-undo-button', window.parent.document).show();
         jQuery('#wpua-remove-button', window.parent.document).hide();
@@ -25,14 +26,23 @@ function wpuaMediaUploader(section, edit_image, select_image) {
       }
       this._frame = wp.media({
         state: 'library',
-        states: [ new wp.media.controller.Library({ title: edit_image + ": " + section }) ]
+        states: [ new wp.media.controller.Library({
+                  title: edit_image + ": " + section,
+                  library: wp.media.query(_.defaults({
+                    type: 'image'
+                  }))
+                }) ]
       });
       this._frame.on('open', function() {
-        var selection = this.state().get('selection');
         id = jQuery('#wp-user-avatar').val();
-        attachment = wp.media.attachment(id);
-        attachment.fetch();
-        selection.add(attachment ? [ attachment ] : []);
+        if(id == "") {
+          jQuery('div.media-router').find('a:first').trigger('click');
+        } else {
+          var selection = this.state().get('selection');
+          attachment = wp.media.attachment(id);
+          attachment.fetch();
+          selection.add(attachment ? [ attachment ] : []);
+        }
       }, this._frame);
       this._frame.on('toolbar:create:select', function(toolbar) {
         this.createSelectToolbar(toolbar, {
@@ -43,7 +53,6 @@ function wpuaMediaUploader(section, edit_image, select_image) {
       return this._frame;
     },
     select: function(id) {
-      var settings = wp.media.view.settings,
       selection = this.get('selection').single();
       wp.media.wpUserAvatar.set(selection ? selection.id : -1);
     },
@@ -85,6 +94,7 @@ jQuery(function($) {
   $('body').on('click', '#wpua-undo', function(e) {
     e.preventDefault();
     $('#wpua-original').remove();
+    $('#wpua-images').removeAttr('style');
     $('#wpua-undo-button').hide();
     $('#wpua-remove-button, #wpua-thumbnail').show();
     $('#wpua-preview').find('img:first').attr('src', wpuaSrc).show();
