@@ -3,7 +3,7 @@
  * Media Library view of all avatars in use.
  *
  * @package WP User Avatar
- * @version 1.8.10
+ * @version 1.8.11
  */
   /** WordPress Administration Bootstrap */
   require_once(ABSPATH.'wp-admin/admin.php');
@@ -11,7 +11,9 @@
   if(!current_user_can('upload_files'))
     wp_die(__('You do not have permission to upload files.'));
 
-  $wp_list_table = $this->_wpua_get_list_table('WP_User_Avatar_List_Table');
+  global $wpua_admin;
+
+  $wp_list_table = $wpua_admin->_wpua_get_list_table('WP_User_Avatar_List_Table');
   $pagenum = $wp_list_table->get_pagenum();
 
   // Handle bulk actions

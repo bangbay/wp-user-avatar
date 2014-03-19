@@ -3,10 +3,10 @@
  * Admin page to change plugin options.
  *
  * @package WP User Avatar
- * @version 1.8.10
+ * @version 1.8.11
  */
 
-global $show_avatars, $upload_size_limit_with_units, $wpua_allow_upload, $wpua_disable_gravatar, $wpua_edit_avatar, $wpua_resize_crop, $wpua_resize_h, $wpua_resize_upload, $wpua_resize_w, $wpua_subscriber, $wpua_tinymce, $wpua_upload_size_limit, $wpua_upload_size_limit_with_units;
+global $show_avatars, $upload_size_limit_with_units, $wpua_admin, $wpua_allow_upload, $wpua_disable_gravatar, $wpua_edit_avatar, $wpua_resize_crop, $wpua_resize_h, $wpua_resize_upload, $wpua_resize_w, $wpua_subscriber, $wpua_tinymce, $wpua_upload_size_limit, $wpua_upload_size_limit_with_units;
 $updated = false;
 if(isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true') {
   $updated = true;
@@ -140,7 +140,7 @@ $hide_resize = (bool) $wpua_resize_upload != 1 ? ' style="display:none;"' : "";
           <fieldset>
             <legend class="screen-reader-text"><span><?php _e('Default Avatar'); ?></span></legend>
             <?php _e('For users without a custom avatar of their own, you can either display a generic logo or a generated one based on their e-mail address.'); ?><br />
-            <?php echo $this->wpua_add_default_avatar(); ?>
+            <?php echo $wpua_admin->wpua_add_default_avatar(); ?>
           </fieldset>
         </td>
       </tr>

@@ -3,7 +3,7 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.8.10
+ * @version 1.8.11
  */
 
 class WP_User_Avatar {
@@ -48,7 +48,7 @@ class WP_User_Avatar {
 
   // Media Uploader
   public static function wpua_media_upload_scripts($user="") {
-    global $current_user, $mustache_admin, $pagenow, $post, $show_avatars, $wp_user_avatar, $wpua_admin, $wpua_is_profile, $wpua_upload_size_limit;
+    global $current_user, $mustache_admin, $pagenow, $post, $show_avatars, $wp_user_avatar, $wpua_admin, $wpua_functions, $wpua_is_profile, $wpua_upload_size_limit;
     // This is a profile page
     $wpua_is_profile = true;
     $user = ($pagenow == 'user-edit.php' && isset($_GET['user_id'])) ? get_user_by('id', $_GET['user_id']) : $current_user;
@@ -75,7 +75,7 @@ class WP_User_Avatar {
       wp_localize_script('wp-user-avatar-admin', 'wpua_admin', $wpua_admin_scripts);
     } else {
       // User remove/edit settings
-      $avatar_medium_src = (bool) $show_avatars == 1 ? wpua_get_avatar_original($user->user_email, 96) : includes_url().'images/blank.gif';
+      $avatar_medium_src = (bool) $show_avatars == 1 ? $wpua_functions->wpua_get_avatar_original($user->user_email, 96) : includes_url().'images/blank.gif';
       $wpua_custom_scripts = array('section' => $user->display_name, 'edit_image' => __('Choose Image'), 'select_image' => __('Select Image'), 'avatar_thumb' => $avatar_medium_src);
       wp_localize_script('wp-user-avatar', 'wpua_custom', $wpua_custom_scripts);
     }
@@ -83,7 +83,7 @@ class WP_User_Avatar {
 
   // Add to edit user profile
   public static function wpua_action_show_user_profile($user) {
-    global $blog_id, $current_user, $show_avatars, $wpdb, $wp_user_avatar, $wpua_allow_upload, $wpua_edit_avatar, $wpua_upload_size_limit_with_units;
+    global $blog_id, $current_user, $show_avatars, $wpdb, $wp_user_avatar, $wpua_allow_upload, $wpua_edit_avatar, $wpua_functions, $wpua_upload_size_limit_with_units;
     // Get WPUA attachment ID
     $wpua = get_user_meta($user->ID, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
     // Show remove button if WPUA is set
@@ -91,7 +91,7 @@ class WP_User_Avatar {
     // Hide image tags if show avatars is off
     $hide_images = !has_wp_user_avatar($user->ID) && (bool) $show_avatars == 0 ? 'wpua-no-avatars' : "";
     // If avatars are enabled, get original avatar image or show blank
-    $avatar_medium_src = (bool) $show_avatars == 1 ? wpua_get_avatar_original($user->user_email, 96) : includes_url().'images/blank.gif';
+    $avatar_medium_src = (bool) $show_avatars == 1 ? $wpua_functions->wpua_get_avatar_original($user->user_email, 96) : includes_url().'images/blank.gif';
     // Check if user has wp_user_avatar, if not show image from above
     $avatar_medium = has_wp_user_avatar($user->ID) ? get_wp_user_avatar_src($user->ID, 'medium') : $avatar_medium_src;
     // Check if user has wp_user_avatar, if not show image from above

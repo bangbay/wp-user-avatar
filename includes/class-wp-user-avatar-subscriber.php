@@ -3,7 +3,7 @@
  * Settings only for subscribers and contributors.
  *
  * @package WP User Avatar
- * @version 1.8.10
+ * @version 1.8.11
  */
 
 class WP_User_Avatar_Subscriber {

@@ -3,7 +3,7 @@
  * Defines all of administrative, activation, and deactivation settings.
  *
  * @package WP User Avatar
- * @version 1.8.10
+ * @version 1.8.11
  */
 
 class WP_User_Avatar_Admin {
@@ -126,9 +126,9 @@ class WP_User_Avatar_Admin {
 
   // Add default avatar
   public function wpua_add_default_avatar($avatar_list=null){
-    global $avatar_default, $mustache_admin, $mustache_medium, $wpua_avatar_default, $wpua_disable_gravatar;
+    global $avatar_default, $mustache_admin, $mustache_medium, $wpua_avatar_default, $wpua_disable_gravatar, $wpua_functions;
     // Remove get_avatar filter
-    remove_filter('get_avatar', 'wpua_get_avatar_filter');
+    remove_filter('get_avatar', array($wpua_functions, 'wpua_get_avatar_filter'));
     // Set avatar_list variable
     $avatar_list = "";
     // Set avatar defaults

@@ -3,7 +3,7 @@
  * TinyMCE button for Visual Editor.
  *
  * @package WP User Avatar
- * @version 1.8.10
+ * @version 1.8.11
  */
 
 function wpua_myplugin_addbuttons() {
