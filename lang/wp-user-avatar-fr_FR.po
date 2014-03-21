@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP User Avatar 1.8.11\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2014-03-18 00:00-0000\n"
+"PO-Revision-Date: 2014-03-20 00:00-0000\n"
 "Language: fr_FR\n"
 "Last-Translator: WP User Avatar\n"
 "Language-Team: WP User Avatar\n"
@@ -18,11 +18,11 @@ msgstr ""
 msgid "Donate"
 msgstr "Faites un don"
 
-#: includes/wpua-functions.php:279
+#: includes/wpua-functions.php:92
 msgid "Do you like WP User Avatar?"
 msgstr "Etes-vous satisfait avec WP-Utilisateur-Avatar?"
 
-#: includes/wpua-functions.php:279
+#: includes/wpua-functions.php:92
 msgid "Make a donation."
 msgstr "Faites un don"
 

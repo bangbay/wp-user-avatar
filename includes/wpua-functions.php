@@ -6,19 +6,19 @@
  * @version 1.8.11
  */
 
-function has_wp_user_avatar($args) {
+function has_wp_user_avatar($id_or_email, $has_wpua="", $user="", $user_id="") {
   global $wpua_functions;
-  return $wpua_functions->has_wp_user_avatar($args);
+  return $wpua_functions->has_wp_user_avatar($id_or_email, $has_wpua, $user, $user_id);
 }
 
-function get_wp_user_avatar($args) {
+function get_wp_user_avatar($id_or_email, $size="", $default="", $alt="") {
   global $wpua_functions;
-  return $wpua_functions->get_wp_user_avatar($args);
+  return $wpua_functions->get_wp_user_avatar($id_or_email, $size, $default, $alt);
 }
 
-function get_wp_user_avatar_src($args) {
+function get_wp_user_avatar_src($id_or_email, $size="", $align="") {
   global $wpua_functions;
-  return $wpua_functions->get_wp_user_avatar_src($args);
+  return $wpua_functions->get_wp_user_avatar_src($id_or_email, $size, $align);
 }
 
 // Before wrapper for profile

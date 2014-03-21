@@ -13,7 +13,7 @@ class WP_User_Avatar {
     if($this->wpua_is_author_or_above() || ((bool) $wpua_allow_upload == 1 && is_user_logged_in())) {
       // Profile functions and scripts
       add_action('show_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
-      add_action('edit_user_profile', array($this, 'wpua_action_show_user_profile'));
+      add_action('edit_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
       add_action('personal_options_update', array($this, 'wpua_action_process_option_update'));
       add_action('edit_user_profile_update', array($this, 'wpua_action_process_option_update'));
       // Admin scripts
@@ -23,8 +23,8 @@ class WP_User_Avatar {
       }
       // Front pages
       if(!is_admin()){
-        add_action('show_user_profile', array($this, 'wpua_media_upload_scripts'));
-        add_action('edit_user_profile', array($this, 'wpua_media_upload_scripts'));
+        add_action('show_user_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
+        add_action('edit_user_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
       }
       if(!$this->wpua_is_author_or_above()) {
         // Upload errors
