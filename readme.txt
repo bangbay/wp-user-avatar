@@ -368,6 +368,10 @@ This would output:
 
 == Changelog ==
 
+= 1.8.11 =
+* Bug Fix: Die messages
+* Update: Move public functions to class
+
 = 1.8.10 =
 * Add: Search and screen option in Media Library view
 * Bug Fix: Bulk delete in Media Library view

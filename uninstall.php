@@ -6,7 +6,7 @@
 
 // Remove user metadata and options on plugin delete
 if(!defined('WP_UNINSTALL_PLUGIN')) {
-  die(__('You are not allowed to call this page directly.'));
+  die('You are not allowed to call this page directly.');
 }
 
 global $wpdb, $blog_id, $switched;
