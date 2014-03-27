@@ -1,9 +1,6 @@
 // Docu : http://wiki.moxiecode.com/index.php/TinyMCE:Create_plugin/3.x#Creating_your_own_plugins
 
 (function() {
-  // Load plugin specific language pack
-  tinymce.PluginManager.requireLangPack('wpUserAvatar');
-  
   tinymce.create('tinymce.plugins.wpUserAvatar', {
     /**
      * Initializes the plugin, this will be executed after the plugin has been created.
@@ -32,7 +29,7 @@
       ed.addButton('wpUserAvatar', {
         title : 'Insert WP User Avatar',
         cmd : 'mceWpUserAvatar',
-        image : url + '/../../images/wpua-32x32.png'
+        image : url + '/../../images/wpua-20x20.png'
       });
 
       // Add a node change handler, selects the button in the UI when a image is selected
@@ -67,7 +64,7 @@
         author    : 'Bangbay Siboliban',
         authorurl : 'http://siboliban.org/',
         infourl   : 'http://wordpress.org/plugins/wp-user-avatar/',
-        version   : "1.9"
+        version   : "1.9.1"
       };
     }
   });

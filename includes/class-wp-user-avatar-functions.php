@@ -3,12 +3,12 @@
  * Core user functions.
  * 
  * @package WP User Avatar
- * @version 1.9
+ * @version 1.9.1
  */
 
 class WP_User_Avatar_Functions {
   public function __construct() {
-    add_filter('get_avatar', array($this, 'wpua_get_avatar_filter'), 10, 6);
+    add_filter('get_avatar', array($this, 'wpua_get_avatar_filter'), 10, 5);
   }
 
   // Returns true if user has Gravatar-hosted image
@@ -126,7 +126,7 @@ class WP_User_Avatar_Functions {
       }
     }
     // Enable get_avatar filter
-    add_filter('get_avatar', array($wpua_functions, 'wpua_get_avatar_filter'), 10, 6);
+    add_filter('get_avatar', array($wpua_functions, 'wpua_get_avatar_filter'), 10, 5);
     return apply_filters('wpua_get_avatar_original', $default);
   }
 
@@ -205,7 +205,7 @@ class WP_User_Avatar_Functions {
       $str_replacements = array("", "", "", 'avatar-'.$size, 'wp-user-avatar wp-user-avatar-'.$size.$alignclass.' photo');
       $avatar = str_replace($str_replacemes, $str_replacements, $avatar);
     }
-    return apply_filters('get_wp_user_avatar', $avatar, $id_or_email, $size, $default, $alt);
+    return apply_filters('get_wp_user_avatar', $avatar, $id_or_email, $size, $align, $alt, $email);
   }
 
   // Return just the image src

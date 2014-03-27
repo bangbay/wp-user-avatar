@@ -3,7 +3,7 @@
  * Admin page to change plugin options.
  *
  * @package WP User Avatar
- * @version 1.9
+ * @version 1.9.1
  */
 
 global $show_avatars, $upload_size_limit_with_units, $wpua_admin, $wpua_allow_upload, $wpua_disable_gravatar, $wpua_edit_avatar, $wpua_resize_crop, $wpua_resize_h, $wpua_resize_upload, $wpua_resize_w, $wpua_subscriber, $wpua_tinymce, $wpua_upload_size_limit, $wpua_upload_size_limit_with_units;
@@ -13,12 +13,12 @@ if(isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true') {
 }
 $hide_size = (bool) $wpua_allow_upload != 1 ? ' style="display:none;"' : "";
 $hide_resize = (bool) $wpua_resize_upload != 1 ? ' style="display:none;"' : "";
-$wpua_options_page_title = _('WP User Avatar', 'wp-user-avatar');
+$wpua_options_page_title = __('WP User Avatar', 'wp-user-avatar');
 $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_options_page_title);
 ?>
 
 <?php if($updated) : ?>
-  <div id="message" class="updated"><p><strong><?php _e( 'Settings saved.' ); ?></strong></p></div>
+  <div id="message" class="updated"><p><strong><?php _e('Settings saved.'); ?></strong></p></div>
 <?php endif; ?>
 
 <div class="wrap">

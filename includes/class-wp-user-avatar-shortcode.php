@@ -3,7 +3,7 @@
  * Defines shortcodes.
  *
  * @package WP User Avatar
- * @version 1.9
+ * @version 1.9.1
  */
 
 class WP_User_Avatar_Shortcode {

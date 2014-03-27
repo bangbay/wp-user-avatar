@@ -3,7 +3,7 @@
  * Public user functions.
  * 
  * @package WP User Avatar
- * @version 1.9
+ * @version 1.9.1
  */
 
 function has_wp_user_avatar($id_or_email="", $has_wpua="", $user="", $user_id="") {
@@ -11,9 +11,9 @@ function has_wp_user_avatar($id_or_email="", $has_wpua="", $user="", $user_id=""
   return $wpua_functions->has_wp_user_avatar($id_or_email, $has_wpua, $user, $user_id);
 }
 
-function get_wp_user_avatar($id_or_email="", $size="", $default="", $alt="") {
+function get_wp_user_avatar($id_or_email="", $size="", $align="", $alt="", $email="") {
   global $wpua_functions;
-  return $wpua_functions->get_wp_user_avatar($id_or_email, $size, $default, $alt);
+  return $wpua_functions->get_wp_user_avatar($id_or_email, $size, $align, $alt, $email);
 }
 
 function get_wp_user_avatar_src($id_or_email="", $size="", $align="") {

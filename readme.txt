@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.6
 Tested up to: 3.8.1
-Stable tag: 1.9
+Stable tag: 1.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -367,6 +367,11 @@ This would output:
 4. After you've chosen a WP User Avatar image, you will see the option to remove it.
 
 == Changelog ==
+
+= 1.9.1 =
+* Bug Fix: Double underscore for options page title
+* Bug Fix: Remove TinyMCE language pack
+* Bug Fix: Wrong variables in get_wp_user_avatar filter
 
 = 1.9 =
 * Add: Filters throughout plugin
