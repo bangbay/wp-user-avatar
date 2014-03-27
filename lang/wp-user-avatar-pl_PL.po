@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.8.11\n"
+"Project-Id-Version: WP User Avatar 1.9\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
 "PO-Revision-Date: 2014-03-24 00:00-0000\n"
 "Language: de_DE\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: includes/class-wp-user-avatar-admin.php:203
+#: includes/class-wp-user-avatar-admin.php:208
 msgid "Donate"
 msgstr "Dotuj"
 
@@ -26,37 +26,37 @@ msgstr "Jesteś zadowolony z Wp User Avatar"
 msgid "Make a donation."
 msgstr "Dokonaj dotacji"
 
-#: includes/wpua-options-page.php:40
+#: includes/wpua-options-page.php:44
 msgid "Add avatar button to Visual Editor"
 msgstr "Dodaj przycisk avatara do edytora wizualnego"
 
-#: includes/wpua-options-page.php:46
+#: includes/wpua-options-page.php:50
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Pozwalaj kontrybutorom oraz subskrynentom przesyłać awatary"
 
-#: includes/wpua-options-page.php:52
+#: includes/wpua-options-page.php:56
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Wyłącz gravatary i używaj tylko lokalnych awatarów"
 
-#: includes/wpua-options-page.php:63
-#: includes/wpua-options-page.php:68
+#: includes/wpua-options-page.php:72
+#: includes/wpua-options-page.php:77
 msgid "Upload Size Limit"
 msgstr "Limit wielkości pliku"
 
-#: includes/wpua-options-page.php:63
-#: includes/wpua-options-page.php:68
+#: includes/wpua-options-page.php:72
+#: includes/wpua-options-page.php:77
 msgid "(only for Contributors & Subscribers)"
 msgstr "(tylko dla subskrynentów i kontrybutorów)"
 
-#: includes/wpua-options-page.php:78
+#: includes/wpua-options-page.php:87
 msgid "Allow users to edit avatars"
 msgstr "Pozwalaj użytkownikom edytować awatary"
 
-#: includes/wpua-options-page.php:84
+#: includes/wpua-options-page.php:93
 msgid "Resize avatars on upload"
 msgstr "Zmieniaj rozmiar po przesłaniu"
 
-#: includes/wpua-options-page.php:96
+#: includes/wpua-options-page.php:103
 msgid "Crop avatars to exact dimensions"
 msgstr "Przytnij awatar do dokładnych rozmiarów"
 

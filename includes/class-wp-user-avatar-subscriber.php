@@ -3,7 +3,7 @@
  * Settings only for subscribers and contributors.
  *
  * @package WP User Avatar
- * @version 1.8.11
+ * @version 1.9
  */
 
 class WP_User_Avatar_Subscriber {
@@ -55,6 +55,7 @@ class WP_User_Avatar_Subscriber {
     if((bool) $wpua_edit_avatar != 1) {
       array_push($offlimits, 'post.php');
     }
+    $offlimits = apply_filters('wpua_subscriber_offlimits', $offlimits);
     if(in_array($pagenow, $offlimits)) {
       do_action('admin_page_access_denied');
       wp_die(__('You do not have sufficient permissions to access this page.'));

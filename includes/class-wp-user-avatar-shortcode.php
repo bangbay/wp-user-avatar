@@ -3,7 +3,7 @@
  * Defines shortcodes.
  *
  * @package WP User Avatar
- * @version 1.8.11
+ * @version 1.9
  */
 
 class WP_User_Avatar_Shortcode {
@@ -93,9 +93,9 @@ class WP_User_Avatar_Shortcode {
   }
 
   // Update user
-  private function wpua_edit_user($user_id = 0){
+  private function wpua_edit_user($user_id = 0) {
     $user = new stdClass;
-    if($user_id){
+    if($user_id) {
       $update = true;
       $user->ID = (int) $user_id;
     } else {
@@ -103,10 +103,10 @@ class WP_User_Avatar_Shortcode {
     }
     $errors = new WP_Error();
     do_action_ref_array('wpua_update_errors', array(&$errors, $update, &$user));
-    if($errors->get_error_codes()){
+    if($errors->get_error_codes()) {
       return $errors;
     }
-    if($update){
+    if($update) {
       $user_id = wp_update_user($user);
     }
     return $user_id;
@@ -116,9 +116,9 @@ class WP_User_Avatar_Shortcode {
   public function wpua_edit_shortcode($atts) {
     global $current_user, $errors;
     // Shortcode only works with logged in user
-    if(is_user_logged_in()){
+    if(is_user_logged_in()) {
       // Save
-      if(isset($_POST['submit']) && $_POST['submit'] && $_POST['action'] == 'update'){
+      if(isset($_POST['submit']) && $_POST['submit'] && $_POST['action'] == 'update') {
         do_action('wpua_update', $current_user->ID);
         // Check for errors
         $errors = $this->wpua_edit_user($current_user->ID);

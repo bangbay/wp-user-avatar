@@ -3,7 +3,7 @@
  * Core user functions.
  * 
  * @package WP User Avatar
- * @version 1.8.11
+ * @version 1.9
  */
 
 class WP_User_Avatar_Functions {
@@ -29,7 +29,7 @@ class WP_User_Avatar_Functions {
       wp_cache_set($hash, $data, $group="", $expire=60*5);
     }
     $has_gravatar = ($data == '200') ? true : false;
-    return $has_gravatar;
+    return apply_filters('wpua_has_gravatar', $has_gravatar);
   }
 
   // Returns true if user has wp_user_avatar
@@ -43,7 +43,7 @@ class WP_User_Avatar_Functions {
     }
     $wpua = get_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
     $has_wpua = !empty($wpua) && wp_attachment_is_image($wpua) ? true : false;
-    return $has_wpua;
+    return apply_filters('has_wp_user_avatar', $has_wpua);
   }
 
   // Replace get_avatar only in get_wp_user_avatar
@@ -92,7 +92,7 @@ class WP_User_Avatar_Functions {
         $avatar = '<img src="'.$default.'"'.$dimensions.' alt="'.$alt.'" class="avatar avatar-'.$size.' wp-user-avatar wp-user-avatar-'.$size.' photo avatar-default" />';
       }
     }
-    return $avatar;
+    return apply_filters('wpua_get_avatar_filter', $avatar, $id_or_email, $size, $default, $alt);
   }
 
   // Get original avatar, for when user removes wp_user_avatar
@@ -127,7 +127,7 @@ class WP_User_Avatar_Functions {
     }
     // Enable get_avatar filter
     add_filter('get_avatar', array($wpua_functions, 'wpua_get_avatar_filter'), 10, 6);
-    return $default;
+    return apply_filters('wpua_get_avatar_original', $default);
   }
 
   // Find WPUA, show get_avatar if empty
@@ -205,7 +205,7 @@ class WP_User_Avatar_Functions {
       $str_replacements = array("", "", "", 'avatar-'.$size, 'wp-user-avatar wp-user-avatar-'.$size.$alignclass.' photo');
       $avatar = str_replace($str_replacemes, $str_replacements, $avatar);
     }
-    return $avatar;
+    return apply_filters('get_wp_user_avatar', $avatar, $id_or_email, $size, $default, $alt);
   }
 
   // Return just the image src
@@ -218,7 +218,7 @@ class WP_User_Avatar_Functions {
       $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $wpua_image, $matches, PREG_SET_ORDER);
       $wpua_image_src = !empty($matches) ? $matches [0] [1] : "";
     }
-    return $wpua_image_src;
+    return apply_filters('get_wp_user_avatar_src', $wpua_image_src);
   }
 
   // Check if avatar_upload is in use

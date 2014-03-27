@@ -3,7 +3,7 @@
  * Based on WP_Media_List_Table class.
  *
  * @package WP User Avatar
- * @version 1.8.11
+ * @version 1.9
  */
 
 class WP_User_Avatar_List_Table extends WP_List_Table {
@@ -239,7 +239,7 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
         <td <?php echo $attributes ?>>
           <strong>
           <?php
-            if(!empty($wpuas)){
+            if(!empty($wpuas)) {
               foreach($wpuas as $usermeta) {
                 $user = get_userdata($usermeta->user_id);
                 $user_array[] = '<a href="'.get_edit_user_link($user->ID).'">'.$user->user_login.'</a>';

@@ -67,11 +67,11 @@
         author    : 'Bangbay Siboliban',
         authorurl : 'http://siboliban.org/',
         infourl   : 'http://wordpress.org/plugins/wp-user-avatar/',
-        version   : "1.8.11"
+        version   : "1.9"
       };
     }
   });
 
   // Register plugin
-  tinymce.PluginManager.add('wpUserAvatar', tinymce.plugins.muluBox);
+  tinymce.PluginManager.add('wpUserAvatar', tinymce.plugins.wpUserAvatar);
 })();

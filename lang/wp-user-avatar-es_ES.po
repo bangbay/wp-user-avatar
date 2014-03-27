@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.8.11\n"
+"Project-Id-Version: WP User Avatar 1.9\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
 "PO-Revision-Date: 2014-03-24 00:00-0000\n"
 "Language: es_ES\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: includes/class-wp-user-avatar-admin.php:203
+#: includes/class-wp-user-avatar-admin.php:208
 msgid "Donate"
 msgstr "Donar"
 
@@ -26,37 +26,37 @@ msgstr "¿Está satisfecho con WP-Usuario-Avatar?"
 msgid "Make a donation."
 msgstr "Donar"
 
-#: includes/wpua-options-page.php:40
+#: includes/wpua-options-page.php:44
 msgid "Add avatar button to Visual Editor"
 msgstr "Añadir botón avatar al editor visual"
 
-#: includes/wpua-options-page.php:46
+#: includes/wpua-options-page.php:50
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Permitir los colaboradores y los suscriptores subir avatares"
 
-#: includes/wpua-options-page.php:52
+#: includes/wpua-options-page.php:56
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Desactivar Gravatar y utilizar sólo los avatares locales"
 
-#: includes/wpua-options-page.php:63
-#: includes/wpua-options-page.php:68
+#: includes/wpua-options-page.php:72
+#: includes/wpua-options-page.php:77
 msgid "Upload Size Limit"
 msgstr "Sube límite de tamaño"
 
-#: includes/wpua-options-page.php:63
-#: includes/wpua-options-page.php:68
+#: includes/wpua-options-page.php:72
+#: includes/wpua-options-page.php:77
 msgid "(only for Contributors & Subscribers)"
 msgstr "(para colaboradores y suscriptores)"
 
-#: includes/wpua-options-page.php:78
+#: includes/wpua-options-page.php:87
 msgid "Allow users to edit avatars"
 msgstr "Permitir a los usuarios editar avatar"
 
-#: includes/wpua-options-page.php:84
+#: includes/wpua-options-page.php:93
 msgid "Resize avatars on upload"
 msgstr "Cambiar el tamaño de avatares en carga"
 
-#: includes/wpua-options-page.php:96
+#: includes/wpua-options-page.php:103
 msgid "Crop avatars to exact dimensions"
 msgstr "Recortar los avatares a sus dimensiones exactas"
 

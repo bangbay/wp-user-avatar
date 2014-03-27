@@ -3,7 +3,7 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.8.11
+ * @version 1.9
  */
 
 class WP_User_Avatar {
@@ -22,7 +22,7 @@ class WP_User_Avatar {
         add_action('admin_enqueue_scripts', array($this, 'wpua_media_upload_scripts'));
       }
       // Front pages
-      if(!is_admin()){
+      if(!is_admin()) {
         add_action('show_user_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
         add_action('edit_user_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
       }

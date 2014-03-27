@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.8.11\n"
+"Project-Id-Version: WP User Avatar 1.9\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
 "PO-Revision-Date: 2014-03-24 00:00-0000\n"
 "Language: fr_FR\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: includes/class-wp-user-avatar-admin.php:203
+#: includes/class-wp-user-avatar-admin.php:208
 msgid "Donate"
 msgstr "Faites un don"
 
@@ -26,37 +26,37 @@ msgstr "Etes-vous satisfait avec WP-Utilisateur-Avatar?"
 msgid "Make a donation."
 msgstr "Faites un don"
 
-#: includes/wpua-options-page.php:40
+#: includes/wpua-options-page.php:44
 msgid "Add avatar button to Visual Editor"
 msgstr "Ajouter le bouton avatar sur l'éditeur visuel"
 
-#: includes/wpua-options-page.php:46
+#: includes/wpua-options-page.php:50
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Permettre aux contributeurs et aux abonnés d'envoyer des avatars"
 
-#: includes/wpua-options-page.php:52
+#: includes/wpua-options-page.php:56
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Désactiver Gravatar et utiliser les avatars fournis"
 
-#: includes/wpua-options-page.php:63
-#: includes/wpua-options-page.php:68
+#: includes/wpua-options-page.php:72
+#: includes/wpua-options-page.php:77
 msgid "Upload Size Limit"
 msgstr "Taille limite d'envoi de fichiers"
 
-#: includes/wpua-options-page.php:63
-#: includes/wpua-options-page.php:68
+#: includes/wpua-options-page.php:72
+#: includes/wpua-options-page.php:77
 msgid "(only for Contributors & Subscribers)"
 msgstr "(pour contributeurs et abonnés)"
 
-#: includes/wpua-options-page.php:78
+#: includes/wpua-options-page.php:87
 msgid "Allow users to edit avatars"
 msgstr "Permettre aux utilisateurs de modifier avatar"
 
-#: includes/wpua-options-page.php:84
+#: includes/wpua-options-page.php:93
 msgid "Resize avatars on upload"
 msgstr "Redimensionner avatars lors du téléchargement"
 
-#: includes/wpua-options-page.php:78
+#: includes/wpua-options-page.php:103
 msgid "Crop avatars to exact dimensions"
 msgstr "Recadrer les avatars pour parvenir aux dimensions exactes"
 
