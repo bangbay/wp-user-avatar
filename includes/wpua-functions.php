@@ -3,7 +3,7 @@
  * Public user functions.
  * 
  * @package WP User Avatar
- * @version 1.9.2
+ * @version 1.9.3
  */
 
 function has_wp_user_avatar($id_or_email="", $has_wpua="", $user="", $user_id="") {

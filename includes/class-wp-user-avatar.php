@@ -3,7 +3,7 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.9.2
+ * @version 1.9.3
  */
 
 class WP_User_Avatar {
@@ -173,7 +173,7 @@ class WP_User_Avatar {
     global $blog_id, $post, $wpdb, $wp_user_avatar, $wpua_resize_crop, $wpua_resize_h, $wpua_resize_upload, $wpua_resize_w;
     // Check if user has publish_posts capability
     if($wp_user_avatar->wpua_is_author_or_above()) {
-      $wpua_id = isset($_POST['wp-user-avatar']) ? intval($_POST['wp-user-avatar']) : "";
+      $wpua_id = isset($_POST['wp-user-avatar']) ? strip_tags($_POST['wp-user-avatar']) : "";
       // Remove old attachment postmeta
       delete_metadata('post', null, '_wp_attachment_wp_user_avatar', $user_id, true);
       // Create new attachment postmeta

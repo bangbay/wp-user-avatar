@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.9.2
+ * @version 1.9.3
  */
 
 /*
@@ -10,7 +10,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.9.2
+Version: 1.9.3
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -28,7 +28,7 @@ class WP_User_Avatar_Setup {
 
   // Define paths
   function _define_constants() {
-    define('WPUA_VERSION', '1.9.2');
+    define('WPUA_VERSION', '1.9.3');
     define('WPUA_FOLDER', basename(dirname(__FILE__)));
     define('WPUA_DIR', plugin_dir_path(__FILE__));
     define('WPUA_INC', WPUA_DIR.'includes'.'/');

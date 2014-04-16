@@ -3,19 +3,20 @@
  * Defines shortcodes.
  *
  * @package WP User Avatar
- * @version 1.9.2
+ * @version 1.9.3
  */
 
 class WP_User_Avatar_Shortcode {
   public function __construct() {
+    global $wp_user_avatar;
     add_shortcode('avatar', array($this, 'wpua_shortcode'));
     add_shortcode('avatar_upload', array($this, 'wpua_edit_shortcode'));
     // Add avatar and scripts to avatar_upload
-    add_action('wpua_show_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
-    add_action('wpua_show_profile', array('wp_user_avatar', 'wpua_media_upload_scripts'));
-    add_action('wpua_update', array('wp_user_avatar', 'wpua_action_process_option_update'));
+    add_action('wpua_show_profile', array($wp_user_avatar, 'wpua_action_show_user_profile'));
+    add_action('wpua_show_profile', array($wp_user_avatar, 'wpua_media_upload_scripts'));
+    add_action('wpua_update', array($wp_user_avatar, 'wpua_action_process_option_update'));
     // Add error messages to avatar_upload
-    add_action('wpua_update_errors', array('wp_user_avatar', 'wpua_upload_errors'), 10, 3);
+    add_action('wpua_update_errors', array($wp_user_avatar, 'wpua_upload_errors'), 10, 3);
   }
 
   // Display shortcode
@@ -146,7 +147,7 @@ class WP_User_Avatar_Shortcode {
       <?php wp_nonce_field('update-user_'.$current_user->ID); ?>
       <?php submit_button(__('Save')); ?>
     </form>
-  <?
+  <?php
     return ob_get_clean();
   }
 }
