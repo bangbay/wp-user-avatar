@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.9.1\n"
+"Project-Id-Version: WP User Avatar 1.9.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2014-03-24 00:00-0000\n"
+"PO-Revision-Date: 2014-04-16 00:00-0000\n"
 "Language: sv_SE\n"
 "Last-Translator: Mattias Tengblad <mst@eyesx.com>\n"
 "Language-Team: WordPress Sverige <info@wpsv.se>\n"
@@ -26,37 +26,37 @@ msgstr "Är du nöjd med Visningsbild (avatar)?"
 msgid "Make a donation."
 msgstr "Donera"
 
-#: includes/wpua-options-page.php:44
+#: includes/wpua-options-page.php:46
 msgid "Add avatar button to Visual Editor"
 msgstr "Lägg till knapp för avatarer i den visuella redigeraren"
 
-#: includes/wpua-options-page.php:50
+#: includes/wpua-options-page.php:52
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Tillåt medarbetare & prenumeranter att ladda upp avatarer"
 
-#: includes/wpua-options-page.php:56
+#: includes/wpua-options-page.php:58
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Inaktivera Gravatar och använd endast lokala avatarer"
 
-#: includes/wpua-options-page.php:72
-#: includes/wpua-options-page.php:77
+#: includes/wpua-options-page.php:75
+#: includes/wpua-options-page.php:80
 msgid "Upload Size Limit"
 msgstr "Storleksgräns för uppladdningar"
 
-#: includes/wpua-options-page.php:72
-#: includes/wpua-options-page.php:77
+#: includes/wpua-options-page.php:75
+#: includes/wpua-options-page.php:80
 msgid "(only for Contributors & Subscribers)"
 msgstr "(endast för medarbetare & prenumeranter)"
 
-#: includes/wpua-options-page.php:87
+#: includes/wpua-options-page.php:90
 msgid "Allow users to edit avatars"
 msgstr "Tillåt användare att redigera avatarer"
 
-#: includes/wpua-options-page.php:93
+#: includes/wpua-options-page.php:96
 msgid "Resize avatars on upload"
 msgstr "Ändra storlek på avatarer på uppladdning"
 
-#: includes/wpua-options-page.php:103
+#: includes/wpua-options-page.php:106
 msgid "Crop avatars to exact dimensions"
 msgstr "Beskär avatarer till exakta dimensioner"
 

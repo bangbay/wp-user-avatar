@@ -4,8 +4,8 @@ Contributors: bangbay
 Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
 Requires at least: 3.6
-Tested up to: 3.8.1
-Stable tag: 1.9.1
+Tested up to: 3.8.3
+Stable tag: 1.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -367,6 +367,17 @@ This would output:
 4. After you've chosen a WP User Avatar image, you will see the option to remove it.
 
 == Changelog ==
+
+= 1.9.2 =
+* Add: Setup class
+* Bug Fix: Give wpua_attachment_is_image filter two variables
+* Bug Fix: Return [avatar_upload] instead of echo
+* Remove: Unneccessary filters
+* Update: Allow upload to overwrite avatar for Contributors & Subscribers
+* Update: Move Edit Image link for Contributors & Subscribers
+* Update: Move text from localize script to data attribute
+* Update: Shorten variable names
+* Update: Wrap all classes in init
 
 = 1.9.1 =
 * Bug Fix: Double underscore for options page title

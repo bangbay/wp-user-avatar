@@ -3,10 +3,36 @@
  * Global variables used in plugin.
  *
  * @package WP User Avatar
- * @version 1.9.1
+ * @version 1.9.2
  */
 
 // Define global variables
+global $avatar_default,
+       $show_avatars,
+       $wpua_allow_upload,
+       $wpua_avatar_default,
+       $wpua_disable_gravatar,
+       $wpua_edit_avatar,
+       $wpua_resize_crop,
+       $wpua_resize_h,
+       $wpua_resize_upload,
+       $wpua_resize_w,
+       $wpua_tinymce,
+       $mustache_original,
+       $mustache_medium,
+       $mustache_thumbnail,
+       $mustache_avatar,
+       $mustache_admin,
+       $wpua_default_avatar_updated,
+       $wpua_users_updated,
+       $wpua_media_updated,
+       $upload_size_limit,
+       $upload_size_limit_with_units,
+       $wpua_user_upload_size_limit,
+       $wpua_upload_size_limit,
+       $wpua_upload_size_limit_with_units,
+       $all_sizes;
+
 $avatar_default = get_option('avatar_default');
 $show_avatars = get_option('show_avatars');
 $wpua_allow_upload = get_option('wp_user_avatar_allow_upload');

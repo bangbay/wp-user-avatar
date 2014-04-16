@@ -3,7 +3,7 @@
  * Core user functions.
  * 
  * @package WP User Avatar
- * @version 1.9.1
+ * @version 1.9.2
  */
 
 class WP_User_Avatar_Functions {
@@ -29,12 +29,25 @@ class WP_User_Avatar_Functions {
       wp_cache_set($hash, $data, $group="", $expire=60*5);
     }
     $has_gravatar = ($data == '200') ? true : false;
-    return apply_filters('wpua_has_gravatar', $has_gravatar);
+    return $has_gravatar;
+  }
+
+  // Check if local image
+  public function wpua_attachment_is_image($attachment_id) {
+    $is_image = wp_attachment_is_image($attachment_id);
+    $is_image = apply_filters('wpua_attachment_is_image', $is_image, $attachment_id);
+    return $is_image;
+  }
+
+  // Get image src
+  public function wpua_get_attachment_image_src($attachment_id, $size='thumbnail', $icon=false) {
+    $image_src_array = wp_get_attachment_image_src($attachment_id, $size, $icon);
+    return apply_filters('wpua_get_attachment_image_src', $image_src_array, $attachment_id, $size, $icon);
   }
 
   // Returns true if user has wp_user_avatar
   public function has_wp_user_avatar($id_or_email="", $has_wpua=false, $user="", $user_id="") {
-    global $blog_id, $wpdb;
+    global $blog_id, $wpdb, $wpua_functions;
     if(!is_object($id_or_email) && !empty($id_or_email)) {
       // Find user by ID or e-mail address
       $user = is_numeric($id_or_email) ? get_user_by('id', $id_or_email) : get_user_by('email', $id_or_email);
@@ -42,8 +55,8 @@ class WP_User_Avatar_Functions {
       $user_id = !empty($user) ? $user->ID : "";
     }
     $wpua = get_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
-    $has_wpua = !empty($wpua) && wp_attachment_is_image($wpua) ? true : false;
-    return apply_filters('has_wp_user_avatar', $has_wpua);
+    $has_wpua = !empty($wpua) && $wpua_functions->wpua_attachment_is_image($wpua) ? true : false;
+    return $has_wpua;
   }
 
   // Replace get_avatar only in get_wp_user_avatar
@@ -65,9 +78,9 @@ class WP_User_Avatar_Functions {
       // User doesn't have WPUA or Gravatar and Default Avatar is wp_user_avatar, show custom Default Avatar
       } elseif($avatar_default == 'wp_user_avatar') {
         // Show custom Default Avatar
-        if(!empty($wpua_avatar_default) && wp_attachment_is_image($wpua_avatar_default)) {
+        if(!empty($wpua_avatar_default) && $wpua_functions->wpua_attachment_is_image($wpua_avatar_default)) {
           // Get image
-          $wpua_avatar_default_image = wp_get_attachment_image_src($wpua_avatar_default, array($size,$size));
+          $wpua_avatar_default_image = $wpua_functions->wpua_get_attachment_image_src($wpua_avatar_default, array($size,$size));
           // Image src
           $default = $wpua_avatar_default_image[0];
           // Add dimensions if numeric size
@@ -104,8 +117,8 @@ class WP_User_Avatar_Functions {
       // User doesn't have Gravatar and Default Avatar is wp_user_avatar, show custom Default Avatar
       if(!$wpua_functions->wpua_has_gravatar($id_or_email) && $avatar_default == 'wp_user_avatar') {
         // Show custom Default Avatar
-        if(!empty($wpua_avatar_default) && wp_attachment_is_image($wpua_avatar_default)) {
-          $wpua_avatar_default_image = wp_get_attachment_image_src($wpua_avatar_default, array($size,$size));
+        if(!empty($wpua_avatar_default) && $wpua_functions->wpua_attachment_is_image($wpua_avatar_default)) {
+          $wpua_avatar_default_image = $wpua_functions->wpua_get_attachment_image_src($wpua_avatar_default, array($size,$size));
           $default = $wpua_avatar_default_image[0];
         } else {
           $default = $mustache_avatar;
@@ -118,8 +131,8 @@ class WP_User_Avatar_Functions {
         $default = !empty($matches) ? $matches [0] [1] : "";
       }
     } else {
-      if(!empty($wpua_avatar_default) && wp_attachment_is_image($wpua_avatar_default)) {
-        $wpua_avatar_default_image = wp_get_attachment_image_src($wpua_avatar_default, array($size,$size));
+      if(!empty($wpua_avatar_default) && $wpua_functions->wpua_attachment_is_image($wpua_avatar_default)) {
+        $wpua_avatar_default_image = $wpua_functions->wpua_get_attachment_image_src($wpua_avatar_default, array($size,$size));
         $default = $wpua_avatar_default_image[0];
       } else {
         $default = $mustache_avatar;
@@ -131,8 +144,9 @@ class WP_User_Avatar_Functions {
   }
 
   // Find WPUA, show get_avatar if empty
-  public function get_wp_user_avatar($id_or_email="", $size='96', $align="", $alt="", $email='unknown@gravatar.com') {
-    global $all_sizes, $avatar_default, $blog_id, $post, $wpdb, $_wp_additional_image_sizes;
+  public function get_wp_user_avatar($id_or_email="", $size='96', $align="", $alt="") {
+    global $all_sizes, $avatar_default, $blog_id, $post, $wpdb, $wpua_functions, $_wp_additional_image_sizes;
+    $email='unknown@gravatar.com';
     // Checks if comment
     if(is_object($id_or_email)) {
       // Checks if comment author is registered user by user ID
@@ -177,7 +191,7 @@ class WP_User_Avatar_Functions {
       // Numeric size use size array
       $get_size = is_numeric($size) ? array($size,$size) : $size;
       // Get image src
-      $wpua_image = wp_get_attachment_image_src($wpua_meta, $get_size);
+      $wpua_image = $wpua_functions->wpua_get_attachment_image_src($wpua_meta, $get_size);
       // Add dimensions to img only if numeric size was specified
       $dimensions = is_numeric($size) ? ' width="'.$wpua_image[1].'" height="'.$wpua_image[2].'"' : "";
       // Construct the img tag
@@ -201,11 +215,11 @@ class WP_User_Avatar_Functions {
         $avatar = preg_replace('/(width|height)=\"\d*\"\s/', "", $avatar);
         $avatar = preg_replace("/(width|height)=\'\d*\'\s/", "", $avatar);
       }
-      $str_replacemes = array('wp-user-avatar ', 'wp-user-avatar-'.$get_size.' ', 'wp-user-avatar-'.$size.' ', 'avatar-'.$get_size, 'photo');
+      $str_replace = array('wp-user-avatar ', 'wp-user-avatar-'.$get_size.' ', 'wp-user-avatar-'.$size.' ', 'avatar-'.$get_size, 'photo');
       $str_replacements = array("", "", "", 'avatar-'.$size, 'wp-user-avatar wp-user-avatar-'.$size.$alignclass.' photo');
-      $avatar = str_replace($str_replacemes, $str_replacements, $avatar);
+      $avatar = str_replace($str_replace, $str_replacements, $avatar);
     }
-    return apply_filters('get_wp_user_avatar', $avatar, $id_or_email, $size, $align, $alt, $email);
+    return apply_filters('get_wp_user_avatar', $avatar, $id_or_email, $size, $align, $alt);
   }
 
   // Return just the image src
@@ -218,7 +232,7 @@ class WP_User_Avatar_Functions {
       $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $wpua_image, $matches, PREG_SET_ORDER);
       $wpua_image_src = !empty($matches) ? $matches [0] [1] : "";
     }
-    return apply_filters('get_wp_user_avatar_src', $wpua_image_src);
+    return $wpua_image_src;
   }
 
   // Check if avatar_upload is in use
@@ -230,4 +244,9 @@ class WP_User_Avatar_Functions {
   }
 }
 
-$wpua_functions = new WP_User_Avatar_Functions();
+// Initialize WP_User_Avatar_Functions
+function wpua_functions_init() {
+  global $wpua_functions;
+  $wpua_functions = new WP_User_Avatar_Functions();
+}
+add_action('init', 'wpua_functions_init');

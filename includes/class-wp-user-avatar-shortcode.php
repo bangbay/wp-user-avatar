@@ -3,7 +3,7 @@
  * Defines shortcodes.
  *
  * @package WP User Avatar
- * @version 1.9.1
+ * @version 1.9.2
  */
 
 class WP_User_Avatar_Shortcode {
@@ -129,16 +129,31 @@ class WP_User_Avatar_Shortcode {
       } elseif(isset($errors) && !is_wp_error($errors)) {
         echo '<div class="updated"><p><strong>'.__('Profile updated.').'</strong></p></div>';
       }
-      // Form
-      echo '<form id="wpua-edit-'.$current_user->ID.'" class="wpua-edit" action="'.get_permalink().'" method="post" enctype="multipart/form-data">';
-      do_action('wpua_show_profile', $current_user);
-      echo '<input type="hidden" name="action" value="update" />';
-      echo '<input type="hidden" name="user_id" id="user_id" value="'.esc_attr($current_user->ID).'" />';
-      wp_nonce_field('update-user_'.$current_user->ID);
-      submit_button(__('Save'));
-      echo '</form>';
+      // Edit form
+      return $this->wpua_edit_form();
     }
+  }
+
+  // Edit form
+  public function wpua_edit_form() {
+     global $current_user;
+     ob_start();
+  ?>
+    <form id="wpua-edit-<?php echo $current_user->ID; ?>" class="wpua-edit" action="<?php echo get_permalink(); ?>" method="post" enctype="multipart/form-data">
+      <?php do_action('wpua_show_profile', $current_user); ?>
+      <input type="hidden" name="action" value="update" />
+      <input type="hidden" name="user_id" id="user_id" value="<?php echo esc_attr($current_user->ID); ?>" />
+      <?php wp_nonce_field('update-user_'.$current_user->ID); ?>
+      <?php submit_button(__('Save')); ?>
+    </form>
+  <?
+    return ob_get_clean();
   }
 }
 
-$wpua_shortcode = new WP_User_Avatar_Shortcode();
+// Initialize WP_User_Avatar_Shortcode
+function wpua_shortcode_init() {
+  global $wpua_shortcode;
+  $wpua_shortcode = new WP_User_Avatar_Shortcode();
+}
+add_action('init', 'wpua_shortcode_init');

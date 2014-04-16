@@ -3,7 +3,7 @@
  * Admin page to change plugin options.
  *
  * @package WP User Avatar
- * @version 1.9.1
+ * @version 1.9.2
  */
 
 global $show_avatars, $upload_size_limit_with_units, $wpua_admin, $wpua_allow_upload, $wpua_disable_gravatar, $wpua_edit_avatar, $wpua_resize_crop, $wpua_resize_h, $wpua_resize_upload, $wpua_resize_w, $wpua_subscriber, $wpua_tinymce, $wpua_upload_size_limit, $wpua_upload_size_limit_with_units;
@@ -29,6 +29,7 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
     <?php do_action('wpua_donation_message'); ?>
     <table class="form-table">
       <?php
+        // Format settings in table rows
         $wpua_before_settings = array();
         $wpua_before_settings = apply_filters('wpua_before_settings', $wpua_before_settings);
         echo implode("", $wpua_before_settings);
@@ -37,6 +38,7 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
         <th scope="row"><?php _e('Settings'); ?></th>
         <td>
           <?php
+            // Format settings in fieldsets
             $wpua_settings = array();
             $wpua_settings['tinymce'] = '<fieldset>
               <label for="wp_user_avatar_tinymce">
@@ -63,6 +65,7 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
       </tr>
     </table>
     <?php
+      // Format settings in table
       $wpua_subscriber_settings = array();
       $wpua_subscriber_settings['subscriber-settings'] = '<div id="wpua-contributors-subscribers"'.$hide_size.'>
         <table class="form-table">

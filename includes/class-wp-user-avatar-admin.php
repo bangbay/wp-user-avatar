@@ -3,22 +3,23 @@
  * Defines all of administrative, activation, and deactivation settings.
  *
  * @package WP User Avatar
- * @version 1.9.1
+ * @version 1.9.2
  */
 
 class WP_User_Avatar_Admin {
   public function __construct() {
     global $show_avatars, $wpua_allow_upload, $wpua_tinymce;
     // Initialize default settings
-    register_activation_hook(WPUA_DIR.'wp-user-avatar.php', array($this, 'wpua_options'));    
+    register_activation_hook(WPUA_DIR.'wp-user-avatar.php', array($this, 'wpua_options'));
     // Settings saved to wp_options
-    add_action('admin_init', array($this, 'wpua_options'));    
+    add_action('admin_init', array($this, 'wpua_options'));
     // Remove subscribers edit_posts capability
     register_deactivation_hook(WPUA_DIR.'wp-user-avatar.php', array($this, 'wpua_deactivate'));
     // Translations
     load_plugin_textdomain('wp-user-avatar', "", WPUA_FOLDER.'/lang');
     // Admin menu settings
-    add_action('admin_menu', array($this, 'wpua_admin'));    
+    add_action('admin_menu', array($this, 'wpua_admin'));
+    add_action('admin_init', array($this, 'wpua_register_settings'));
     // Default avatar
     add_filter('default_avatar_select', array($this, 'wpua_add_default_avatar'), 10);
     add_filter('whitelist_options', array($this, 'wpua_whitelist_options'), 10);
@@ -66,12 +67,12 @@ class WP_User_Avatar_Admin {
 
   // Add options page and settings
   public function wpua_admin() {
-    add_menu_page(__('WP User Avatar', 'wp-user-avatar'), __('WP User Avatar', 'wp-user-avatar'), 'manage_options', 'wp-user-avatar', array($this, 'wpua_options_page'), WPUA_URL.'images/wpua-icon.png');
+    add_menu_page(__('WP User Avatar', 'wp-user-avatar'), __('Avatars'), 'manage_options', 'wp-user-avatar', array($this, 'wpua_options_page'), WPUA_URL.'images/wpua-icon.png');
     add_submenu_page('wp-user-avatar', __('Settings'), __('Settings'), 'manage_options', 'wp-user-avatar', array($this, 'wpua_options_page'));
     $hook = add_submenu_page('wp-user-avatar', __('Library'), __('Library'), 'manage_options', 'wp-user-avatar-library', array($this, 'wpua_media_page'));
     add_action("load-$hook", array($this, 'wpua_media_screen_option'));
     add_filter('set-screen-option', array($this, 'wpua_set_media_screen_option'), 10, 3);
-    add_action('admin_init', array($this, 'wpua_register_settings'));
+
   }
 
   // Checks if current page is settings page
@@ -112,21 +113,21 @@ class WP_User_Avatar_Admin {
 
   // Whitelist settings
   public function wpua_register_settings() {
-    $wpua_register_settings = array();
-    $wpua_register_settings[] = register_setting('wpua-settings-group', 'avatar_rating');
-    $wpua_register_settings[] = register_setting('wpua-settings-group', 'avatar_default');
-    $wpua_register_settings[] = register_setting('wpua-settings-group', 'avatar_default_wp_user_avatar', 'intval');
-    $wpua_register_settings[] = register_setting('wpua-settings-group', 'show_avatars', 'intval');
-    $wpua_register_settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_tinymce', 'intval');
-    $wpua_register_settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_allow_upload', 'intval');
-    $wpua_register_settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_disable_gravatar', 'intval');
-    $wpua_register_settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_edit_avatar', 'intval');
-    $wpua_register_settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_resize_crop', 'intval');
-    $wpua_register_settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_resize_h', 'intval');
-    $wpua_register_settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_resize_upload', 'intval');
-    $wpua_register_settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_resize_w', 'intval');
-    $wpua_register_settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_upload_size_limit', 'intval');
-    return apply_filters('wpua_register_settings', $wpua_register_settings);
+    $settings = array();
+    $settings[] = register_setting('wpua-settings-group', 'avatar_rating');
+    $settings[] = register_setting('wpua-settings-group', 'avatar_default');
+    $settings[] = register_setting('wpua-settings-group', 'avatar_default_wp_user_avatar');
+    $settings[] = register_setting('wpua-settings-group', 'show_avatars', 'intval');
+    $settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_tinymce', 'intval');
+    $settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_allow_upload', 'intval');
+    $settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_disable_gravatar', 'intval');
+    $settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_edit_avatar', 'intval');
+    $settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_resize_crop', 'intval');
+    $settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_resize_h', 'intval');
+    $settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_resize_upload', 'intval');
+    $settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_resize_w', 'intval');
+    $settings[] = register_setting('wpua-settings-group', 'wp_user_avatar_upload_size_limit', 'intval');
+    return apply_filters('wpua_register_settings', $settings);
   }
 
   // Add default avatar
@@ -160,8 +161,8 @@ class WP_User_Avatar_Admin {
       $avatar_list .= '<br />';
     }
     // Show remove link if custom Default Avatar is set
-    if(!empty($wpua_avatar_default) && wp_attachment_is_image($wpua_avatar_default)) {
-      $avatar_thumb_src = wp_get_attachment_image_src($wpua_avatar_default, array(32,32));
+    if(!empty($wpua_avatar_default) && $wpua_functions->wpua_attachment_is_image($wpua_avatar_default)) {
+      $avatar_thumb_src = $wpua_functions->wpua_get_attachment_image_src($wpua_avatar_default, array(32,32));
       $avatar_thumb = $avatar_thumb_src[0];
       $hide_remove = "";
     } else {
@@ -176,9 +177,10 @@ class WP_User_Avatar_Admin {
     $wpua_list = "\n\t<label><input type='radio' name='avatar_default' id='wp_user_avatar_radio' value='wp_user_avatar'$selected_avatar /> ";
     $wpua_list .= preg_replace("/src='(.+?)'/", "src='\$1'", $avatar_thumb_img);
     $wpua_list .= ' '.__('WP User Avatar', 'wp-user-avatar').'</label>';
-    $wpua_list .= '<p id="wpua-edit"><button type="button" class="button" id="wpua-add" name="wpua-add">'.__('Choose Image').'</button>';
+    $wpua_list .= '<p id="wpua-edit"><button type="button" class="button" id="wpua-add" name="wpua-add" data-title="'._('Choose Image').': '._('Default Avatar').'">'.__('Choose Image').'</button>';
     $wpua_list .= '<span id="wpua-remove-button"'.$hide_remove.'><a href="#" id="wpua-remove">'.__('Remove').'</a></span><span id="wpua-undo-button"><a href="#" id="wpua-undo">'.__('Undo').'</a></span></p>';
     $wpua_list .= '<input type="hidden" id="wp-user-avatar" name="avatar_default_wp_user_avatar" value="'.$wpua_avatar_default.'">';
+    $wpua_list .= '<div id="wpua-modal"></div>';
     if((bool) $wpua_disable_gravatar != 1) {
       return $wpua_list.'<div id="wp-avatars">'.$avatar_list.'</div>';
     } else {
@@ -187,9 +189,9 @@ class WP_User_Avatar_Admin {
   }
 
   // Add default avatar_default to whitelist
-  public function wpua_whitelist_options($whitelist_options) {
-    $whitelist_options['discussion'][] = 'avatar_default_wp_user_avatar';
-    return $whitelist_options;
+  public function wpua_whitelist_options($options) {
+    $options['discussion'][] = 'avatar_default_wp_user_avatar';
+    return $options;
   }
 
   // Add actions links on plugin page
@@ -233,17 +235,22 @@ class WP_User_Avatar_Admin {
   }
 
   // Add media states
-  public function wpua_add_media_state($media_states) {
+  public function wpua_add_media_state($states) {
     global $post, $wpua_avatar_default;
     $is_wpua = get_post_custom_values('_wp_attachment_wp_user_avatar', $post->ID);
     if(!empty($is_wpua)) {
-      $media_states[] = __('Avatar');
+      $states[] = __('Avatar');
     }
     if(!empty($wpua_avatar_default) && ($wpua_avatar_default == $post->ID)) {
-      $media_states[] = __('Default Avatar');
+      $states[] = __('Default Avatar');
     }
-    return apply_filters('wpua_add_media_state', $media_states);
+    return apply_filters('wpua_add_media_state', $states);
   }
 }
 
-$wpua_admin = new WP_User_Avatar_Admin();
+// Initialize WP_User_Avatar_Admin
+function wpua_admin_init() {
+  global $wpua_admin;
+  $wpua_admin = new WP_User_Avatar_Admin();
+}
+add_action('init', 'wpua_admin_init');

@@ -3,7 +3,7 @@
  * Updates for legacy settings.
  *
  * @package WP User Avatar
- * @version 1.9.1
+ * @version 1.9.2
  */
 
 class WP_User_Avatar_Update {
@@ -69,4 +69,9 @@ class WP_User_Avatar_Update {
   }
 }
 
-$wpua_update = new WP_User_Avatar_Update();
+// Initialize WP_User_Avatar_Update
+function wpua_update_init() {
+  global $wpua_update;
+  $wpua_update = new WP_User_Avatar_Update();
+}
+add_action('init', 'wpua_update_init');

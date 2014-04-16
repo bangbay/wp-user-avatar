@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.9.1\n"
+"Project-Id-Version: WP User Avatar 1.9.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2014-03-24 00:00-0000\n"
+"PO-Revision-Date: 2014-04-16 00:00-0000\n"
 "Language: de_DE\n"
 "Last-Translator: WP User Avatar\n"
 "Language-Team: WP User Avatar\n"
@@ -26,37 +26,37 @@ msgstr "Jesteś zadowolony z Wp User Avatar"
 msgid "Make a donation."
 msgstr "Dokonaj dotacji"
 
-#: includes/wpua-options-page.php:44
+#: includes/wpua-options-page.php:46
 msgid "Add avatar button to Visual Editor"
 msgstr "Dodaj przycisk avatara do edytora wizualnego"
 
-#: includes/wpua-options-page.php:50
+#: includes/wpua-options-page.php:52
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Pozwalaj kontrybutorom oraz subskrynentom przesyłać awatary"
 
-#: includes/wpua-options-page.php:56
+#: includes/wpua-options-page.php:58
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Wyłącz gravatary i używaj tylko lokalnych awatarów"
 
-#: includes/wpua-options-page.php:72
-#: includes/wpua-options-page.php:77
+#: includes/wpua-options-page.php:75
+#: includes/wpua-options-page.php:80
 msgid "Upload Size Limit"
 msgstr "Limit wielkości pliku"
 
-#: includes/wpua-options-page.php:72
-#: includes/wpua-options-page.php:77
+#: includes/wpua-options-page.php:75
+#: includes/wpua-options-page.php:80
 msgid "(only for Contributors & Subscribers)"
 msgstr "(tylko dla subskrynentów i kontrybutorów)"
 
-#: includes/wpua-options-page.php:87
+#: includes/wpua-options-page.php:90
 msgid "Allow users to edit avatars"
 msgstr "Pozwalaj użytkownikom edytować awatary"
 
-#: includes/wpua-options-page.php:93
+#: includes/wpua-options-page.php:96
 msgid "Resize avatars on upload"
 msgstr "Zmieniaj rozmiar po przesłaniu"
 
-#: includes/wpua-options-page.php:103
+#: includes/wpua-options-page.php:106
 msgid "Crop avatars to exact dimensions"
 msgstr "Przytnij awatar do dokładnych rozmiarów"
 
