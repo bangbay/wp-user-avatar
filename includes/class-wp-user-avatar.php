@@ -107,8 +107,8 @@ class WP_User_Avatar {
         <button type="submit" class="button" id="wpua-upload" name="submit" value="<?php _e('Upload'); ?>"><?php _e('Upload'); ?></button>
       </p>
       <p id="wpua-upload-messages">
-        <span id="wpua-max-upload"><?php printf(__('Maximum upload file size: %d%s.'), esc_html($wpua_upload_size_limit_with_units), esc_html('KB')); ?></span>
-        <span id="wpua-allowed-files"><?php _e('Allowed Files'); ?>: <?php _e('<code>jpg jpeg png gif</code>'); ?></span>
+        <span id="wpua-max-upload" class="description"><?php printf(__('Maximum upload file size: %d%s.'), esc_html($wpua_upload_size_limit_with_units), esc_html('KB')); ?></span>
+        <span id="wpua-allowed-files" class="description"><?php _e('Allowed Files'); ?>: <?php _e('<code>jpg jpeg png gif</code>'); ?></span>
       </p>
     <?php endif; ?>
     <div id="wpua-images" class="<?php echo $hide_images; ?>">

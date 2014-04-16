@@ -11,7 +11,7 @@ jQuery(function($) {
     $('#wpua-original').remove();
     $('#wpua-remove-button, #wpua-thumbnail').hide();
     $('#wpua-preview').find('img:first').hide();
-    $('#wpua-preview').prepend('<img id="wpua-original" height="98" />');
+    $('#wpua-preview').prepend('<img id="wpua-original" style="max-height:96px;" />');
     $('#wpua-original').attr('src', wpua_custom.avatar_thumb);
     $('#wp-user-avatar').val("");
     $('#wpua-original, #wpua-undo-button').show();
