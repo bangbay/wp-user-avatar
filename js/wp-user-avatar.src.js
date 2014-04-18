@@ -9,16 +9,14 @@
       // Selected attachment ID
       settings.post.wpUserAvatarId = id;
       // Selected attachment image
-      settings.post.wpUserAvatarSrc = jQuery('div.attachment-info').find('img').attr('src');
+      settings.post.wpUserAvatarSrc = $('div.attachment-info').find('img').attr('src');
       // Set WP User Avatar
       if(settings.post.wpUserAvatarId && settings.post.wpUserAvatarSrc) {
-        jQuery('#wp-user-avatar', window.parent.document).val(settings.post.wpUserAvatarId);
-        jQuery('#wpua-images', window.parent.document).show();
-        jQuery('#wpua-preview', window.parent.document).find('img').attr('src', settings.post.wpUserAvatarSrc).removeAttr('height', "");
-        jQuery('#wpua-undo-button', window.parent.document).show();
-        jQuery('#wpua-remove-button', window.parent.document).hide();
-        jQuery('#wpua-thumbnail', window.parent.document).hide();
-        jQuery('#wp_user_avatar_radio', window.parent.document).trigger('click');
+        $('#wp-user-avatar').val(settings.post.wpUserAvatarId);
+        $('#wpua-images, #wpua-undo-button').show();
+        $('#wpua-preview').find('img').attr('src', settings.post.wpUserAvatarSrc).removeAttr('height', "");
+        $('#wpua-remove-button, #wpua-thumbnail').hide();
+        $('#wp_user_avatar_radio').trigger('click');
       }
       // Close media modal
       wp.media.wpUserAvatar.frame().close();
@@ -34,14 +32,14 @@
           type: 'image'
         },
         multiple: false,
-        title: jQuery('#wpua-add').data('title')
+        title: $('#wpua-add').data('title')
       });
       // Run on frame open
       this._frame.on('open', function() {
-        id = jQuery('#wp-user-avatar').val();
+        var id = $('#wp-user-avatar').val();
         if(id == "") {
           // If no WPUA is set, go to upload tab
-          jQuery('div.media-router').find('a:first').trigger('click');
+          $('div.media-router').find('a:first').trigger('click');
         } else {
           // If WPUA is set, select attachment on open
           var selection = this.state().get('selection');
@@ -61,10 +59,9 @@
     },
     init: function() {
       // Open Media Uploader
-      jQuery('body').on('click', '#wpua-add', function(e) {
+      $('body').on('click', '#wpua-add', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        // Open media modal
         wp.media.wpUserAvatar.frame().open();
       });
     }
@@ -88,7 +85,7 @@ jQuery(function($) {
     $('#wpua-original').remove();
     $('#wpua-remove-button, #wpua-thumbnail').hide();
     $('#wpua-preview').find('img:first').hide();
-    $('#wpua-preview').prepend('<img id="wpua-original" style="max-height:96px;" />');
+    $('#wpua-preview').prepend('<img id="wpua-original" />');
     $('#wpua-original').attr('src', wpua_custom.avatar_thumb);
     $('#wp-user-avatar').val("");
     $('#wpua-original, #wpua-undo-button').show();

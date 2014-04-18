@@ -3,7 +3,7 @@
  * Defines shortcodes.
  *
  * @package WP User Avatar
- * @version 1.9.3
+ * @version 1.9.4
  */
 
 class WP_User_Avatar_Shortcode {
@@ -95,6 +95,7 @@ class WP_User_Avatar_Shortcode {
 
   // Update user
   private function wpua_edit_user($user_id = 0) {
+    global $post;
     $user = new stdClass;
     if($user_id) {
       $update = true;
@@ -109,6 +110,7 @@ class WP_User_Avatar_Shortcode {
     }
     if($update) {
       $user_id = wp_update_user($user);
+      wp_redirect(add_query_arg(array('updated' => 'true'), get_permalink($post)));
     }
     return $user_id;
   }
@@ -116,7 +118,7 @@ class WP_User_Avatar_Shortcode {
   // Edit shortcode
   public function wpua_edit_shortcode($atts) {
     global $current_user, $errors;
-    // Shortcode only works with logged in user
+    // Shortcode only works with logged-in user
     if(is_user_logged_in()) {
       // Save
       if(isset($_POST['submit']) && $_POST['submit'] && $_POST['action'] == 'update') {
@@ -137,15 +139,15 @@ class WP_User_Avatar_Shortcode {
 
   // Edit form
   public function wpua_edit_form() {
-     global $current_user;
+     global $current_user, $post;
      ob_start();
   ?>
-    <form id="wpua-edit-<?php echo $current_user->ID; ?>" class="wpua-edit" action="<?php echo get_permalink(); ?>" method="post" enctype="multipart/form-data">
+    <form id="wpua-edit-<?php echo $current_user->ID; ?>" class="wpua-edit" action="<?php echo get_permalink($post); ?>" method="post" enctype="multipart/form-data">
       <?php do_action('wpua_show_profile', $current_user); ?>
       <input type="hidden" name="action" value="update" />
       <input type="hidden" name="user_id" id="user_id" value="<?php echo esc_attr($current_user->ID); ?>" />
       <?php wp_nonce_field('update-user_'.$current_user->ID); ?>
-      <?php submit_button(__('Save')); ?>
+      <?php submit_button(__('Update Profile')); ?>
     </form>
   <?php
     return ob_get_clean();

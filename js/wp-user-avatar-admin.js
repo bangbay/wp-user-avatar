@@ -30,7 +30,7 @@ jQuery(function($) {
   // Update readable size on keyup
   $('#wp_user_avatar_upload_size_limit').keyup(function() {
     var wpuaUploadSizeLimit = $(this).val();
-    wpuaUploadSizeLimit = wpuaUploadSizeLimit.replace(/\D/g, '');
+    wpuaUploadSizeLimit = wpuaUploadSizeLimit.replace(/\D/g, "");
     $(this).val(wpuaUploadSizeLimit);
     $('#wpua-readable-size').html(Math.floor(wpuaUploadSizeLimit / 1024) + 'KB');
     $('#wpua-readable-size-error').toggle(wpuaUploadSizeLimit > parseInt(wpua_admin.max_upload_size));

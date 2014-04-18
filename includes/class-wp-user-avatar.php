@@ -3,7 +3,7 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.9.3
+ * @version 1.9.4
  */
 
 class WP_User_Avatar {
@@ -68,13 +68,13 @@ class WP_User_Avatar {
       // Size limit slider
       wp_enqueue_script('jquery-ui-slider');
       wp_enqueue_style('wp-user-avatar-jqueryui', WPUA_URL.'css/jquery.ui.slider.css', "", null);
-      // Remove/edit settings
+      // Default avatar
       wp_localize_script('wp-user-avatar', 'wpua_custom', array('avatar_thumb' => $mustache_admin));
       // Settings control
       wp_enqueue_script('wp-user-avatar-admin', WPUA_URL.'js/wp-user-avatar-admin.js', array('wp-user-avatar'), WPUA_VERSION, true);
       wp_localize_script('wp-user-avatar-admin', 'wpua_admin', array('upload_size_limit' => $wpua_upload_size_limit, 'max_upload_size' => wp_max_upload_size()));
     } else {
-      // User remove/edit settings
+      // Original user avatar
       $avatar_medium_src = (bool) $show_avatars == 1 ? $wpua_functions->wpua_get_avatar_original($user->user_email, 'medium') : includes_url().'images/blank.gif';
       wp_localize_script('wp-user-avatar', 'wpua_custom', array('avatar_thumb' => $avatar_medium_src));
     }
@@ -96,8 +96,10 @@ class WP_User_Avatar {
     // Check if user has wp_user_avatar, if not show image from above
     $avatar_thumbnail = has_wp_user_avatar($user->ID) ? get_wp_user_avatar_src($user->ID, 96) : $avatar_medium_src;
     $edit_attachment_link = add_query_arg(array('post' => $wpua, 'action' => 'edit'), admin_url('post.php'));
+    // Chck if admin page
+    $is_admin = is_admin() ? '_admin' : "";
   ?>
-    <?php do_action('wpua_before_avatar'); ?>
+    <?php do_action('wpua_before_avatar'.$is_admin); ?>
     <input type="hidden" name="wp-user-avatar" id="wp-user-avatar" value="<?php echo $wpua; ?>" />
     <?php if($wp_user_avatar->wpua_is_author_or_above()) : // Button to launch Media Uploader ?>
       <p id="wpua-add-button"><button type="button" class="button" id="wpua-add" name="wpua-add" data-title="<?php _e('Choose Image'); ?>: <?php echo $user->display_name; ?>"><?php _e('Choose Image'); ?></button></p>
@@ -128,7 +130,7 @@ class WP_User_Avatar {
       </p>
       <p id="wpua-undo-button"><button type="button" class="button" id="wpua-undo" name="wpua-undo"><?php _e('Undo'); ?></button></p>
     </div>
-    <?php do_action('wpua_after_avatar'); ?>
+    <?php do_action('wpua_after_avatar'.$is_admin); ?>
   <?php
   }
 
@@ -192,7 +194,7 @@ class WP_User_Avatar {
           'meta_query' => array(
             array(
               'key' => '_wp_attachment_wp_user_avatar',
-              'value' => '',
+              'value' => "",
               'compare' => '!='
             )
           )
@@ -262,7 +264,7 @@ class WP_User_Avatar {
                 'meta_query' => array(
                   array(
                     'key' => '_wp_attachment_wp_user_avatar',
-                    'value' => '',
+                    'value' => "",
                     'compare' => '!='
                   )
                 )

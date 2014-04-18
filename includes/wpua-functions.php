@@ -3,7 +3,7 @@
  * Public user functions.
  * 
  * @package WP User Avatar
- * @version 1.9.3
+ * @version 1.9.4
  */
 
 function has_wp_user_avatar($id_or_email="", $has_wpua="", $user="", $user_id="") {
@@ -34,6 +34,8 @@ function wpua_after_avatar() {
 // Before avatar container
 function wpua_do_before_avatar() {
   global $wpua_functions;
+  $wpua_profile_title = '<h3>'.__('Avatar').'</h3>';
+  $wpua_profile_title = apply_filters('wpua_profile_title', $wpua_profile_title);
 ?>
   <?php if(class_exists('bbPress') && bbp_is_edit()) : // Add to bbPress profile with same style ?>
     <h2 class="entry-title"><?php _e('Avatar'); ?></h2>
@@ -46,15 +48,9 @@ function wpua_do_before_avatar() {
         <tr>
           <th><label for="wp_user_avatar"><?php _e('Image'); ?></label></th>
           <td>
-  <?php elseif($wpua_functions->wpua_has_shortcode()) : // Add to profile without table ?>
+  <?php else : // Add to profile without table ?>
     <div class="wpua-edit-container">
-      <h3><?php _e('Avatar') ?></h3>
-  <?php else : // Add to profile with admin style ?>
-    <h3><?php _e('Avatar') ?></h3>
-    <table class="form-table">
-      <tr>
-        <th><label for="wp_user_avatar"><?php _e('Image'); ?></label></th>
-        <td>
+      <?php echo $wpua_profile_title; ?>
   <?php endif; ?>
   <?php
 }
@@ -71,16 +67,46 @@ function wpua_do_after_avatar() {
         </tr>
       </table>
     </fieldset>
-  <?php elseif($wpua_functions->wpua_has_shortcode()) : // Add to profile without table ?>
+  <?php else : // Add to profile without table ?>
     </div>
-  <?php else : // Add to profile with admin style ?>
-        </td>
-      </tr>
-    </table>
   <?php endif; ?>
   <?php
 }
 add_action('wpua_after_avatar', 'wpua_do_after_avatar');
+
+// Before wrapper for profile
+function wpua_before_avatar_admin() {
+  do_action('wpua_before_avatar_admin');
+}
+
+// After wrapper for profile
+function wpua_after_avatar_admin() {
+  do_action('wpua_after_avatar_admin');
+}
+
+// Before avatar container
+function wpua_do_before_avatar_admin() {
+  global $wpua_functions;
+?>
+  <h3><?php _e('Avatar') ?></h3>
+  <table class="form-table">
+    <tr>
+      <th><label for="wp_user_avatar"><?php _e('Image'); ?></label></th>
+      <td>
+  <?php
+}
+add_action('wpua_before_avatar_admin', 'wpua_do_before_avatar_admin');
+
+// After avatar container
+function wpua_do_after_avatar_admin() {
+  global $wpua_functions;
+?>
+      </td>
+    </tr>
+  </table>
+  <?php
+}
+add_action('wpua_after_avatar_admin', 'wpua_do_after_avatar_admin');
 
 // Filter for the inevitable complaints about the donation message :(
 function wpua_donation_message() {
@@ -94,3 +120,9 @@ function wpua_do_donation_message() { ?>
  <?php 
 }
 add_action('wpua_donation_message', 'wpua_do_donation_message');
+
+// Register widget
+function wpua_widgets_init() {
+  register_widget('WP_User_Avatar_Profile_Widget');
+}
+add_action('widgets_init', 'wpua_widgets_init');

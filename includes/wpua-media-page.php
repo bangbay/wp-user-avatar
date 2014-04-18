@@ -3,7 +3,7 @@
  * Media Library view of all avatars in use.
  *
  * @package WP User Avatar
- * @version 1.9.3
+ * @version 1.9.4
  */
   /** WordPress Administration Bootstrap */
   require_once(ABSPATH.'wp-admin/admin.php');
@@ -66,7 +66,7 @@
     ?>
   </h2>
   <?php
-    $message = '';
+    $message = "";
     if(!empty($_GET['deleted']) && $deleted = absint($_GET['deleted'])) {
       $message = sprintf(_n('Media attachment permanently deleted.', '%d media attachments permanently deleted.', $deleted), number_format_i18n($_GET['deleted']));
       $_SERVER['REQUEST_URI'] = remove_query_arg(array('deleted'), $_SERVER['REQUEST_URI']);

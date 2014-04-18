@@ -3,7 +3,7 @@
  * Core user functions.
  * 
  * @package WP User Avatar
- * @version 1.9.3
+ * @version 1.9.4
  */
 
 class WP_User_Avatar_Functions {
@@ -47,7 +47,7 @@ class WP_User_Avatar_Functions {
 
   // Returns true if user has wp_user_avatar
   public function has_wp_user_avatar($id_or_email="", $has_wpua=false, $user="", $user_id="") {
-    global $blog_id, $wpdb, $wpua_functions;
+    global $blog_id, $wpdb, $wpua_avatar_default, $wpua_functions;
     if(!is_object($id_or_email) && !empty($id_or_email)) {
       // Find user by ID or e-mail address
       $user = is_numeric($id_or_email) ? get_user_by('id', $id_or_email) : get_user_by('email', $id_or_email);
@@ -55,7 +55,8 @@ class WP_User_Avatar_Functions {
       $user_id = !empty($user) ? $user->ID : "";
     }
     $wpua = get_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
-    $has_wpua = !empty($wpua) && $wpua_functions->wpua_attachment_is_image($wpua) ? true : false;
+    // Check if avatar is same as default avatar or on excluded list
+    $has_wpua = !empty($wpua) && ($wpua != $wpua_avatar_default) && $wpua_functions->wpua_attachment_is_image($wpua) ? true : false;
     return $has_wpua;
   }
 
@@ -145,7 +146,7 @@ class WP_User_Avatar_Functions {
 
   // Find WPUA, show get_avatar if empty
   public function get_wp_user_avatar($id_or_email="", $size='96', $align="", $alt="") {
-    global $all_sizes, $avatar_default, $blog_id, $post, $wpdb, $wpua_functions, $_wp_additional_image_sizes;
+    global $all_sizes, $avatar_default, $blog_id, $post, $wpdb, $wpua_avatar_default, $wpua_functions, $_wp_additional_image_sizes;
     $email='unknown@gravatar.com';
     // Checks if comment
     if(is_object($id_or_email)) {
@@ -186,8 +187,8 @@ class WP_User_Avatar_Functions {
     $wpua_meta = get_the_author_meta($wpdb->get_blog_prefix($blog_id).'user_avatar', $email);
     // Add alignment class
     $alignclass = !empty($align) && ($align == 'left' || $align == 'right' || $align == 'center') ? ' align'.$align : ' alignnone';
-    // User has WPUA, bypass get_avatar
-    if(!empty($wpua_meta)) {
+    // User has WPUA, check if on excluded list and bypass get_avatar
+    if(!empty($wpua_meta) && $wpua_functions->wpua_attachment_is_image($wpua_meta)) {
       // Numeric size use size array
       $get_size = is_numeric($size) ? array($size,$size) : $size;
       // Get image src

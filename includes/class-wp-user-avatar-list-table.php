@@ -3,11 +3,11 @@
  * Based on WP_Media_List_Table class.
  *
  * @package WP User Avatar
- * @version 1.9.3
+ * @version 1.9.4
  */
 
 class WP_User_Avatar_List_Table extends WP_List_Table {
-  function __construct($args = array()) {
+  public function __construct($args = array()) {
     global $avatars_array, $post, $wpua_avatar_default;
     $paged = (get_query_var('page')) ? get_query_var('page') : 1;
     $q = array(
@@ -18,7 +18,7 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
       'meta_query' => array(
         array(
           'key' => '_wp_attachment_wp_user_avatar',
-          'value' => '',
+          'value' => "",
           'compare' => '!='
         )
       )
@@ -37,11 +37,11 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
     ));
   }
 
-  function ajax_user_can() {
+  public function ajax_user_can() {
     return current_user_can('upload_files');
   }
 
-  function search_box($text, $input_id) {
+  public function search_box($text, $input_id) {
     if(empty($_REQUEST['s']) && !$this->has_items())
       return;
     $input_id = $input_id.'-search-input';
@@ -63,7 +63,7 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
   <?php
   }
 
-  function prepare_items() {
+  public function prepare_items() {
     global $avatars_array, $lost, $wpdb, $wp_query, $post_mime_types, $avail_post_mime_types, $post;
     $q = $_REQUEST;
     $q['post__in'] = $avatars_array;
@@ -76,37 +76,37 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
     ));
   }
 
-  function get_views() {
+  public function get_views() {
     global $avatars_array;
     $type_links = array();
     $_total_posts = count(array_filter($avatars_array));
-    $class = (empty($_GET['post_mime_type']) && !isset($_GET['status'])) ? ' class="current"' : '';
+    $class = (empty($_GET['post_mime_type']) && !isset($_GET['status'])) ? ' class="current"' : "";
     $type_links['all'] = sprintf('<a href="%s">',esc_url(add_query_arg(array('page' => 'wp-user-avatar-library'), 'admin.php'))).sprintf(_nx('All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $_total_posts, 'uploaded files'), number_format_i18n($_total_posts)).'</a>';
     return $type_links;
   }
 
-  function get_bulk_actions() {
+  public function get_bulk_actions() {
     $actions = array();
     $actions['delete'] = __('Delete Permanently');
     return $actions;
   }
 
-  function current_action() {
+  public function current_action() {
     return parent::current_action();
   }
 
-  function has_items() {
+  public function has_items() {
     return have_posts();
   }
 
-  function no_items() {
+  public function no_items() {
     _e('No media attachments found.');
   }
 
-  function get_columns() {
+  public function get_columns() {
     $posts_columns = array();
     $posts_columns['cb'] = '<input type="checkbox" />';
-    $posts_columns['icon'] = '';
+    $posts_columns['icon'] = "";
     $posts_columns['title'] = _x('File', 'column name');
     $posts_columns['author'] = __('Author');
     $posts_columns['parent'] = _x('Uploaded to', 'column name');
@@ -114,7 +114,7 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
     return $posts_columns;
   }
 
-  function get_sortable_columns() {
+  public function get_sortable_columns() {
     return array(
       'title' => 'title',
       'author' => 'author',
@@ -122,17 +122,17 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
     );
   }
 
-  function display_rows() {
+  public function display_rows() {
     global $post, $wpdb;
     add_filter('the_title','esc_html');
-    $alt = '';
+    $alt = "";
     while (have_posts()) : the_post();
       $user_can_edit = current_user_can('edit_post', $post->ID);
 
       if($this->is_trash && $post->post_status != 'trash' || !$this->is_trash && $post->post_status == 'trash')
         continue;
 
-      $alt = ('alternate' == $alt) ? '' : 'alternate';
+      $alt = ('alternate' == $alt) ? "" : 'alternate';
       $post_owner = (get_current_user_id() == $post->post_author) ? 'self' : 'other';
       $att_title = _draft_or_post_title();
   ?>
@@ -141,7 +141,7 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
         list( $columns, $hidden ) = $this->get_column_info();
         foreach($columns as $column_name => $column_display_name) {
           $class = "class='$column_name column-$column_name'";
-          $style = '';
+          $style = "";
           if(in_array($column_name, $hidden)) {
             $style = ' style="display:none;"';
           }
@@ -190,7 +190,7 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
               if ( preg_match( '/^.*?\.(\w+)$/', get_attached_file( $post->ID ), $matches ) )
                 echo esc_html( strtoupper( $matches[1] ) );
               else
-                echo strtoupper( str_replace( 'image/', '', get_post_mime_type() ) );
+                echo strtoupper( str_replace( 'image/', "", get_post_mime_type() ) );
             ?>
           </p>
           <?php echo $this->row_actions( $this->_get_row_actions( $post, $att_title ) ); ?>
@@ -263,7 +263,7 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
   <?php endwhile;
   }
 
-  function _get_row_actions($post, $att_title) {
+  public function _get_row_actions($post, $att_title) {
     $actions = array();
     if(current_user_can('edit_post', $post->ID) && !$this->is_trash) {
       $actions['edit'] = '<a href="'.get_edit_post_link($post->ID, true).'">'.__('Edit').'</a>';
@@ -275,7 +275,7 @@ class WP_User_Avatar_List_Table extends WP_List_Table {
         $actions['trash'] = "<a class='submitdelete' href='".wp_nonce_url("post.php?action=trash&amp;post=$post->ID", 'trash-post_'. $post->ID)."'>".__('Trash')."</a>";
       }
       if($this->is_trash || !EMPTY_TRASH_DAYS || !MEDIA_TRASH) {
-        $delete_ays = (!$this->is_trash && !MEDIA_TRASH) ? " onclick='return showNotice.warn();'" : '';
+        $delete_ays = (!$this->is_trash && !MEDIA_TRASH) ? " onclick='return showNotice.warn();'" : "";
         $actions['delete'] = "<a class='submitdelete'$delete_ays href='".wp_nonce_url("post.php?action=delete&amp;post=$post->ID", 'delete-post_'.$post->ID)."'>".__('Delete Permanently')."</a>";
       }
     }
