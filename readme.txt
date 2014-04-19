@@ -2,7 +2,7 @@
 
 Contributors: bangbay
 Donate link: http://siboliban.org/donate
-Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo
+Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo, widget
 Requires at least: 3.6
 Tested up to: 3.9
 Stable tag: 1.9.4
@@ -25,7 +25,11 @@ WordPress currently only allows you to use custom avatars that are uploaded thro
 * Allow Contributors and Subscribers to upload their own avatars.
 * Limit upload file size and image dimensions for Contributors and Subscribers.
 
+Visit WP User Avatar(http://wpuseravatar.com/) for more information and documentation.
+
 == Installation ==
+
+Visit WP User Avatar(http://wpuseravatar.com/) for more information and documentation.
 
 1. Download, install, and activate the WP User Avatar plugin.
 2. On your profile edit page, click "Edit Image".
@@ -128,6 +132,8 @@ Returns true if the user has a WP User Avatar image. You must specify the user I
 ?>`
 
 == Frequently Asked Questions ==
+
+Visit WP User Avatar(http://wpuseravatar.com/) for more information and documentation.
 
 = How do I use WP User Avatar? =
 
@@ -261,6 +267,8 @@ I've spent countless hours developing this plugin for free. If you're able to gi
 
 == Advanced Settings ==
 
+Visit WP User Avatar(http://wpuseravatar.com/) for more information and documentation.
+
 = Add WP User Avatar to your own profile edit page =
 
 You can use the [avatar_upload] shortcode to add a standalone uploader to any page. It's best to use this uploader by itself and without other profile fields.
@@ -287,7 +295,7 @@ Then, to add WP User Avatar to that hook and remove it from the other hooks outs
 
 // Loads only outside of administration panel
 if(!is_admin()) {
-  add_action('init','my_avatar_filter');`
+  add_action('init','my_avatar_filter');
 }`
 
 = HTML Wrapper =
