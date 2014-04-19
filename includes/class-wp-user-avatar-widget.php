@@ -7,10 +7,8 @@
  */
 
 class WP_User_Avatar_Profile_Widget extends WP_Widget {
-  var $current_id;
-
   public function __construct() {
-    $widget_ops = array('classname' => 'widget_wp_user_avatar', 'description' => __('Choose Image', 'wp-user-avatar'));
+    $widget_ops = array('classname' => 'widget_wp_user_avatar', 'description' => __('Insert').' '.__('[avatar_upload]', 'wp-user-avatar').'.');
     parent::__construct('wp_user_avatar_profile', __('WP User Avatar', 'wp-user-avatar'), $widget_ops);
   }
 
@@ -31,7 +29,6 @@ class WP_User_Avatar_Profile_Widget extends WP_Widget {
       // Get [avatar_upload] shortcode
       echo $wpua_shortcode->wpua_edit_shortcode("");
       remove_filter('wpua_profile_title', '__return_null');
-      echo $after_widget;
     }
   }
 

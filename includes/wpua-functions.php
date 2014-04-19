@@ -33,7 +33,6 @@ function wpua_after_avatar() {
 
 // Before avatar container
 function wpua_do_before_avatar() {
-  global $wpua_functions;
   $wpua_profile_title = '<h3>'.__('Avatar').'</h3>';
   $wpua_profile_title = apply_filters('wpua_profile_title', $wpua_profile_title);
 ?>
@@ -58,7 +57,6 @@ add_action('wpua_before_avatar', 'wpua_do_before_avatar');
 
 // After avatar container
 function wpua_do_after_avatar() {
-  global $wpua_functions;
 ?>
   <?php if(class_exists('bbPress') && bbp_is_edit()) : // Add to bbPress profile with same style ?>
     </fieldset>
@@ -86,7 +84,6 @@ function wpua_after_avatar_admin() {
 
 // Before avatar container
 function wpua_do_before_avatar_admin() {
-  global $wpua_functions;
 ?>
   <h3><?php _e('Avatar') ?></h3>
   <table class="form-table">
@@ -99,7 +96,6 @@ add_action('wpua_before_avatar_admin', 'wpua_do_before_avatar_admin');
 
 // After avatar container
 function wpua_do_after_avatar_admin() {
-  global $wpua_functions;
 ?>
       </td>
     </tr>

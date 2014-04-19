@@ -368,6 +368,7 @@ This would output:
 = 1.9.4 =
 * Add: Widget for [avatar_upload]
 * Add: wpua_before_avatar_admin and wpua_after_avatar_admin for admin pages
+* Bug Fix: Load functions class on plugins_loaded
 * Update: Allow non-numeric WPUA value
 
 = 1.9.3 =

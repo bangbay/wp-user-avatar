@@ -12,7 +12,7 @@ class WP_User_Avatar_Functions {
   }
 
   // Returns true if user has Gravatar-hosted image
-  public function wpua_has_gravatar($id_or_email, $has_gravatar=false, $user="", $email="") {
+  public function wpua_has_gravatar($id_or_email="", $has_gravatar=false, $user="", $email="") {
     if(!is_object($id_or_email) && !empty($id_or_email)) {
       // Find user by ID or e-mail address
       $user = is_numeric($id_or_email) ? get_user_by('id', $id_or_email) : get_user_by('email', $id_or_email);
@@ -110,7 +110,7 @@ class WP_User_Avatar_Functions {
   }
 
   // Get original avatar, for when user removes wp_user_avatar
-  public function wpua_get_avatar_original($id_or_email, $size="", $default="", $alt="") {
+  public function wpua_get_avatar_original($id_or_email="", $size="", $default="", $alt="") {
     global $avatar_default, $mustache_avatar, $wpua_avatar_default, $wpua_disable_gravatar, $wpua_functions;
     // Remove get_avatar filter
     remove_filter('get_avatar', array($wpua_functions, 'wpua_get_avatar_filter'));
@@ -224,7 +224,7 @@ class WP_User_Avatar_Functions {
   }
 
   // Return just the image src
-  public function get_wp_user_avatar_src($id_or_email, $size="", $align="") {
+  public function get_wp_user_avatar_src($id_or_email="", $size="", $align="") {
     $wpua_image_src = "";
     // Gets the avatar img tag
     $wpua_image = get_wp_user_avatar($id_or_email, $size, $align);
@@ -235,14 +235,6 @@ class WP_User_Avatar_Functions {
     }
     return $wpua_image_src;
   }
-
-  // Check if avatar_upload is in use
-  public function wpua_has_shortcode() {
-    global $post;
-    $content = !empty($post->post_content) ? $post->post_content : null;
-    $has_shortcode = has_shortcode($content, 'avatar_upload') ? true : false;
-    return $has_shortcode;
-  }
 }
 
 // Initialize WP_User_Avatar_Functions
@@ -250,4 +242,4 @@ function wpua_functions_init() {
   global $wpua_functions;
   $wpua_functions = new WP_User_Avatar_Functions();
 }
-add_action('init', 'wpua_functions_init');
+add_action('plugins_loaded', 'wpua_functions_init');
