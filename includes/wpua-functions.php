@@ -3,37 +3,78 @@
  * Public user functions.
  * 
  * @package WP User Avatar
- * @version 1.9.4
+ * @version 1.9.5
  */
 
+/**
+ * Returns true if user has wp_user_avatar
+ * @param int|string $id_or_email
+ * @param bool $has_wpua
+ * @param object $user
+ * @param int $user_id
+ * @uses object $wpua_functions
+ * @return object has_wp_user_avatar()
+ */
 function has_wp_user_avatar($id_or_email="", $has_wpua="", $user="", $user_id="") {
   global $wpua_functions;
   return $wpua_functions->has_wp_user_avatar($id_or_email, $has_wpua, $user, $user_id);
 }
 
+/**
+ * Find WPUA, show get_avatar if empty
+ * @param int|string $id_or_email
+ * @param int|string $size
+ * @param string $align
+ * @param string $alt
+ * @uses object $wpua_functions
+ * @return object get_wp_user_avatar()
+ */
 function get_wp_user_avatar($id_or_email="", $size="", $align="", $alt="") {
   global $wpua_functions;
   return $wpua_functions->get_wp_user_avatar($id_or_email, $size, $align, $alt);
 }
 
+/**
+ * Return just the image src
+ * @param int|string $id_or_email
+ * @param int|string $size
+ * @param string $align
+ * @uses object $wpua_functions
+ * @return object get_wp_user_avatar_src()
+ */
 function get_wp_user_avatar_src($id_or_email="", $size="", $align="") {
   global $wpua_functions;
   return $wpua_functions->get_wp_user_avatar_src($id_or_email, $size, $align);
 }
 
-// Before wrapper for profile
+/**
+ * Before wrapper for profile
+ * @uses do_action()
+ */
 function wpua_before_avatar() {
   do_action('wpua_before_avatar');
 }
 
-// After wrapper for profile
+/**
+ * After wrapper for profile
+ * @uses do_action()
+ */
 function wpua_after_avatar() {
   do_action('wpua_after_avatar');
 }
 
-// Before avatar container
+/**
+ * Before avatar container
+ * @uses apply_filters()
+ * @uses bbp_is_edit()
+ * @uses wpuf_has_shortcode()
+ */
 function wpua_do_before_avatar() {
   $wpua_profile_title = '<h3>'.__('Avatar').'</h3>';
+  /**
+   * Filter profile title
+   * @param string $wpua_profile_title
+   */
   $wpua_profile_title = apply_filters('wpua_profile_title', $wpua_profile_title);
 ?>
   <?php if(class_exists('bbPress') && bbp_is_edit()) : // Add to bbPress profile with same style ?>
@@ -55,7 +96,11 @@ function wpua_do_before_avatar() {
 }
 add_action('wpua_before_avatar', 'wpua_do_before_avatar');
 
-// After avatar container
+/**
+ * After avatar container
+ * @uses bbp_is_edit()
+ * @uses wpuf_has_shortcode()
+ */
 function wpua_do_after_avatar() {
 ?>
   <?php if(class_exists('bbPress') && bbp_is_edit()) : // Add to bbPress profile with same style ?>
@@ -72,17 +117,25 @@ function wpua_do_after_avatar() {
 }
 add_action('wpua_after_avatar', 'wpua_do_after_avatar');
 
-// Before wrapper for profile
+/**
+ * Before wrapper for profile
+ * @uses do_action()
+ */
 function wpua_before_avatar_admin() {
   do_action('wpua_before_avatar_admin');
 }
 
-// After wrapper for profile
+/**
+ * After wrapper for profile
+ * @uses do_action()
+ */
 function wpua_after_avatar_admin() {
   do_action('wpua_after_avatar_admin');
 }
 
-// Before avatar container
+/**
+ * Before avatar container
+ */
 function wpua_do_before_avatar_admin() {
 ?>
   <h3><?php _e('Avatar') ?></h3>
@@ -94,7 +147,9 @@ function wpua_do_before_avatar_admin() {
 }
 add_action('wpua_before_avatar_admin', 'wpua_do_before_avatar_admin');
 
-// After avatar container
+/**
+ * After avatar container
+ */
 function wpua_do_after_avatar_admin() {
 ?>
       </td>
@@ -104,11 +159,17 @@ function wpua_do_after_avatar_admin() {
 }
 add_action('wpua_after_avatar_admin', 'wpua_do_after_avatar_admin');
 
-// Filter for the inevitable complaints about the donation message :(
+/**
+ * Filter for the inevitable complaints about the donation message :(
+ * @uses do_action()
+ */
 function wpua_donation_message() {
   do_action('wpua_donation_message');
 }
-// Donation message
+
+/**
+ * Donation message
+ */
 function wpua_do_donation_message() { ?>
   <div class="updated">
     <p><?php _e('Do you like WP User Avatar?', 'wp-user-avatar'); ?> <a href="http://siboliban.org/donate" target="_blank"><?php _e('Make a donation.', 'wp-user-avatar'); ?></a></p>
@@ -117,7 +178,10 @@ function wpua_do_donation_message() { ?>
 }
 add_action('wpua_donation_message', 'wpua_do_donation_message');
 
-// Register widget
+/**
+ * Register widget
+ * @uses register_widget()
+ */
 function wpua_widgets_init() {
   register_widget('WP_User_Avatar_Profile_Widget');
 }

@@ -3,10 +3,16 @@
  * Defines shortcodes.
  *
  * @package WP User Avatar
- * @version 1.9.4
+ * @version 1.9.5
  */
 
 class WP_User_Avatar_Shortcode {
+  /**
+   * Constructor
+   * @uses object $wp_user_avatar
+   * @uses add_action()
+   * @uses add_shortcode()
+   */
   public function __construct() {
     global $wp_user_avatar;
     add_shortcode('avatar', array($this, 'wpua_shortcode'));
@@ -19,7 +25,31 @@ class WP_User_Avatar_Shortcode {
     add_action('wpua_update_errors', array($wp_user_avatar, 'wpua_upload_errors'), 10, 3);
   }
 
-  // Display shortcode
+  /**
+   * Display shortcode
+   * @since 1.1
+   * @param array $atts
+   * @param string $content
+   * @uses array $_wp_additional_image_sizes
+   * @uses array $all_sizes
+   * @uses int $blog_id
+   * @uses object $post
+   * @uses object $wpdb
+   * @uses do_shortcode()
+   * @uses get_attachment_link()
+   * @uses get_blog_prefix()
+   * @uses get_option()
+   * @uses get_user_by()
+   * @uses get_query_var()
+   * @uses get_the_author_meta()
+   * @uses get_user_meta()
+   * @uses get_wp_user_avatar_src()
+   * @uses get_wp_user_avatar()
+   * @uses image_add_caption()
+   * @uses is_author()
+   * @uses shortcode_atts()
+   * @return string 
+   */
   public function wpua_shortcode($atts, $content=null) {
     global $all_sizes, $blog_id, $post, $wpdb;
     // Set shortcode attributes
@@ -93,29 +123,42 @@ class WP_User_Avatar_Shortcode {
     return $avatar;
   }
 
-  // Update user
-  private function wpua_edit_user($user_id = 0) {
-    global $post;
+  /**
+   * Update user
+   * @since 1.8
+   * @param bool $user_id
+   * @uses add_query_arg()
+   * @uses do_action_ref_array()
+   * @uses wp_safe_redirect()
+   */
+  private function wpua_edit_user($user_id=0) {
+    global $post, $wp_http_referer;
     $user = new stdClass;
-    if($user_id) {
-      $update = true;
-      $user->ID = (int) $user_id;
-    } else {
-      $update = false;
-    }
+    $update = $user_id ? true : false;
     $errors = new WP_Error();
     do_action_ref_array('wpua_update_errors', array(&$errors, $update, &$user));
     if($errors->get_error_codes()) {
+      // Return with errors
       return $errors;
     }
     if($update) {
-      $user_id = wp_update_user($user);
-      wp_redirect(add_query_arg(array('updated' => 'true'), get_permalink($post)));
+      // Redirect with updated variable
+      wp_safe_redirect(add_query_arg(array('updated' => '1'), $_POST['_wp_http_referer']));
     }
-    return $user_id;
   }
 
-  // Edit shortcode
+  /**
+   * Edit shortcode
+   * @since 1.8
+   * @param array $atts
+   * @uses do_action()
+   * @uses get_error_messages()
+   * @uses is_user_logged_in()
+   * @uses is_wp_error()
+   * @uses wpua_edit_form()
+   * @uses wpua_edit_user()
+   * @return string
+   */
   public function wpua_edit_shortcode($atts) {
     global $current_user, $errors;
     // Shortcode only works with logged-in user
@@ -128,8 +171,8 @@ class WP_User_Avatar_Shortcode {
       }
       // Errors
       if(isset($errors) && is_wp_error($errors)) {
-        echo '<div class="error"><p>'.implode( "</p>\n<p>", $errors->get_error_messages()).'</p></div>';
-      } elseif(isset($errors) && !is_wp_error($errors)) {
+        echo '<div class="error"><p>'.implode("</p>\n<p>", $errors->get_error_messages()).'</p></div>';
+      } elseif(isset($_GET['updated']) && $_GET['updated'] == '1') {
         echo '<div class="updated"><p><strong>'.__('Profile updated.').'</strong></p></div>';
       }
       // Edit form
@@ -137,12 +180,22 @@ class WP_User_Avatar_Shortcode {
     }
   }
 
-  // Edit form
-  public function wpua_edit_form() {
+  /**
+   * Edit form
+   * @since 1.8
+   * @uses object $current_user
+   * @uses object $post
+   * @uses do_action()
+   * @uses submit_button()
+   * @uses wp_nonce_field()
+   * @uses wp_reset_query()
+   */
+  private function wpua_edit_form() {
      global $current_user, $post;
+     wp_reset_query();
      ob_start();
   ?>
-    <form id="wpua-edit-<?php echo $current_user->ID; ?>" class="wpua-edit" action="<?php echo get_permalink($post); ?>" method="post" enctype="multipart/form-data">
+    <form id="wpua-edit-<?php echo $current_user->ID; ?>" class="wpua-edit" action="" method="post" enctype="multipart/form-data">
       <?php do_action('wpua_show_profile', $current_user); ?>
       <input type="hidden" name="action" value="update" />
       <input type="hidden" name="user_id" id="user_id" value="<?php echo esc_attr($current_user->ID); ?>" />
@@ -154,7 +207,9 @@ class WP_User_Avatar_Shortcode {
   }
 }
 
-// Initialize WP_User_Avatar_Shortcode
+/**
+ * Initialize
+ */
 function wpua_shortcode_init() {
   global $wpua_shortcode;
   $wpua_shortcode = new WP_User_Avatar_Shortcode();

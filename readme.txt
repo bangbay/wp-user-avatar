@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo, widget
 Requires at least: 3.6
 Tested up to: 3.9
-Stable tag: 1.9.4
+Stable tag: 1.9.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,11 +25,11 @@ WordPress currently only allows you to use custom avatars that are uploaded thro
 * Allow Contributors and Subscribers to upload their own avatars.
 * Limit upload file size and image dimensions for Contributors and Subscribers.
 
-Visit WP User Avatar(http://wpuseravatar.com/) for more information and documentation.
+Visit [WP User Avatar](http://wpuseravatar.com/) for more information and documentation.
 
 == Installation ==
 
-Visit WP User Avatar(http://wpuseravatar.com/) for more information and documentation.
+Visit [WP User Avatar](http://wpuseravatar.com/) for more information and documentation.
 
 1. Download, install, and activate the WP User Avatar plugin.
 2. On your profile edit page, click "Edit Image".
@@ -133,7 +133,7 @@ Returns true if the user has a WP User Avatar image. You must specify the user I
 
 == Frequently Asked Questions ==
 
-Visit WP User Avatar(http://wpuseravatar.com/) for more information and documentation.
+Visit [WP User Avatar](http://wpuseravatar.com/) for more information and documentation.
 
 = How do I use WP User Avatar? =
 
@@ -267,7 +267,7 @@ I've spent countless hours developing this plugin for free. If you're able to gi
 
 == Advanced Settings ==
 
-Visit WP User Avatar(http://wpuseravatar.com/) for more information and documentation.
+Visit [WP User Avatar](http://wpuseravatar.com/) for more information and documentation.
 
 = Add WP User Avatar to your own profile edit page =
 
@@ -372,6 +372,10 @@ This would output:
 4. After you've chosen a WP User Avatar image, you will see the option to remove it.
 
 == Changelog ==
+
+= 1.9.5 =
+* Add: Start documentation of functions
+* Bug Fix: [avatar_upload] permalink and redirect
 
 = 1.9.4 =
 * Add: Widget for [avatar_upload]

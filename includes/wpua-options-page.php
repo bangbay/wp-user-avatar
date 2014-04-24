@@ -3,7 +3,33 @@
  * Admin page to change plugin options.
  *
  * @package WP User Avatar
- * @version 1.9.4
+ * @version 1.9.5
+ */
+
+/**
+ * @uses bool $show_avatars
+ * @uses string $upload_size_limit_with_units
+ * @uses object $wpua_admin
+ * @uses bool $wpua_allow_upload
+ * @uses bool $wpua_disable_gravatar
+ * @uses bool $wpua_edit_avatar
+ * @uses bool $wpua_resize_crop
+ * @uses int int $wpua_resize_h
+ * @uses bool $wpua_resize_upload
+ * @uses int $wpua_resize_w
+ * @uses object $wpua_subscriber
+ * @uses bool $wpua_tinymce
+ * @uses int $wpua_upload_size_limit
+ * @uses string $wpua_upload_size_limit_with_units
+ * @uses admin_url()
+ * @uses apply_filters()
+ * @uses checked()
+ * @uses do_action()
+ * @uses do_settings_fields()
+ * @uses get_option()
+ * @uses settings_fields()
+ * @uses submit_button()
+ * @uses wpua_add_default_avatar()
  */
 
 global $show_avatars, $upload_size_limit_with_units, $wpua_admin, $wpua_allow_upload, $wpua_disable_gravatar, $wpua_edit_avatar, $wpua_resize_crop, $wpua_resize_h, $wpua_resize_upload, $wpua_resize_w, $wpua_subscriber, $wpua_tinymce, $wpua_upload_size_limit, $wpua_upload_size_limit_with_units;
@@ -14,6 +40,10 @@ if(isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true') {
 $hide_size = (bool) $wpua_allow_upload != 1 ? ' style="display:none;"' : "";
 $hide_resize = (bool) $wpua_resize_upload != 1 ? ' style="display:none;"' : "";
 $wpua_options_page_title = __('WP User Avatar', 'wp-user-avatar');
+/**
+ * Filter admin page title
+ * @param string $wpua_options_page_title
+ */
 $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_options_page_title);
 ?>
 
@@ -31,6 +61,10 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
       <?php
         // Format settings in table rows
         $wpua_before_settings = array();
+        /**
+         * Filter settings at beginning of table
+         * @param array $wpua_before_settings
+         */
         $wpua_before_settings = apply_filters('wpua_before_settings', $wpua_before_settings);
         echo implode("", $wpua_before_settings);
       ?>
@@ -58,6 +92,10 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
                 .__('Disable Gravatar and use only local avatars', 'wp-user-avatar').'
               </label>
             </fieldset>';
+            /**
+             * Filter main settings
+             * @param array $wpua_settings
+             */
             $wpua_settings = apply_filters('wpua_settings', $wpua_settings);
             echo implode("", $wpua_settings);
           ?>
@@ -109,6 +147,10 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
           </tr>
         </table>
       </div>';
+      /**
+       * Filter Subscriber settings
+       * @param array $wpua_subscriber_settings
+       */
       $wpua_subscriber_settings = apply_filters('wpua_subscriber_settings', $wpua_subscriber_settings);
       echo implode("", $wpua_subscriber_settings);
     ?>
@@ -140,7 +182,7 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
                 );
                 foreach ($ratings as $key => $rating) :
                   $selected = (get_option('avatar_rating') == $key) ? 'checked="checked"' : "";
-                  echo "\n\t<label><input type='radio' name='avatar_rating' value='" . esc_attr($key) . "' $selected/> $rating</label><br />";
+                  echo "\n\t<label><input type='radio' name='avatar_rating' value='".esc_attr($key)."' $selected/> $rating</label><br />";
                 endforeach;
               ?>
             </fieldset>

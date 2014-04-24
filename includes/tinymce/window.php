@@ -3,7 +3,11 @@
  * TinyMCE modal window.
  *
  * @package WP User Avatar
- * @version 1.9.4
+ * @version 1.9.5
+ */
+
+/**
+ * @uses get_users()
  */
 
 if(!defined('ABSPATH')) {
@@ -25,15 +29,15 @@ if(!defined('ABSPATH')) {
   <script type="text/javascript">
     function wpuaInsertAvatar() {
       // Custom shortcode values
-      var shortcode, closing_tag;
-      var user = document.getElementById('wp_user_avatar_user').value;
-      var size = document.getElementById('wp_user_avatar_size').value;
-      var size_number = document.getElementById('wp_user_avatar_size_number').value;
-      var align = document.getElementById('wp_user_avatar_align').value;
-      var link = document.getElementById('wp_user_avatar_link').value;
-      var link_external = document.getElementById('wp_user_avatar_link_external').value;
-      var target = document.getElementById('wp_user_avatar_target').value;
-      var caption = document.getElementById('wp_user_avatar_caption').value;
+      var shortcode, closing_tag,
+          user = document.getElementById('wp_user_avatar_user').value,
+          size = document.getElementById('wp_user_avatar_size').value,
+          size_number = document.getElementById('wp_user_avatar_size_number').value,
+          align = document.getElementById('wp_user_avatar_align').value,
+          link = document.getElementById('wp_user_avatar_link').value,
+          link_external = document.getElementById('wp_user_avatar_link_external').value,
+          target = document.getElementById('wp_user_avatar_target').value,
+          caption = document.getElementById('wp_user_avatar_caption').value;
 
       // Add tag to shortcode only if not blank
       var user_tag = (user != "") ? ' user="' + user + '"' : "";

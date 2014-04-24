@@ -3,10 +3,17 @@
  * Updates for legacy settings.
  *
  * @package WP User Avatar
- * @version 1.9.4
+ * @version 1.9.5
  */
 
 class WP_User_Avatar_Update {
+  /**
+   * Constructor
+   * @uses bool $wpua_default_avatar_updated
+   * @uses bool $wpua_media_updated
+   * @uses bool $wpua_users_updated
+   * @uses add_action()
+   */
   public function __construct() {
     global $wpua_default_avatar_updated, $wpua_media_updated, $wpua_users_updated;
     if(empty($wpua_default_avatar_updated)) {
@@ -20,7 +27,14 @@ class WP_User_Avatar_Update {
     }
   }
 
-  // Update default avatar to new format
+  /**
+   * Update default avatar to new format
+   * @uses string $avatar_default
+   * @uses string $mustache_original
+   * @uses int $wpua_avatar_default
+   * @uses update_option()
+   * @uses wp_get_attachment_image_src()
+   */
   public function wpua_default_avatar() {
     global $avatar_default, $mustache_original, $wpua_avatar_default;
     // If default avatar is the old mustache URL, update it
@@ -37,7 +51,17 @@ class WP_User_Avatar_Update {
     update_option('wp_user_avatar_default_avatar_updated', '1');
   }
 
-  // Rename user meta to match database settings
+  /**
+   * Rename user meta to match database settings
+   * @uses int $blog_id
+   * @uses object $wpdb
+   * @uses delete_user_meta()
+   * @uses get_blog_prefix()
+   * @uses get_user_meta()
+   * @uses get_users()
+   * @uses update_option()
+   * @uses update_user_meta()
+   */
   public function wpua_user_meta() {
     global $blog_id, $wpdb;
     $wpua_metakey = $wpdb->get_blog_prefix($blog_id).'user_avatar';
@@ -56,7 +80,15 @@ class WP_User_Avatar_Update {
     update_option('wp_user_avatar_users_updated', '1'); 
   }
 
-  // Add media state to existing avatars
+  /**
+   * Add media state to existing avatars
+   * @uses int $blog_id
+   * @uses object $wpdb
+   * @uses add_post_meta()
+   * @uses get_blog_prefix()
+   * @uses get_results()
+   * @uses update_option()
+   */
   public function wpua_media_state() {
     global $blog_id, $wpdb;
     // Find all users with WPUA
@@ -69,7 +101,9 @@ class WP_User_Avatar_Update {
   }
 }
 
-// Initialize WP_User_Avatar_Update
+/**
+ * Initialize
+ */
 function wpua_update_init() {
   global $wpua_update;
   $wpua_update = new WP_User_Avatar_Update();
