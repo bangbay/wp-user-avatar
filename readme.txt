@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo, widget
 Requires at least: 3.6
 Tested up to: 3.9
-Stable tag: 1.9.5
+Stable tag: 1.9.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,10 @@ For comments, you must specify the $comment variable.
 
 You can use the <code>[avatar_upload]</code> shortcode to add a standalone uploader to a front page or widget. This uploader is only visible to logged-in users. If you want to integrate the uploader into a profile edit page, see [Other Notes](http://wordpress.org/plugins/wp-user-avatar/other_notes/).
 
+You can specify a user with the shortcode, but you must have <code>edit_user</code> capability for that particular user.
+
+`[avatar_upload user="admin"]`
+
 = [avatar] shortcode =
 
 You can use the <code>[avatar]</code> shortcode in your posts. It will detect the author of the post or you can specify an author by username. You can specify a size, alignment, and link, but they are optional. For links, you can link to the original image file, attachment page, or a custom URL.
@@ -191,6 +195,10 @@ For Administrators, WP User Avatar adds a column with avatar thumbnails to your 
 = Can I use the WP User Avatar uploader in a front page or widget? =
 
 Yes, you can use the <code>[avatar_upload]</code> shortcode to put a standalone uploader in a front page or widget. This uploader is only visible to logged-in users. If you want to integrate the uploader into a profile edit page, see [Other Notes](http://wordpress.org/plugins/wp-user-avatar/other_notes/).
+
+You can specify a user with the shortcode, but you must have <code>'edit_user'</code> capability to change the user's avatar.
+
+`[avatar_upload user="admin"]`
 
 = Can I insert WP User Avatar directly into a post? =
 
@@ -372,6 +380,11 @@ This would output:
 4. After you've chosen a WP User Avatar image, you will see the option to remove it.
 
 == Changelog ==
+
+= 1.9.6 =
+* Bug Fix: Load resource manager on front pages only
+* Update: [avatar_upload] user variable
+* Update: Documentation
 
 = 1.9.5 =
 * Add: Start documentation of functions

@@ -4,7 +4,7 @@
  * Borrowed from NextGen Gallery C_Photocrati_Resource_Manager class.
  *
  * @package WP User Avatar
- * @version 1.9.5
+ * @version 1.9.6
  */
 
 class WP_User_Avatar_Resource_Manager {
@@ -21,6 +21,7 @@ class WP_User_Avatar_Resource_Manager {
    * Start buffering all generated output. We'll then do two things with the buffer
    * 1) Find stylesheets lately enqueued and move them to the header
    * 2) Ensure that wp_print_footer_scripts() is called
+   * @since 1.9.5
    */
   function __construct() {
     // Validate the request
@@ -30,6 +31,7 @@ class WP_User_Avatar_Resource_Manager {
 
   /**
    * Determines if the resource manager should perform it's routines for this request
+   * @since 1.9.5
    * @return bool
    */
   function validate_request() {
@@ -58,6 +60,7 @@ class WP_User_Avatar_Resource_Manager {
 
   /**
    * Output the buffer after PHP execution has ended (but before shutdown)
+   * @since 1.9.5
    * @param string $content
    * @return string
    */
@@ -68,6 +71,7 @@ class WP_User_Avatar_Resource_Manager {
   /**
    * Removes the closing </html> tag from the output buffer. We'll then write our own closing tag
    * in the shutdown function after running wp_print_footer_scripts()
+   * @since 1.9.5
    * @param string $content
    * @return mixed
    */

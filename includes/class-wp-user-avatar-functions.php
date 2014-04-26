@@ -3,12 +3,13 @@
  * Core user functions.
  * 
  * @package WP User Avatar
- * @version 1.9.5
+ * @version 1.9.6
  */
 
 class WP_User_Avatar_Functions {
   /**
    * Constructor
+   * @since 1.8
    * @uses add_filter()
    */
   public function __construct() {
@@ -17,6 +18,7 @@ class WP_User_Avatar_Functions {
 
   /**
    * Returns true if user has Gravatar-hosted image
+   * @since 1.4
    * @param int|string $id_or_email
    * @param bool $has_gravatar
    * @param int|string $user
@@ -50,6 +52,7 @@ class WP_User_Avatar_Functions {
 
   /**
    * Check if local image
+   * @since 1.9.2
    * @param int $attachment_id
    * @uses apply_filters()
    * @uses wp_attachment_is_image()
@@ -59,6 +62,7 @@ class WP_User_Avatar_Functions {
     $is_image = wp_attachment_is_image($attachment_id);
     /**
      * Filter local image check
+     * @since 1.9.2
      * @param bool $is_image
      * @param int $attachment_id
      */
@@ -68,6 +72,7 @@ class WP_User_Avatar_Functions {
 
   /**
    * Get local image tag
+   * @since 1.9.2
    * @param int $attachment_id
    * @param int|string $size
    * @param bool $icon
@@ -80,6 +85,7 @@ class WP_User_Avatar_Functions {
     $image = wp_get_attachment_image($attachment_id, $size, $icon, $attr);
     /**
      * Filter local image tag
+     * @since 1.9.2
      * @param string $image
      * @param int $attachment_id
      * @param int|string $size
@@ -91,6 +97,7 @@ class WP_User_Avatar_Functions {
 
   /**
    * Get local image src
+   * @since 1.9.2
    * @param int $attachment_id
    * @param int|string $size
    * @param bool $icon
@@ -102,6 +109,7 @@ class WP_User_Avatar_Functions {
     $image_src_array = wp_get_attachment_image_src($attachment_id, $size, $icon);
     /**
      * Filter local image src
+     * @since 1.9.2
      * @param array $image_src_array
      * @param int $attachment_id
      * @param int|string $size
@@ -112,6 +120,7 @@ class WP_User_Avatar_Functions {
 
   /**
    * Returns true if user has wp_user_avatar
+   * @since 1.1
    * @param int|string $id_or_email
    * @param bool $has_wpua
    * @param object $user
@@ -142,6 +151,7 @@ class WP_User_Avatar_Functions {
 
   /**
    * Replace get_avatar only in get_wp_user_avatar
+   * @since 1.4
    * @param string $avatar
    * @param int|string $id_or_email
    * @param int|string $size
@@ -213,6 +223,7 @@ class WP_User_Avatar_Functions {
     }
     /**
      * Filter get_avatar filter
+     * @since 1.9
      * @param string $avatar
      * @param int|string $id_or_email
      * @param int|string $size
@@ -224,6 +235,7 @@ class WP_User_Avatar_Functions {
 
   /**
    * Get original avatar, for when user removes wp_user_avatar
+   * @since 1.4
    * @param int|string $id_or_email
    * @param int|string $size
    * @param string $default
@@ -275,6 +287,7 @@ class WP_User_Avatar_Functions {
     add_filter('get_avatar', array($wpua_functions, 'wpua_get_avatar_filter'), 10, 5);
     /**
      * Filter original avatar src
+     * @since 1.9
      * @param string $default
      */
     return apply_filters('wpua_get_avatar_original', $default);
@@ -282,6 +295,7 @@ class WP_User_Avatar_Functions {
 
   /**
    * Find WPUA, show get_avatar if empty
+   * @since 1.0
    * @param int|string $id_or_email
    * @param int|string $size
    * @param string $align
@@ -383,6 +397,7 @@ class WP_User_Avatar_Functions {
     }
     /**
      * Filter get_wp_user_avatar
+     * @since 1.9
      * @param string $avatar
      * @param int|string $id_or_email
      * @param int|string $size
@@ -394,6 +409,7 @@ class WP_User_Avatar_Functions {
 
   /**
    * Return just the image src
+   * @since 1.1
    * @param int|string $id_or_email
    * @param int|string $size
    * @param string $align
@@ -415,6 +431,7 @@ class WP_User_Avatar_Functions {
 
 /**
  * Initialize
+ * @since 1.9.2
  */
 function wpua_functions_init() {
   global $wpua_functions;

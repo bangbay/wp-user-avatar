@@ -3,12 +3,13 @@
  * Defines widgets.
  *
  * @package WP User Avatar
- * @version 1.9.5
+ * @version 1.9.6
  */
 
 class WP_User_Avatar_Profile_Widget extends WP_Widget {
   /**
    * Constructor
+   * @since 1.9.4
    */
   public function __construct() {
     $widget_ops = array('classname' => 'widget_wp_user_avatar', 'description' => __('Insert').' '.__('[avatar_upload]', 'wp-user-avatar').'.');
@@ -41,13 +42,14 @@ class WP_User_Avatar_Profile_Widget extends WP_Widget {
       // Remove profile title
       add_filter('wpua_profile_title', '__return_null');
       // Get [avatar_upload] shortcode
-      echo $wpua_shortcode->wpua_edit_shortcode("");
+      echo $wpua_shortcode->wpua_edit_shortcode();
       remove_filter('wpua_profile_title', '__return_null');
     }
   }
 
   /**
    * Set title
+   * @since 1.9.4
    * @param array $instance
    * @uses wp_parse_args()
    */
@@ -66,6 +68,7 @@ class WP_User_Avatar_Profile_Widget extends WP_Widget {
 
   /**
    * Update widget
+   * @since 1.9.4
    * @param array $new_instance
    * @param array $old_instance
    * @uses wp_parse_args()

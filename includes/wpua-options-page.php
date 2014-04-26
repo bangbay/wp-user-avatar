@@ -3,10 +3,11 @@
  * Admin page to change plugin options.
  *
  * @package WP User Avatar
- * @version 1.9.5
+ * @version 1.9.6
  */
 
 /**
+ * @since 1.4
  * @uses bool $show_avatars
  * @uses string $upload_size_limit_with_units
  * @uses object $wpua_admin
@@ -42,6 +43,7 @@ $hide_resize = (bool) $wpua_resize_upload != 1 ? ' style="display:none;"' : "";
 $wpua_options_page_title = __('WP User Avatar', 'wp-user-avatar');
 /**
  * Filter admin page title
+ * @since 1.9
  * @param string $wpua_options_page_title
  */
 $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_options_page_title);
@@ -63,6 +65,7 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
         $wpua_before_settings = array();
         /**
          * Filter settings at beginning of table
+         * @since 1.9
          * @param array $wpua_before_settings
          */
         $wpua_before_settings = apply_filters('wpua_before_settings', $wpua_before_settings);
@@ -94,6 +97,7 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
             </fieldset>';
             /**
              * Filter main settings
+             * @since 1.9
              * @param array $wpua_settings
              */
             $wpua_settings = apply_filters('wpua_settings', $wpua_settings);
@@ -149,6 +153,7 @@ $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_option
       </div>';
       /**
        * Filter Subscriber settings
+       * @since 1.9
        * @param array $wpua_subscriber_settings
        */
       $wpua_subscriber_settings = apply_filters('wpua_subscriber_settings', $wpua_subscriber_settings);

@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.9.5\n"
+"Project-Id-Version: WP User Avatar 1.9.6\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2014-04-24 00:00-0000\n"
+"PO-Revision-Date: 2014-04-26 00:00-0000\n"
 "Language: de_DE\n"
 "Last-Translator: WP User Avatar\n"
 "Language-Team: WP User Avatar\n"
@@ -14,49 +14,49 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: includes/class-wp-user-avatar-admin.php:209
+#: includes/class-wp-user-avatar-admin.php:302
 msgid "Donate"
 msgstr "Dotuj"
 
-#: includes/wpua-functions.php:175
+#: includes/wpua-functions.php:189
 msgid "Do you like WP User Avatar?"
 msgstr "Jesteś zadowolony z Wp User Avatar"
 
-#: includes/wpua-functions.php:175
+#: includes/wpua-functions.php:189
 msgid "Make a donation."
 msgstr "Dokonaj dotacji"
 
-#: includes/wpua-options-page.php:80
+#: includes/wpua-options-page.php:83
 msgid "Add avatar button to Visual Editor"
 msgstr "Dodaj przycisk avatara do edytora wizualnego"
 
-#: includes/wpua-options-page.php:86
+#: includes/wpua-options-page.php:89
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Pozwalaj kontrybutorom oraz subskrynentom przesyłać awatary"
 
-#: includes/wpua-options-page.php:92
+#: includes/wpua-options-page.php:95
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Wyłącz gravatary i używaj tylko lokalnych awatarów"
 
-#: includes/wpua-options-page.php:113
-#: includes/wpua-options-page.php:118
+#: includes/wpua-options-page.php:117
+#: includes/wpua-options-page.php:122
 msgid "Upload Size Limit"
 msgstr "Limit wielkości pliku"
 
-#: includes/wpua-options-page.php:113
-#: includes/wpua-options-page.php:118
+#: includes/wpua-options-page.php:117
+#: includes/wpua-options-page.php:122
 msgid "(only for Contributors & Subscribers)"
 msgstr "(tylko dla subskrynentów i kontrybutorów)"
 
-#: includes/wpua-options-page.php:128
+#: includes/wpua-options-page.php:132
 msgid "Allow users to edit avatars"
 msgstr "Pozwalaj użytkownikom edytować awatary"
 
-#: includes/wpua-options-page.php:134
+#: includes/wpua-options-page.php:138
 msgid "Resize avatars on upload"
 msgstr "Zmieniaj rozmiar po przesłaniu"
 
-#: includes/wpua-options-page.php:144
+#: includes/wpua-options-page.php:148
 msgid "Crop avatars to exact dimensions"
 msgstr "Przytnij awatar do dokładnych rozmiarów"
 

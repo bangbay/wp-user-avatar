@@ -3,7 +3,14 @@
  * Global variables used in plugin.
  *
  * @package WP User Avatar
- * @version 1.9.5
+ * @version 1.9.6
+ */
+
+/**
+ * @since 1.8
+ * @uses get_intermediate_image_sizes()
+ * @uses get_option()
+ * @uses wp_max_upload_size()
  */
 
 // Define global variables

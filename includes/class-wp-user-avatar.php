@@ -3,12 +3,13 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.9.5
+ * @version 1.9.6
  */
 
 class WP_User_Avatar {
   /**
    * Constructor
+   * @since 1.8
    * @uses string $pagenow
    * @uses bool $show_avatars
    * @uses object $wpua_admin
@@ -53,6 +54,7 @@ class WP_User_Avatar {
 
   /**
    * Avatars have no parent posts
+   * @since 1.8.4
    * @param array $settings
    * @uses object $post
    * @uses bool $wpua_is_profile
@@ -70,6 +72,7 @@ class WP_User_Avatar {
 
   /**
    * Media Uploader
+   * @since 1.4
    * @param object $user
    * @uses object $current_user
    * @uses string $mustache_admin
@@ -124,6 +127,7 @@ class WP_User_Avatar {
 
   /**
    * Add to edit user profile
+   * @since 1.4
    * @param object $user
    * @uses int $blog_id
    * @uses object $current_user
@@ -201,6 +205,7 @@ class WP_User_Avatar {
 
   /**
    * Add upload error messages
+   * @since 1.7.1
    * @param array $errors
    * @param bool $update
    * @param object $user
@@ -231,6 +236,7 @@ class WP_User_Avatar {
 
   /**
    * Set upload size limit
+   * @since 1.5
    * @param object $file
    * @uses int $wpua_upload_size_limit
    * @uses add_action()
@@ -240,6 +246,10 @@ class WP_User_Avatar {
     global $wpua_upload_size_limit;
     $size = $file['size'];
     if(!empty($size) && $size > $wpua_upload_size_limit) {
+      /**
+       * Error handling that only appears on front pages
+       * @since 1.7
+       */
       function wpua_file_size_error($errors, $update, $user) {
         $errors->add('wpua_file_size', __('Memory exceeded. Please try another smaller file.'));
       }
@@ -251,6 +261,7 @@ class WP_User_Avatar {
 
   /**
    * Update user meta
+   * @since 1.4
    * @param int $user_id
    * @uses int $blog_id
    * @uses object $post
@@ -397,6 +408,7 @@ class WP_User_Avatar {
 
   /**
    * Check attachment is owned by user
+   * @since 1.4
    * @param int $attachment_id
    * @param int $user_id
    * @param bool $wpua_author
@@ -413,6 +425,7 @@ class WP_User_Avatar {
 
   /**
    * Check if current user has at least Author privileges
+   * @since 1.8.5
    * @uses current_user_can()
    * @uses apply_filters()
    * @return bool
@@ -421,6 +434,7 @@ class WP_User_Avatar {
     $is_author_or_above = (current_user_can('edit_published_posts') && current_user_can('upload_files') && current_user_can('publish_posts') && current_user_can('delete_published_posts')) ? true : false;
     /**
      * Filter Author privilege check
+     * @since 1.9.2
      * @param bool $is_author_or_above
      */
     return apply_filters('wpua_is_author_or_above', $is_author_or_above);
@@ -429,6 +443,7 @@ class WP_User_Avatar {
 
 /**
  * Initialize WP_User_Avatar
+ * @since 1.8
  */
 function wpua_init() {
   global $wp_user_avatar;

@@ -3,10 +3,11 @@
  * Media Library view of all avatars in use.
  *
  * @package WP User Avatar
- * @version 1.9.5
+ * @version 1.9.6
  */
 
 /**
+ * @since 1.8
  * @uses object $wpua_admin
  * @uses _wpua_get_list_table()
  * @uses add_query_arg()

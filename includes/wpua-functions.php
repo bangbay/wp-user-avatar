@@ -3,11 +3,12 @@
  * Public user functions.
  * 
  * @package WP User Avatar
- * @version 1.9.5
+ * @version 1.9.6
  */
 
 /**
  * Returns true if user has wp_user_avatar
+ * @since 1.8
  * @param int|string $id_or_email
  * @param bool $has_wpua
  * @param object $user
@@ -22,6 +23,7 @@ function has_wp_user_avatar($id_or_email="", $has_wpua="", $user="", $user_id=""
 
 /**
  * Find WPUA, show get_avatar if empty
+ * @since 1.8
  * @param int|string $id_or_email
  * @param int|string $size
  * @param string $align
@@ -36,6 +38,7 @@ function get_wp_user_avatar($id_or_email="", $size="", $align="", $alt="") {
 
 /**
  * Return just the image src
+ * @since 1.8
  * @param int|string $id_or_email
  * @param int|string $size
  * @param string $align
@@ -49,6 +52,7 @@ function get_wp_user_avatar_src($id_or_email="", $size="", $align="") {
 
 /**
  * Before wrapper for profile
+ * @since 1.6
  * @uses do_action()
  */
 function wpua_before_avatar() {
@@ -57,6 +61,7 @@ function wpua_before_avatar() {
 
 /**
  * After wrapper for profile
+ * @since 1.6
  * @uses do_action()
  */
 function wpua_after_avatar() {
@@ -65,6 +70,7 @@ function wpua_after_avatar() {
 
 /**
  * Before avatar container
+ * @since 1.6
  * @uses apply_filters()
  * @uses bbp_is_edit()
  * @uses wpuf_has_shortcode()
@@ -73,6 +79,7 @@ function wpua_do_before_avatar() {
   $wpua_profile_title = '<h3>'.__('Avatar').'</h3>';
   /**
    * Filter profile title
+   * @since 1.9.4
    * @param string $wpua_profile_title
    */
   $wpua_profile_title = apply_filters('wpua_profile_title', $wpua_profile_title);
@@ -98,6 +105,7 @@ add_action('wpua_before_avatar', 'wpua_do_before_avatar');
 
 /**
  * After avatar container
+ * @since 1.6
  * @uses bbp_is_edit()
  * @uses wpuf_has_shortcode()
  */
@@ -118,7 +126,8 @@ function wpua_do_after_avatar() {
 add_action('wpua_after_avatar', 'wpua_do_after_avatar');
 
 /**
- * Before wrapper for profile
+ * Before wrapper for profile in admin section
+ * @since 1.9.4
  * @uses do_action()
  */
 function wpua_before_avatar_admin() {
@@ -126,7 +135,8 @@ function wpua_before_avatar_admin() {
 }
 
 /**
- * After wrapper for profile
+ * After wrapper for profile in admin section
+ * @since 1.9.4
  * @uses do_action()
  */
 function wpua_after_avatar_admin() {
@@ -134,7 +144,8 @@ function wpua_after_avatar_admin() {
 }
 
 /**
- * Before avatar container
+ * Before avatar container in admin section
+ * @since 1.9.4
  */
 function wpua_do_before_avatar_admin() {
 ?>
@@ -148,7 +159,8 @@ function wpua_do_before_avatar_admin() {
 add_action('wpua_before_avatar_admin', 'wpua_do_before_avatar_admin');
 
 /**
- * After avatar container
+ * After avatar container in admin section
+ * @since 1.9.4
  */
 function wpua_do_after_avatar_admin() {
 ?>
@@ -161,6 +173,7 @@ add_action('wpua_after_avatar_admin', 'wpua_do_after_avatar_admin');
 
 /**
  * Filter for the inevitable complaints about the donation message :(
+ * @since 1.6.6
  * @uses do_action()
  */
 function wpua_donation_message() {
@@ -169,6 +182,7 @@ function wpua_donation_message() {
 
 /**
  * Donation message
+ * @since 1.6.6
  */
 function wpua_do_donation_message() { ?>
   <div class="updated">
@@ -180,6 +194,7 @@ add_action('wpua_donation_message', 'wpua_do_donation_message');
 
 /**
  * Register widget
+ * @since 1.9.4
  * @uses register_widget()
  */
 function wpua_widgets_init() {

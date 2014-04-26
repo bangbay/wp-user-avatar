@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: WP User Avatar 1.9.5\n"
+"Project-Id-Version: WP User Avatar 1.9.6\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/wp-user-avatar/\n"
-"PO-Revision-Date: 2014-04-24 00:00-0000\n"
+"PO-Revision-Date: 2014-04-26 00:00-0000\n"
 "Language: sv_SE\n"
 "Last-Translator: Mattias Tengblad <mst@eyesx.com>\n"
 "Language-Team: WordPress Sverige <info@wpsv.se>\n"
@@ -14,49 +14,49 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: includes/class-wp-user-avatar-admin.php:209
+#: includes/class-wp-user-avatar-admin.php:302
 msgid "Donate"
 msgstr "Donera"
 
-#: includes/wpua-functions.php:175
+#: includes/wpua-functions.php:189
 msgid "Do you like WP User Avatar?"
 msgstr "Är du nöjd med Visningsbild (avatar)?"
 
-#: includes/wpua-functions.php:175
+#: includes/wpua-functions.php:189
 msgid "Make a donation."
 msgstr "Donera"
 
-#: includes/wpua-options-page.php:80
+#: includes/wpua-options-page.php:83
 msgid "Add avatar button to Visual Editor"
 msgstr "Lägg till knapp för avatarer i den visuella redigeraren"
 
-#: includes/wpua-options-page.php:86
+#: includes/wpua-options-page.php:89
 msgid "Allow Contributors & Subscribers to upload avatars"
 msgstr "Tillåt medarbetare & prenumeranter att ladda upp avatarer"
 
-#: includes/wpua-options-page.php:92
+#: includes/wpua-options-page.php:95
 msgid "Disable Gravatar and use only local avatars"
 msgstr "Inaktivera Gravatar och använd endast lokala avatarer"
 
-#: includes/wpua-options-page.php:113
-#: includes/wpua-options-page.php:118
+#: includes/wpua-options-page.php:117
+#: includes/wpua-options-page.php:122
 msgid "Upload Size Limit"
 msgstr "Storleksgräns för uppladdningar"
 
-#: includes/wpua-options-page.php:113
-#: includes/wpua-options-page.php:118
+#: includes/wpua-options-page.php:117
+#: includes/wpua-options-page.php:122
 msgid "(only for Contributors & Subscribers)"
 msgstr "(endast för medarbetare & prenumeranter)"
 
-#: includes/wpua-options-page.php:128
+#: includes/wpua-options-page.php:132
 msgid "Allow users to edit avatars"
 msgstr "Tillåt användare att redigera avatarer"
 
-#: includes/wpua-options-page.php:134
+#: includes/wpua-options-page.php:138
 msgid "Resize avatars on upload"
 msgstr "Ändra storlek på avatarer på uppladdning"
 
-#: includes/wpua-options-page.php:144
+#: includes/wpua-options-page.php:148
 msgid "Crop avatars to exact dimensions"
 msgstr "Beskär avatarer till exakta dimensioner"
 

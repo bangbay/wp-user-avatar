@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.9.5
+ * @version 1.9.6
  */
 
 /*
@@ -10,7 +10,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.9.5
+Version: 1.9.6
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -25,6 +25,7 @@ if(!defined('ABSPATH')) {
 class WP_User_Avatar_Setup {
   /**
    * Constructor
+   * @since 1.9.2
    */
   public function __construct() {
     $this->_define_constants();
@@ -34,9 +35,10 @@ class WP_User_Avatar_Setup {
 
   /**
    * Define paths
+   * @since 1.9.2
    */
   private function _define_constants() {
-    define('WPUA_VERSION', '1.9.5');
+    define('WPUA_VERSION', '1.9.6');
     define('WPUA_FOLDER', basename(dirname(__FILE__)));
     define('WPUA_DIR', plugin_dir_path(__FILE__));
     define('WPUA_INC', WPUA_DIR.'includes'.'/');
@@ -46,6 +48,7 @@ class WP_User_Avatar_Setup {
 
   /**
    * WordPress includes used in plugin
+   * @since 1.9.2
    */
   private function _load_wp_includes() {
     require_once(ABSPATH.'wp-admin/includes/file.php');
@@ -57,6 +60,7 @@ class WP_User_Avatar_Setup {
 
   /**
    * Load WP User Avatar
+   * @since 1.9.2
    */
   private function _load_wpua() {
     require_once(WPUA_INC.'wpua-globals.php');
@@ -64,8 +68,11 @@ class WP_User_Avatar_Setup {
     require_once(WPUA_INC.'class-wp-user-avatar-admin.php');
     require_once(WPUA_INC.'class-wp-user-avatar.php');
     require_once(WPUA_INC.'class-wp-user-avatar-functions.php');
-    require_once(WPUA_INC.'class-wp-user-avatar-resource-manager.php');
-    WP_User_Avatar_Resource_Manager::init();
+    // Only needed on front pages
+    if(!is_admin()) {
+      require_once(WPUA_INC.'class-wp-user-avatar-resource-manager.php');
+      WP_User_Avatar_Resource_Manager::init();
+    }
     require_once(WPUA_INC.'class-wp-user-avatar-shortcode.php');
     require_once(WPUA_INC.'class-wp-user-avatar-subscriber.php');
     require_once(WPUA_INC.'class-wp-user-avatar-update.php');

@@ -3,14 +3,29 @@
  * Remove user metadata and options on plugin delete.
  *
  * @package WP User Avatar
- * @version 1.9.5
+ * @version 1.9.6
+ */
+
+/**
+ * @since 1.4
+ * @uses int $blog_id
+ * @uses object $wpdb
+ * @uses delete_option()
+ * @uses delete_post_meta_by_key()
+ * @uses delete_user_meta()
+ * @uses get_users()
+ * @uses get_blog_prefix()
+ * @uses is_multisite()
+ * @uses switch_to_blog()
+ * @uses update_option()
+ * @uses wp_get_sites()
  */
 
 if(!defined('WP_UNINSTALL_PLUGIN')) {
   die('You are not allowed to call this page directly.');
 }
 
-global $wpdb, $blog_id, $switched;
+global $blog_id, $wpdb;
 $users = get_users();
 
 // Remove settings for all sites in multisite

@@ -3,12 +3,13 @@
  * Defines shortcodes.
  *
  * @package WP User Avatar
- * @version 1.9.5
+ * @version 1.9.6
  */
 
 class WP_User_Avatar_Shortcode {
   /**
    * Constructor
+   * @since 1.8
    * @uses object $wp_user_avatar
    * @uses add_action()
    * @uses add_shortcode()
@@ -27,7 +28,7 @@ class WP_User_Avatar_Shortcode {
 
   /**
    * Display shortcode
-   * @since 1.1
+   * @since 1.4
    * @param array $atts
    * @param string $content
    * @uses array $_wp_additional_image_sizes
@@ -132,7 +133,6 @@ class WP_User_Avatar_Shortcode {
    * @uses wp_safe_redirect()
    */
   private function wpua_edit_user($user_id=0) {
-    global $post, $wp_http_referer;
     $user = new stdClass;
     $update = $user_id ? true : false;
     $errors = new WP_Error();
@@ -151,10 +151,13 @@ class WP_User_Avatar_Shortcode {
    * Edit shortcode
    * @since 1.8
    * @param array $atts
+   * @uses current_user_can()
    * @uses do_action()
    * @uses get_error_messages()
+   * @uses get_user_by()
    * @uses is_user_logged_in()
    * @uses is_wp_error()
+   * @uses shortcode_atts()
    * @uses wpua_edit_form()
    * @uses wpua_edit_user()
    * @return string
@@ -163,43 +166,53 @@ class WP_User_Avatar_Shortcode {
     global $current_user, $errors;
     // Shortcode only works with logged-in user
     if(is_user_logged_in()) {
-      // Save
-      if(isset($_POST['submit']) && $_POST['submit'] && $_POST['action'] == 'update') {
-        do_action('wpua_update', $current_user->ID);
-        // Check for errors
-        $errors = $this->wpua_edit_user($current_user->ID);
+      extract(shortcode_atts(array('user' => ""), $atts));
+      // Default user is current user
+      $valid_user = $current_user;
+      // Find user by ID, login, slug, or e-mail address
+      if(!empty($user)) {
+        $get_user = is_numeric($user) ? get_user_by('id', $user) : get_user_by('login', $user);
+        $get_user = empty($get_user) ? get_user_by('slug', $user) : $get_user;
+        $get_user = empty($get_user) ? get_user_by('email', $user) : $get_user;
+        // Check if current user can edit this user
+        $valid_user = current_user_can('edit_user', $get_user) ? $get_user : null;
       }
-      // Errors
-      if(isset($errors) && is_wp_error($errors)) {
-        echo '<div class="error"><p>'.implode("</p>\n<p>", $errors->get_error_messages()).'</p></div>';
-      } elseif(isset($_GET['updated']) && $_GET['updated'] == '1') {
-        echo '<div class="updated"><p><strong>'.__('Profile updated.').'</strong></p></div>';
+      // Show form only for valid user
+      if($valid_user) {
+        // Save
+        if(isset($_POST['submit']) && $_POST['submit'] && $_POST['action'] == 'update') {
+          do_action('wpua_update', $valid_user->ID);
+          // Check for errors
+          $errors = $this->wpua_edit_user($valid_user->ID);
+        }
+        // Errors
+        if(isset($errors) && is_wp_error($errors)) {
+          echo '<div class="error"><p>'.implode("</p>\n<p>", $errors->get_error_messages()).'</p></div>';
+        } elseif(isset($_GET['updated']) && $_GET['updated'] == '1') {
+          echo '<div class="updated"><p><strong>'.__('Profile updated.').'</strong></p></div>';
+        }
+        // Edit form
+        return $this->wpua_edit_form($valid_user);
       }
-      // Edit form
-      return $this->wpua_edit_form();
     }
   }
 
   /**
    * Edit form
    * @since 1.8
-   * @uses object $current_user
-   * @uses object $post
+   * @param object $user
    * @uses do_action()
    * @uses submit_button()
    * @uses wp_nonce_field()
-   * @uses wp_reset_query()
    */
-  private function wpua_edit_form() {
-     global $current_user, $post;
-     wp_reset_query();
+  private function wpua_edit_form($user) {
      ob_start();
   ?>
     <form id="wpua-edit-<?php echo $current_user->ID; ?>" class="wpua-edit" action="" method="post" enctype="multipart/form-data">
-      <?php do_action('wpua_show_profile', $current_user); ?>
+      <?php do_action('wpua_show_profile', $user); ?>
       <input type="hidden" name="action" value="update" />
-      <input type="hidden" name="user_id" id="user_id" value="<?php echo esc_attr($current_user->ID); ?>" />
-      <?php wp_nonce_field('update-user_'.$current_user->ID); ?>
+      <input type="hidden" name="user_id" id="user_id" value="<?php echo esc_attr($user_id); ?>" />
+      <?php wp_nonce_field('update-user_'.$user->ID); ?>
       <?php submit_button(__('Update Profile')); ?>
     </form>
   <?php
@@ -209,6 +222,7 @@ class WP_User_Avatar_Shortcode {
 
 /**
  * Initialize
+ * @since 1.9.2
  */
 function wpua_shortcode_init() {
   global $wpua_shortcode;
