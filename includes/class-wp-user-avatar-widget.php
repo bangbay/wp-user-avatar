@@ -3,7 +3,7 @@
  * Defines widgets.
  *
  * @package WP User Avatar
- * @version 1.9.6
+ * @version 1.9.7
  */
 
 class WP_User_Avatar_Profile_Widget extends WP_Widget {
@@ -42,7 +42,7 @@ class WP_User_Avatar_Profile_Widget extends WP_Widget {
       // Remove profile title
       add_filter('wpua_profile_title', '__return_null');
       // Get [avatar_upload] shortcode
-      echo $wpua_shortcode->wpua_edit_shortcode();
+      echo $wpua_shortcode->wpua_edit_shortcode("");
       remove_filter('wpua_profile_title', '__return_null');
     }
   }

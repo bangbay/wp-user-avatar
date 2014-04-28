@@ -3,7 +3,7 @@
  * Admin page to change plugin options.
  *
  * @package WP User Avatar
- * @version 1.9.6
+ * @version 1.9.7
  */
 
 /**

@@ -3,7 +3,7 @@
  * Public user functions.
  * 
  * @package WP User Avatar
- * @version 1.9.6
+ * @version 1.9.7
  */
 
 /**

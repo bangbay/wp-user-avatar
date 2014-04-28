@@ -4,7 +4,7 @@
  * Borrowed from NextGen Gallery C_Photocrati_Resource_Manager class.
  *
  * @package WP User Avatar
- * @version 1.9.6
+ * @version 1.9.7
  */
 
 class WP_User_Avatar_Resource_Manager {

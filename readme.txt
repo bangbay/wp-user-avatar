@@ -5,7 +5,7 @@ Donate link: http://siboliban.org/donate
 Tags: author image, author photo, author avatar, avatar, bbPress, profile avatar, profile image, user avatar, user image, user photo, widget
 Requires at least: 3.6
 Tested up to: 3.9
-Stable tag: 1.9.6
+Stable tag: 1.9.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -380,6 +380,10 @@ This would output:
 4. After you've chosen a WP User Avatar image, you will see the option to remove it.
 
 == Changelog ==
+
+= 1.9.7 =
+* Bug Fix: Remove resource manager
+* Bug Fix: User ID in shortcode
 
 = 1.9.6 =
 * Bug Fix: Load resource manager on front pages only
