@@ -3,7 +3,7 @@
  * Defines widgets.
  *
  * @package WP User Avatar
- * @version 1.9.7
+ * @version 1.9.8
  */
 
 class WP_User_Avatar_Profile_Widget extends WP_Widget {
@@ -21,20 +21,23 @@ class WP_User_Avatar_Profile_Widget extends WP_Widget {
    * @since 1.9.4
    * @param array $args
    * @param array $instance
+   * @uses object $wp_user_avatar
+   * @uses bool $wpua_allow_upload
    * @uses object $wpua_shortcode
    * @uses add_filter()
    * @uses apply_filters()
    * @uses is_user_logged_in()
    * @uses remove_filter()
    * @uses wpua_edit_shortcode()
+   * @uses wpua_is_author_or_above()
    */
   public function widget($args, $instance) {
-    global $wpua_shortcode;
+    global $wp_user_avatar, $wpua_allow_upload, $wpua_shortcode;
     extract($args);
     $instance = apply_filters('wpua_widget_instance', $instance);
     $title = apply_filters('widget_title', empty($instance['title']) ? "" : $instance['title'], $instance, $this->id_base);
-    // Show widget only for logged-in users
-    if(is_user_logged_in()) {  
+    // Show widget only for users with permission
+    if($wp_user_avatar->wpua_is_author_or_above() || ((bool) $wpua_allow_upload == 1 && is_user_logged_in())) {
       echo $before_widget;
       if($title){
         echo $before_title.$title.$after_title;

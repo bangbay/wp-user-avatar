@@ -3,7 +3,7 @@
  * Defines all of administrative, activation, and deactivation settings.
  *
  * @package WP User Avatar
- * @version 1.9.7
+ * @version 1.9.8
  */
 
 class WP_User_Avatar_Admin {
@@ -115,7 +115,7 @@ class WP_User_Avatar_Admin {
   public function wpua_is_menu_page() {
     global $pagenow;
     $is_menu_page = ($pagenow == 'admin.php' && isset($_GET['page']) && $_GET['page'] == 'wp-user-avatar') ? true : false;
-    return $is_menu_page;
+    return (bool) $is_menu_page;
   }
 
   /**

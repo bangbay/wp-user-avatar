@@ -3,7 +3,7 @@
  * Core user functions.
  * 
  * @package WP User Avatar
- * @version 1.9.7
+ * @version 1.9.8
  */
 
 class WP_User_Avatar_Functions {
@@ -47,7 +47,7 @@ class WP_User_Avatar_Functions {
       wp_cache_set($hash, $data, $group="", $expire=60*5);
     }
     $has_gravatar = ($data == '200') ? true : false;
-    return $has_gravatar;
+    return (bool) $has_gravatar;
   }
 
   /**
@@ -67,7 +67,7 @@ class WP_User_Avatar_Functions {
      * @param int $attachment_id
      */
     $is_image = apply_filters('wpua_attachment_is_image', $is_image, $attachment_id);
-    return $is_image;
+    return (bool) $is_image;
   }
 
   /**
@@ -146,7 +146,7 @@ class WP_User_Avatar_Functions {
     $wpua = get_user_meta($user_id, $wpdb->get_blog_prefix($blog_id).'user_avatar', true);
     // Check if avatar is same as default avatar or on excluded list
     $has_wpua = !empty($wpua) && ($wpua != $wpua_avatar_default) && $wpua_functions->wpua_attachment_is_image($wpua) ? true : false;
-    return $has_wpua;
+    return (bool) $has_wpua;
   }
 
   /**

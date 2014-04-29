@@ -3,7 +3,7 @@
  * Defines shortcodes.
  *
  * @package WP User Avatar
- * @version 1.9.7
+ * @version 1.9.8
  */
 
 class WP_User_Avatar_Shortcode {
@@ -151,6 +151,8 @@ class WP_User_Avatar_Shortcode {
    * Edit shortcode
    * @since 1.8
    * @param array $atts
+   * @uses $wp_user_avatar
+   * @uses $wpua_allow_upload
    * @uses current_user_can()
    * @uses do_action()
    * @uses get_error_messages()
@@ -160,12 +162,13 @@ class WP_User_Avatar_Shortcode {
    * @uses shortcode_atts()
    * @uses wpua_edit_form()
    * @uses wpua_edit_user()
+   * @uses wpua_is_author_or_above()
    * @return string
    */
   public function wpua_edit_shortcode($atts) {
-    global $current_user, $errors;
-    // Shortcode only works with logged-in user
-    if(is_user_logged_in()) {
+    global $current_user, $errors, $wp_user_avatar, $wpua_allow_upload;
+    // Shortcode only works for users with permission
+    if($wp_user_avatar->wpua_is_author_or_above() || ((bool) $wpua_allow_upload == 1 && is_user_logged_in())) {
       extract(shortcode_atts(array('user' => ""), $atts));
       // Default user is current user
       $valid_user = $current_user;

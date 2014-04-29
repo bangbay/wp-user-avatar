@@ -3,7 +3,7 @@
  * TinyMCE button for Visual Editor.
  *
  * @package WP User Avatar
- * @version 1.9.7
+ * @version 1.9.8
  */
 
 /**

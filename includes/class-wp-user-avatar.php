@@ -3,7 +3,7 @@
  * Defines all profile and upload settings.
  *
  * @package WP User Avatar
- * @version 1.9.7
+ * @version 1.9.8
  */
 
 class WP_User_Avatar {
@@ -23,7 +23,7 @@ class WP_User_Avatar {
    */
   public function __construct() {
     global $pagenow, $show_avatars, $wpua_admin, $wpua_allow_upload;
-    // Add WPUA to profile
+    // Add WPUA to profile for users with permission
     if($this->wpua_is_author_or_above() || ((bool) $wpua_allow_upload == 1 && is_user_logged_in())) {
       // Profile functions and scripts
       add_action('show_user_profile', array('wp_user_avatar', 'wpua_action_show_user_profile'));
@@ -59,7 +59,7 @@ class WP_User_Avatar {
    * @uses object $post
    * @uses bool $wpua_is_profile
    * @uses is_admin()
-   * @return array $settings
+   * array $settings
    */
   public function wpua_media_view_settings($settings) {
     global $post, $wpua_is_profile;
@@ -99,6 +99,7 @@ class WP_User_Avatar {
     // This is a profile page
     $wpua_is_profile = 1;
     $user = ($pagenow == 'user-edit.php' && isset($_GET['user_id'])) ? get_user_by('id', $_GET['user_id']) : $current_user;
+    wp_enqueue_style('wp-user-avatar', WPUA_URL.'css/wp-user-avatar.css', "", WPUA_VERSION);
     wp_enqueue_script('jquery');
     if($wp_user_avatar->wpua_is_author_or_above()) {
       wp_enqueue_script('admin-bar');
@@ -107,7 +108,6 @@ class WP_User_Avatar {
     } else {
       wp_enqueue_script('wp-user-avatar', WPUA_URL.'js/wp-user-avatar-user.js', array('jquery'), WPUA_VERSION, true);
     }
-    wp_enqueue_style('wp-user-avatar', WPUA_URL.'css/wp-user-avatar.css', "", WPUA_VERSION);
     // Admin scripts
     if($pagenow == 'options-discussion.php' || $wpua_admin->wpua_is_menu_page()) {
       // Size limit slider
@@ -420,7 +420,7 @@ class WP_User_Avatar {
     if(!empty($attachment) && $attachment->post_author == $user_id) {
       $wpua_author = true;
     }
-    return $wpua_author;
+    return (bool) $wpua_author;
   }
 
   /**
@@ -437,7 +437,7 @@ class WP_User_Avatar {
      * @since 1.9.2
      * @param bool $is_author_or_above
      */
-    return apply_filters('wpua_is_author_or_above', $is_author_or_above);
+    return (bool) apply_filters('wpua_is_author_or_above', $is_author_or_above);
   }
 }
 
