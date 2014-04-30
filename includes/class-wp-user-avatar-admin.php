@@ -3,7 +3,7 @@
  * Defines all of administrative, activation, and deactivation settings.
  *
  * @package WP User Avatar
- * @version 1.9.8
+ * @version 1.9.9
  */
 
 class WP_User_Avatar_Admin {
@@ -11,18 +11,14 @@ class WP_User_Avatar_Admin {
    * Constructor
    * @since 1.8
    * @uses bool $show_avatars
-   * @uses bool $wpua_allow_upload
-   * @uses bool $wpua_tinymce
    * @uses add_action()
    * @uses add_filter()
-   * @uses current_user_can()
-   * @uses is_admin()
    * @uses load_plugin_textdomain()
    * @uses register_activation_hook()
    * @uses register_deactivation_hook()
    */
   public function __construct() {
-    global $show_avatars, $wpua_allow_upload, $wpua_tinymce;
+    global $show_avatars;
     // Initialize default settings
     register_activation_hook(WPUA_DIR.'wp-user-avatar.php', array($this, 'wpua_options'));
     // Settings saved to wp_options
@@ -41,16 +37,12 @@ class WP_User_Avatar_Admin {
     add_filter('plugin_action_links', array($this, 'wpua_action_links'), 10, 2);
     add_filter('plugin_row_meta', array($this, 'wpua_row_meta'), 10, 2);
     // Hide column in Users table if default avatars are enabled
-    if((bool) $show_avatars == 0 && is_admin()) {
+    if((bool) $show_avatars == 0) {
       add_filter('manage_users_columns', array($this, 'wpua_add_column'), 10, 1);
       add_filter('manage_users_custom_column', array($this, 'wpua_show_column'), 10, 3);
     }
     // Media states
     add_filter('display_media_states', array($this, 'wpua_add_media_state'), 10, 1);
-    // Load TinyMCE only if enabled and user has editing privileges
-    if((bool) $wpua_tinymce == 1 && current_user_can('edit_posts') && current_user_can('edit_pages')) {
-      include_once(WPUA_INC.'wpua-tinymce.php');
-    }
   }
 
   /**

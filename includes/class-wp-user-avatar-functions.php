@@ -3,7 +3,7 @@
  * Core user functions.
  * 
  * @package WP User Avatar
- * @version 1.9.8
+ * @version 1.9.9
  */
 
 class WP_User_Avatar_Functions {

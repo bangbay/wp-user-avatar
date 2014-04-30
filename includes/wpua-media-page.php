@@ -3,7 +3,7 @@
  * Media Library view of all avatars in use.
  *
  * @package WP User Avatar
- * @version 1.9.8
+ * @version 1.9.9
  */
 
 /**
