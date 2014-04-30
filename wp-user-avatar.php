@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.9.10
+ * @version 1.9.11
  */
 
 /*
@@ -10,7 +10,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.9.10
+Version: 1.9.11
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -38,7 +38,7 @@ class WP_User_Avatar_Setup {
    * @since 1.9.2
    */
   private function _define_constants() {
-    define('WPUA_VERSION', '1.9.10');
+    define('WPUA_VERSION', '1.9.11');
     define('WPUA_FOLDER', basename(dirname(__FILE__)));
     define('WPUA_DIR', plugin_dir_path(__FILE__));
     define('WPUA_INC', WPUA_DIR.'includes'.'/');
@@ -72,10 +72,10 @@ class WP_User_Avatar_Setup {
     require_once(WPUA_INC.'class-wp-user-avatar.php');
     require_once(WPUA_INC.'class-wp-user-avatar-functions.php');
     // Only needed on front pages and if NextGEN Gallery isn't installed
-    if(!is_admin() && !defined('NEXTGEN_GALLERY_PLUGIN_DIR') && !defined('NGG_GALLERY_PLUGIN_DIR')) {
-      require_once(WPUA_INC.'class-wp-user-avatar-resource-manager.php');
-      WP_User_Avatar_Resource_Manager::init();
-    }
+    // if(!is_admin() && !defined('NEXTGEN_GALLERY_PLUGIN_DIR') && !defined('NGG_GALLERY_PLUGIN_DIR')) {
+    //   require_once(WPUA_INC.'class-wp-user-avatar-resource-manager.php');
+    //   WP_User_Avatar_Resource_Manager::init();
+    // }
     require_once(WPUA_INC.'class-wp-user-avatar-shortcode.php');
     require_once(WPUA_INC.'class-wp-user-avatar-subscriber.php');
     require_once(WPUA_INC.'class-wp-user-avatar-update.php');

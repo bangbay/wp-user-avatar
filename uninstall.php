@@ -3,7 +3,7 @@
  * Remove user metadata and options on plugin delete.
  *
  * @package WP User Avatar
- * @version 1.9.10
+ * @version 1.9.11
  */
 
 /**
