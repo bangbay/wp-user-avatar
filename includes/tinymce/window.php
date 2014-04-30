@@ -3,7 +3,7 @@
  * TinyMCE modal window.
  *
  * @package WP User Avatar
- * @version 1.9.9
+ * @version 1.9.10
  */
 
 /**
@@ -30,7 +30,8 @@ if(!defined('ABSPATH')) {
   <script type="text/javascript">
     function wpuaInsertAvatar() {
       // Custom shortcode values
-      var shortcode, closing_tag,
+      var shortcode,
+          closing_tag,
           user = document.getElementById('wp_user_avatar_user').value,
           size = document.getElementById('wp_user_avatar_size').value,
           size_number = document.getElementById('wp_user_avatar_size_number').value,
@@ -53,8 +54,14 @@ if(!defined('ABSPATH')) {
       closing_tag = (caption != "") ? "]" + caption + "[/avatar]" : " /]";
       shortcode = "<p>[avatar" + user_tag + size_tag + align_tag + link_tag + target_tag + closing_tag + "</p>";
 
+      // Insert into Visual Editor
       if(window.tinyMCE) {
-        window.tinyMCE.execInstanceCommand(window.tinyMCE.activeEditor.id, 'mceInsertContent', false, shortcode);
+        var tmce_ver = window.tinyMCE.majorVersion;
+        if(tmce_ver >= "4") {
+          window.tinyMCE.execCommand('mceInsertContent', false, shortcode);
+        } else {
+          window.tinyMCE.execInstanceCommand(window.tinyMCE.activeEditor.id, 'mceInsertContent', false, shortcode);
+        }
         tinyMCEPopup.editor.execCommand('mceRepaint');
         tinyMCEPopup.close();
       }
@@ -62,22 +69,32 @@ if(!defined('ABSPATH')) {
     }
     function wpuaInsertAvatarUpload() {
       // Upload shortcode
-      var shortcode = "<p>[avatar_upload]</p>";
+      var shortcode = "<p>[avatar_upload /]</p>";
 
+      // Insert into Visual Editor
       if(window.tinyMCE) {
-        window.tinyMCE.execInstanceCommand(window.tinyMCE.activeEditor.id, 'mceInsertContent', false, shortcode);
+        var tmce_ver = window.tinyMCE.majorVersion;
+        if(tmce_ver >= "4") {
+          window.tinyMCE.execCommand('mceInsertContent', false, shortcode);
+        } else {
+          window.tinyMCE.execInstanceCommand(window.tinyMCE.activeEditor.id, 'mceInsertContent', false, shortcode);
+        }
         tinyMCEPopup.editor.execCommand('mceRepaint');
         tinyMCEPopup.close();
       }
       return;
     }
+
     jQuery(function($) {
+      // Show link input
       $('#wp_user_avatar_link').change(function() {
         $('#wp_user_avatar_link_external_section').toggle($('#wp_user_avatar_link').val() == 'custom-url');
       });
+      // Show size input
       $('#wp_user_avatar_size').change(function() {
         $('#wp_user_avatar_size_number_section').toggle($('#wp_user_avatar_size').val() == 'custom');
       });
+      // Tabs
       $('#wpua-tabs').tabs();
     });
   </script>

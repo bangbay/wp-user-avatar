@@ -4,7 +4,7 @@
  * Borrowed from NextGEN Gallery C_Photocrati_Resource_Manager class.
  *
  * @package WP User Avatar
- * @version 1.9.9
+ * @version 1.9.10
  */
 
 class WP_User_Avatar_Resource_Manager {
@@ -35,7 +35,7 @@ class WP_User_Avatar_Resource_Manager {
   /**
    * Created early as possible in the wp_footer action this is the string to which we
    * will move JS resources after
-   * @since 1.9.9
+   * @since 1.9.10
    */
   function print_marker() {
     print $this->marker;
