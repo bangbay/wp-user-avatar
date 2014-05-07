@@ -3,7 +3,7 @@
  * Admin page to change plugin options.
  *
  * @package WP User Avatar
- * @version 1.9.11
+ * @version 1.9.12
  */
 
 /**
@@ -48,10 +48,6 @@ $wpua_options_page_title = __('WP User Avatar', 'wp-user-avatar');
  */
 $wpua_options_page_title = apply_filters('wpua_options_page_title', $wpua_options_page_title);
 ?>
-
-<?php if($updated) : ?>
-  <div id="message" class="updated"><p><strong><?php _e('Settings saved.'); ?></strong></p></div>
-<?php endif; ?>
 
 <div class="wrap">
   <h2><?php echo $wpua_options_page_title; ?></h2>

@@ -3,7 +3,7 @@
  * Defines shortcodes.
  *
  * @package WP User Avatar
- * @version 1.9.11
+ * @version 1.9.12
  */
 
 class WP_User_Avatar_Shortcode {
@@ -129,12 +129,15 @@ class WP_User_Avatar_Shortcode {
    * @since 1.8
    * @param bool $user_id
    * @uses add_query_arg()
+   * @uses apply_filters()
    * @uses do_action_ref_array()
+   * @uses wp_get_referer()
+   * @uses wp_redirect()
    * @uses wp_safe_redirect()
    */
   private function wpua_edit_user($user_id=0) {
-    $user = new stdClass;
     $update = $user_id ? true : false;
+    $user = new stdClass;
     $errors = new WP_Error();
     do_action_ref_array('wpua_update_errors', array(&$errors, $update, &$user));
     if($errors->get_error_codes()) {
@@ -143,7 +146,21 @@ class WP_User_Avatar_Shortcode {
     }
     if($update) {
       // Redirect with updated variable
-      wp_safe_redirect(add_query_arg(array('updated' => '1'), $_POST['_wp_http_referer']));
+      $redirect_url = add_query_arg(array('updated' => '1'), wp_get_referer());
+      /**
+       * Filter redirect URL
+       * @since 1.9.12
+       * @param string $redirect_url
+       */
+      $redirect_url = apply_filters('wpua_edit_user_redirect_url', $redirect_url);
+      /**
+       * Filter wp_safe_redirect or wp_redirect
+       * @since 1.9.12
+       * @param bool $safe_redirect
+       */
+      $safe_redirect = apply_filters('wpua_edit_user_safe_redirect', true);
+      $safe_redirect ? wp_safe_redirect($redirect_url) : wp_redirect($redirect_url);
+      exit;
     }
   }
 
@@ -230,5 +247,7 @@ class WP_User_Avatar_Shortcode {
 function wpua_shortcode_init() {
   global $wpua_shortcode;
   $wpua_shortcode = new WP_User_Avatar_Shortcode();
+  // Clean output
+  ob_start();
 }
 add_action('init', 'wpua_shortcode_init');

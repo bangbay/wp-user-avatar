@@ -3,7 +3,7 @@
  * TinyMCE modal window.
  *
  * @package WP User Avatar
- * @version 1.9.11
+ * @version 1.9.12
  */
 
 /**
