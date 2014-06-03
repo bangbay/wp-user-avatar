@@ -3,7 +3,7 @@
  * Defines shortcodes.
  *
  * @package WP User Avatar
- * @version 1.9.12
+ * @version 1.9.13
  */
 
 class WP_User_Avatar_Shortcode {
@@ -226,7 +226,7 @@ class WP_User_Avatar_Shortcode {
    * @uses wp_nonce_field()
    */
   private function wpua_edit_form($user) {
-     ob_start();
+    ob_start();
   ?>
     <form id="wpua-edit-<?php echo $user->ID; ?>" class="wpua-edit" action="" method="post" enctype="multipart/form-data">
       <?php do_action('wpua_show_profile', $user); ?>

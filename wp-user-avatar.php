@@ -1,7 +1,7 @@
 <?php
 /**
  * @package WP User Avatar
- * @version 1.9.12
+ * @version 1.9.13
  */
 
 /*
@@ -10,7 +10,7 @@ Plugin URI: http://wordpress.org/plugins/wp-user-avatar/
 Description: Use any image from your WordPress Media Library as a custom user avatar. Add your own Default Avatar.
 Author: Bangbay Siboliban
 Author URI: http://siboliban.org/
-Version: 1.9.12
+Version: 1.9.13
 Text Domain: wp-user-avatar
 Domain Path: /lang/
 */
@@ -38,7 +38,7 @@ class WP_User_Avatar_Setup {
    * @since 1.9.2
    */
   private function _define_constants() {
-    define('WPUA_VERSION', '1.9.12');
+    define('WPUA_VERSION', '1.9.13');
     define('WPUA_FOLDER', basename(dirname(__FILE__)));
     define('WPUA_DIR', plugin_dir_path(__FILE__));
     define('WPUA_INC', WPUA_DIR.'includes'.'/');
@@ -49,13 +49,21 @@ class WP_User_Avatar_Setup {
   /**
    * WordPress includes used in plugin
    * @since 1.9.2
+   * @uses is_admin()
    */
   private function _load_wp_includes() {
-    require_once(ABSPATH.'wp-admin/includes/file.php');
-    require_once(ABSPATH.'wp-admin/includes/image.php');
-    require_once(ABSPATH.'wp-admin/includes/media.php');
+    if(!is_admin()) {
+      // wp_handle_upload
+      require_once(ABSPATH.'wp-admin/includes/file.php');
+      // wp_generate_attachment_metadata
+      require_once(ABSPATH.'wp-admin/includes/image.php');
+      // image_add_caption
+      require_once(ABSPATH.'wp-admin/includes/media.php');
+      // submit_button
+      require_once(ABSPATH.'wp-admin/includes/template.php');
+    }
+    // add_screen_option
     require_once(ABSPATH.'wp-admin/includes/screen.php');
-    require_once(ABSPATH.'wp-admin/includes/template.php');
   }
 
   /**
